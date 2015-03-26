@@ -22,6 +22,11 @@ float divi(float arg1, float arg2)
 	return arg2 / arg1;
 }
 
+float subtract(float arg1, float arg2)
+{
+	return arg1 - arg2;
+}
+
 float multiply(float arg1, float arg2)
 {
 	return arg1 * arg2;
@@ -38,6 +43,12 @@ float call_a_func(MathFunc call_this)
 float doMath(float x, float y)
 {
 	float output = (*multiply)(x, y);
+	return output;
+}
+
+float doMath2(float(*f)(float, float), float x, float y)
+{
+	float output = (*f)(x, y);
 	return output;
 }
 
