@@ -54,6 +54,7 @@ float doMath(float x, float y)
 }
 
 float arithmetic(MathFunc f, float x, float y)
+// float doMath2(float(*f)(float, float), float x, float y)
 {
 	float output = (*f)(x, y);
 	return output;
@@ -67,6 +68,7 @@ void myfunction (int i)
 struct myclass {           // function object type:
   void operator() (int i) {std::cout << ' ' << i;}
 } myobject;
+
 int main() 
 {
  	
