@@ -1,8 +1,9 @@
-#include <iostream>
-#include <bitset>
 #include <algorithm>
+#include <bitset>
+#include <iostream>
+#include <string>
+#include <tuple>
 #include <vector>
-
 
 using namespace std;
 
@@ -61,21 +62,21 @@ float arithmetic(MathFunc f, float x, float y)
 }
 
 void myfunction (int i) 
-{  // function:
+{
   std::cout << ' ' << i;
 }
 
-struct myclass {           // function object type:
+struct myclass 
+{ // function object type:
   void operator() (int i) {std::cout << ' ' << i;}
 } myobject;
 
 int main() 
 {
  	
- 	auto func = []() {cout << "Hello World\n\n";};
+ 	auto func = []() {cout << "Hello World\n";};
 	auto mult = [](int x, int y){return x * y;};
 	auto divide = [](float x, float y){return x / y;};
-
  	func();
 
 	int x , y;
@@ -103,17 +104,25 @@ int main()
 	vector<int> n;
 
 	for(int i = 0; i < 11; i++)
-	{
 		n.push_back(i);
-	}
 
 	for(int x : n)
-		cout<< "5 * " << x << " = " << mult(5, x) << "\n";
+		cout<< "5 * " << x << " = " << mult(5, x) << " | ";
 
-	auto l = [](int num){return num * 2;};
+	cout << "\n";
 	cout << "myvector contains:";
   	for_each (n.begin(), n.end(), [](int num){cout<< " " << num * 2;});
-  	cout << '\n';
+  	cout << "\n";
+
+  	tuple<int, string, vector<int>> mytuple;
+  	mytuple = make_tuple(9, "nine", n);
+  	string word;
+  	vector<int> res;
+  	tie(x, word, res) = mytuple;
+  	cout << "x: " << x << ", word: " << word <<"\n";
+  	cout << "multiplying res by 9 contains:";
+  	for_each (res.begin(), res.end(), [](int num){cout<< " " << num * 9;});
+  	cout << "\n";
 	
 	return 0;
 }
