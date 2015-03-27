@@ -1,5 +1,7 @@
 #include <iostream>
 #include <bitset>
+#include <algorithm>
+#include <vector>
 
 
 using namespace std;
@@ -22,9 +24,19 @@ float divi(float arg1, float arg2)
 	return arg2 / arg1;
 }
 
+float subtract(float arg1, float arg2)
+{
+	return arg1 - arg2;
+}
+
 float multiply(float arg1, float arg2)
 {
 	return arg1 * arg2;
+}
+
+float add(MathFunc f, float x, float y)
+{
+	return x + y;
 }
 
 float call_a_func(MathFunc call_this)
@@ -41,11 +53,26 @@ float doMath(float x, float y)
 	return output;
 }
 
+float arithmetic(MathFunc f, float x, float y)
+{
+	float output = (*f)(x, y);
+	return output;
+}
+
+void myfunction (int i) 
+{  // function:
+  std::cout << ' ' << i;
+}
+
+struct myclass {           // function object type:
+  void operator() (int i) {std::cout << ' ' << i;}
+} myobject;
 int main() 
 {
  	
- 	auto func = []() {cout << "\nHello World\n\n";};
+ 	auto func = []() {cout << "Hello World\n\n";};
 	auto mult = [](int x, int y){return x * y;};
+	auto divide = [](float x, float y){return x / y;};
 
  	func();
 
@@ -62,8 +89,29 @@ int main()
 	float mult_final_result = doMath(1.5, 1.5);
 	cout<< "mult final result: " << mult_final_result << "\n";
 
+	float subtract_final_result = arithmetic(&subtract, 1.9, 1.5);
+	cout<< "subtract final result: " << subtract_final_result << "\n";
+
 	auto mans = mult(10, 23);
 	cout << "Mult Using Lambda\n" << 10 << " * " << 23 << " = " << mans << "\n";
+
+	auto dans = divide(23, 11);
+	cout << "Divide Answer: " << dans << "\n" ;
+
+	vector<int> n;
+
+	for(int i = 0; i < 11; i++)
+	{
+		n.push_back(i);
+	}
+
+	for(int x : n)
+		cout<< "5 * " << x << " = " << mult(5, x) << "\n";
+
+	auto l = [](int num){return num * 2;};
+	cout << "myvector contains:";
+  	for_each (n.begin(), n.end(), [](int num){cout<< " " << num * 2;});
+  	cout << '\n';
 	
 	return 0;
 }
