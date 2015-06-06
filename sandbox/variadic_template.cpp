@@ -41,13 +41,7 @@ class VariadicTemplate;
 template<class... T> 
 void func(tuple<T&& ...> args )
 {
-    cout << sizeof...(T) << "\n";
-    size_t size = sizeof...(T);
-    
-    cout << "Tuple args: " << get<0>(args) << ", " << get<1>(args) << "\n---------------------\n";
-
     print(args);
-
     cout << "\n";
 }
 
@@ -86,8 +80,6 @@ public:
 private:
     string word;
     int number;
-    // tuple<int, string> vals;
-
 };
 
 template<>
@@ -120,8 +112,6 @@ public:
 private:
     string word;
     string number;
-    // tuple<T, string> vals;
-
 };
 
 
@@ -153,6 +143,19 @@ private:
 
 };
 
+template<typename... T>
+class VariadicTemplate<tuple<T&&...>>
+{
+public:
+
+    VariadicTemplate();
+    VariadicTemplate(tuple<T&&...> args)
+    {
+        print(args);
+        cout<< "\n";
+    };
+};
+
 int main()
 {
     VariadicTemplate<int, string> vtExample(9, std::string("twenty-three"));
@@ -173,7 +176,11 @@ int main()
 
     VariadicTemplate<string, int, vector<int>> vtExample2("wu wei", 3, cc);
     vtExample2.print();
-    // auto tv = make_tuple(i.begin(), i.end())
-    // func(forward_as_tuple(i));
+    cout<<"t: ";
     print(t);
+    
+    auto z = forward_as_tuple("one", 2, 3.00, 'A');
+    cout<<"\nz: ";
+    print(z);
+    cout<< "\n"; 
 }

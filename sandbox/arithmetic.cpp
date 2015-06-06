@@ -123,6 +123,8 @@ int main()
   	cout << "multiplying res by 9 contains:";
   	for_each (res.begin(), res.end(), [](int num){cout<< " " << num * 9;});
   	cout << "\n";
+
+  	cout << "\n";
 	
 	return 0;
 }
