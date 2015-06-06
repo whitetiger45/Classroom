@@ -47,6 +47,7 @@ int main()
     f.setValue(10);
     f.print(std::cout);
     f.print(std::cout);
+    cout << f;
     
     return 0;
 }
