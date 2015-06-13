@@ -1,3 +1,6 @@
+//algorithm from Data Structures and Algorithms in C++
+//Michael T. Goodrich * Roberto Tamassia * David Mount
+//Page 141
 #include <iostream>
 #include <vector>
 
