@@ -11,6 +11,7 @@ struct Adder
    {
    		return result;
    }
+   
    static void print(std::ostream & os)
    {
    		os << "the answer inside of operator: " << result << "\n";
@@ -42,26 +43,35 @@ int call_a_func(MathFunc call_this, int x, int y) {
 
 int main()
 {
-	int a, b;
-	while(cin >> a >> b)
-	{
-		int final_result = call_a_func(&mul, a, b);
-		cout<< a << " * " << b << " = " << final_result << "\n";
-		final_result = call_a_func(&add, a, b);
-		cout<< a << " + " << b << " = " << final_result << "\n";
-		final_result = call_a_func(&div, b, a);
-		cout<< a << " / " << b << " = " << final_result << "\n";
-		final_result = call_a_func(&sub, a, b);
-		cout<< a << " - " << b << " = " << final_result << "\n";
-		
-		auto mult = [](int x, int y){return x * y;};
- 		auto mans = mult(a, b);
- 		cout << "Mult Using Lambda\n" << a << " * " << b << " = " << mans << "\nEnd of Lambda\n";
- 		
- 		auto divi = [](float x, float y){return x / y;};
- 		auto dans = divi(a, b);
- 		cout << "Div Using Lambda\n" << a << " / " << b << " = " << dans << "\nEnd of Lambda\n";
-	}
+	int a = 20, b = 3;
+	// while(cin >> a >> b)
+
+	// {
+	int final_result = call_a_func(&mul, a, b);
+	cout<< a << " * " << b << " = " << final_result << "\n";
+	
+    final_result = call_a_func(&add, a, b);
+	cout<< a << " + " << b << " = " << final_result << "\n";
+	
+    final_result = call_a_func(&div, b, a);
+	cout<< a << " / " << b << " = " << final_result << "\n";
+	
+    final_result = call_a_func(&sub, a, b);
+	cout<< a << " - " << b << " = " << final_result << "\n";
+	
+	auto mult = [](int x, int y){return x * y;};
+	auto mans = mult(a, b);
+	cout << "Mult Using Lambda\n" << a << " * " << b << " = " << mans << "\nEnd of Lambda\n";
+	
+	auto divi = [](float x, float y){return x / y;};
+	auto dans = divi(a, b);
+	cout << "Div Using Lambda\n" << a << " / " << b << " = " << dans << "\nEnd of Lambda\n";
+
+    cout << "Adder: 21 + 2 = " << Adder<21, 2>::result << "\n";
+
+    Adder<19, 4>::print(cout);
+
+	// }
 	
 
 

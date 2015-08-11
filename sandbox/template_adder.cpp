@@ -10,12 +10,11 @@ struct Adder
    {
    	return os << result;
    }
-   
-//   	Adder<21, 2>::result;
-   
+      
 };
 
-int main() {
+int main() 
+{
 	//Adder<21, 2> a;
 	auto a = Adder<21, 2>::result;
 	std::cout<< Adder<21, 24>::result << endl;
