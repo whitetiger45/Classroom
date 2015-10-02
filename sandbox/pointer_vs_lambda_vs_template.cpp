@@ -11,7 +11,7 @@ struct Adder
    {
    		return result;
    }
-   
+
    static void print(std::ostream & os)
    {
    		os << "the answer inside of operator: " << result << "\n";
@@ -44,9 +44,7 @@ int call_a_func(MathFunc call_this, int x, int y) {
 int main()
 {
 	int a = 20, b = 3;
-	// while(cin >> a >> b)
 
-	// {
 	int final_result = call_a_func(&mul, a, b);
 	cout<< a << " * " << b << " = " << final_result << "\n";
 	
@@ -70,11 +68,6 @@ int main()
     cout << "Adder: 21 + 2 = " << Adder<21, 2>::result << "\n";
 
     Adder<19, 4>::print(cout);
-
-	// }
-	
-
-
 
 }
 
