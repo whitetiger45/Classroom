@@ -26,7 +26,7 @@ int main()
 
     int z, y, userChoice = 0;
     char userWantsToContinue;
-    std::string userWord, createdWord;
+    std::string userWord, createdWord;//created word is currently unused
     std::string a;
     bool more = true;
     do{
