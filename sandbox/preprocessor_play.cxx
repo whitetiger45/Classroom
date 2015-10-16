@@ -7,6 +7,7 @@
 ask(Num, "\nEnter a number: ")
 ask(Word, "\nEnter a word: ")
 ask(AnotherWord, "\nEnter next word: ")
+ask(Phrase,"\nDo you want to make a phrase? 1 or 0: ")
 ask(More, "More to add? 1 or 0: ")
 #undef ask
 #define func(n,a) void me##n() { std::cout << a;} 
@@ -46,7 +47,7 @@ int main()
                     std::string nextWord;
                     addWord();
                     std::cin >> userWord;
-                    std::cout << "Do you want to make a phrase? 1 or 0: ";
+                    addPhrase();
 
                     do
                     {
@@ -58,7 +59,7 @@ int main()
                         addMore();
                         std::cin >> checkForMore;
                         appendString = checkForMore;
-                                              
+
                     }while(appendString);
                     std::cout << userWord << "\n";
 
