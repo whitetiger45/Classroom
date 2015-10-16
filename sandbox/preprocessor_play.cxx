@@ -10,8 +10,6 @@ ask(More, "More to add? 1 or 0: ")
 #undef ask
 using namespace std;
 
-//this program was created using ideone, so the input values are usually given as input on the webpage
-
 int main() 
 {
     int z, y, q;
