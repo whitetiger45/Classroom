@@ -15,7 +15,7 @@ ask(More, "Restart program? [y or n]: ")
 func(nu, "Enter a value corresponding to the options below:\n1: Number\n2: Word\nUser: ")
 #undef func
 enum {number = 1, word};
-enum userWantsMore{n , y};
+enum {n , y};
 char option[] = {'n', 'y'};
 
 
