@@ -7,20 +7,25 @@
 ask(Num, "\nEnter a number: ")
 ask(Word, "\nEnter a word: ")
 ask(AnotherWord, "\nEnter next word: ")
-ask(Phrase,"\nDo you want to make a phrase? 1 or 0: ")
-ask(More, "More to add? 1 or 0: ")
+ask(Phrase,"\nDo you want to make a phrase? [y or n]: ")
+ask(NextString, "\nExtend phrase? [y or n]: ")
+ask(More, "Restart program? [y or n]: ")
 #undef ask
 #define func(n,a) void me##n() { std::cout << a;} 
 func(nu, "Enter a value corresponding to the options below:\n1: Number\n2: Word\nUser: ")
 #undef func
 enum {number = 1, word};
+enum userWantsMore{n , y};
+char option[] = {'n', 'y'};
+
 
 using namespace std;
 
 int main() 
 {
 
-    int z, y, q, userChoice = 0;
+    int z, y, userChoice = 0;
+    char userWantsToContinue;
     std::string userWord, createdWord;
     std::string a;
     bool more = true;
@@ -43,24 +48,32 @@ int main()
             case word:
             {
                     bool appendString = true;
-                    int checkForMore = 0;
+                    char checkForMore ;
+                    int count = 0;
                     std::string nextWord;
                     addWord();
                     std::cin >> userWord;
-                    addPhrase();
-
-                    do
+                    while(appendString)
                     {
-                        std::cin >> checkForMore;
-                        appendString = checkForMore;
+                        if(count == 0)
+                        {
+                            addPhrase();
+                            std::cin >> checkForMore;
+                            appendString = (checkForMore == option[n]) ? false : true;
+                            count++;
+                        }
+                        else
+                        {
+                            addNextString();                            
+                            std::cin >> checkForMore;
+                            appendString = (checkForMore == option[n]) ? false : true;
+                        }
+                        if(!appendString)
+                            break;
                         addAnotherWord();
                         std::cin >> nextWord;
                         userWord += " " + nextWord;
-                        addMore();
-                        std::cin >> checkForMore;
-                        appendString = checkForMore;
-
-                    }while(appendString);
+                    }
                     std::cout << userWord << "\n";
 
                     break;
@@ -70,8 +83,8 @@ int main()
         }
 
         addMore();
-        std::cin >> q;
-        more = q;
+        std::cin >> userWantsToContinue;
+        more = (userWantsToContinue == option[n]) ? false : true;
 
     }while(more);
     return 0;
