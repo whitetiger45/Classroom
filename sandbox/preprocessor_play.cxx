@@ -20,6 +20,7 @@ func(nu, "Enter a value corresponding to the options below:\n1: Multiply\n2: Div
 enum {multiply= 1, divide, add, subtract, speak};
 enum {n , y};
 char option[] = {'n', 'y'};
+std::string menuOptionStrings[] = {"multiply", "divide", "add", "subtract", "speak"};
 
 
 using namespace std;
