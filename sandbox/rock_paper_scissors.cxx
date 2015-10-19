@@ -8,7 +8,7 @@
     func(nu, "Enter rock, paper or scissors: ")
     #undef func
     #define func(n, a) void ask##n() { std::cout << a;}
-    func(PlayAgain, "Would you like to play again? [y or n]: ")
+    func(PlayAgain, "\nWould you like to play again? [y or n]: ")
     #undef func
     #define func(n, a) void declare##n(int param){std::cout << a <<"\n";}
     func(CompWinner, "Computer Wins!")
