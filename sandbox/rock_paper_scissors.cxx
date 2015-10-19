@@ -35,7 +35,7 @@
     {
         bool playAgain = true;
         char userWantsToPlayAgain;
-         void (*result_handler)(int);
+        void (*result_handler)(int);
         do
         {
             menu();
