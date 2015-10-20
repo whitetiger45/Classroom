@@ -15,12 +15,17 @@ void printBoard()
     {
         for(int l = 0; l < 3; l++)
         {
-            switch(board[i][l])
+            /*switch(board[i][l])
             {
-                case X: cout<<"X"; break;
-                case O: cout <<"O"; break;
+                //case X: cout<<"X"; break;
+                //case O: cout <<"O"; break;
                 case EMPTY: cout <<" "; break;
-            }
+            }*/
+            if(((i +1)* (l +1) % 2 )== 0)
+                cout<< "X";
+            else
+                cout << "O";
+
             if (l < 2) cout <<" | "; // column boundary
         }
         if (i < 2) cout <<"\n+-+-+-+-+-\n" ;
