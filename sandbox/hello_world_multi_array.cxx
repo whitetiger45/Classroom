@@ -54,6 +54,8 @@ int main ()
   {
     for (m=WIDTH; m>=0; m--)
     {
+      if( n == 1 && m == 0)//temporary fix to skip printing an extra h
+        continue;
       std::cout << world[n][m] << " ";
     }
      std::cout << "\n";
