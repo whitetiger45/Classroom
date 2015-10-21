@@ -25,6 +25,9 @@ func(UserWinner, "User Wins!", userScore)
 func(ADraw, "Draw!", drawCount)
 #undef func
 
+#define func(n, a, b, c) void score##n(){std::cout << "\nWins | Draws | Losses |\n  " << a << "  |   " << b << "   |   " << c << "    | \n";}
+func(Board, userScore, drawCount, computerScore)
+
 using namespace std;
  
 char opts[] = {'n', 'y'};
@@ -68,7 +71,7 @@ int main()
         playAgain = (userWantsToPlayAgain == opts[n]) ? false : true;
     }while(playAgain);
  
- 
+    scoreBoard();
  
     return 0;
 }
