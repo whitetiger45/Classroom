@@ -20,7 +20,7 @@ int main ()
       else if(m == y)
       hello[n][y--]=word2[n];
     }
-  
+      hello[2][3]=word2[2];//manually put in the 'r' because it gets overwritten currently
 
     for (n=HEIGHT; n >=0; n--)
       for (m=WIDTH; m >=0; m--)
@@ -54,7 +54,7 @@ int main ()
   {
     for (m=WIDTH; m>=0; m--)
     {
-      if( n == 1 && m == 0)//temporary fix to skip printing an extra h
+      if( n == 1 && m == 0)//temporary fix to skip printing an extra
         continue;
       std::cout << world[n][m] << " ";
     }
