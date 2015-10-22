@@ -5,8 +5,10 @@
 #include <string>
 #include <cstring>
 
-#define func(n,a) void me##n() { std::cout << a;} 
-func(nu, "Enter rock, paper or scissors: ")
+#define func(n,a) void show##n() { std::cout << a;}
+#define func(n,a) void show##n() { std::cout << a;}
+func(Title, "**************************************\n*        Paper Rock Scissors         *\n**************************************\n\n")
+func(Menu, "Enter rock, paper or scissors: ")
 #undef func
 
 #define func(n, a) void ask##n() { std::cout << a;}
@@ -46,9 +48,10 @@ int main()
     bool playAgain = true;
     char userWantsToPlayAgain;
     void (*result_handler)(int);
+    showTitle();
     do
     {
-        menu();
+        showMenu();
         string userChoice;
         cin >> userChoice;
         srand(time(NULL));
