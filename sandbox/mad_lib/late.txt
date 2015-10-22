@@ -1,0 +1,7 @@
+adverb:voraciously|hastily|angrily|nervously|
+verb:ate|swollowed|sniffed|pawed|<verb> and <verb>
+animal:dog|cat|fish|hamster
+soften:I know you work very hard, but|I didn't think you'd ever notice, but|
+thing:homework|assignment|paper|program
+lost:lost|misplaced|burnt|sold
+start:<soften> I <lost> my <thing> because my <animal> <adverb> <verb> it .

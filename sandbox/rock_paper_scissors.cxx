@@ -11,7 +11,7 @@ func(nu, "Enter rock, paper or scissors: ")
 
 #define func(n, a) void ask##n() { std::cout << a;}
 func(PlayAgain, "\nWould you like to play again? [y or n]: ")
-func(SeeScore, "Would you like to see the score? [y or n]: ")
+func(SeeScore, "Would you like to see the score? [y or n]: ")//unused function currently
 #undef func
 
 /*scoreboard not fully implemented yet*/

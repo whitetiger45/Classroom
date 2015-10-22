@@ -1,0 +1,8 @@
+adverb:hastily|unfortunately|angrily|happily|haphazardly|confidently
+place:garage|bedroom|bath tub|grass|parking lot|office|closet|library|classroom|club|parlor
+adjective:hot|grumpy|hungry|tired|dirty|upset|sick|pissed off|agitated
+action:slept with|woke up with|found|touched|slapped|showered with|wrote to|left|avoided|shouted at|choked
+action2:sit|leave|get out|make me food|make me rich|play a song|kick rocks
+noun:book|girl|bartender|letter|teddy bear|fish|police officer|poor man|bus driver|librarian
+pronoun:myself|her|them|it|him
+start:I was <adjective> , so I <action> <pronoun> in the <place> . I then <adverb> <action> a <noun> . After that, I <action> a <noun> , and told <pronoun> to <action2> .

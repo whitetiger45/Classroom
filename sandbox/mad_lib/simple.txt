@@ -1,0 +1,4 @@
+adverb:quickly|stealthily|
+portal:front door|cave|secret lair
+animal:dog|cat|mouse|<animal> and <animal>
+start:My <animal> <adverb> ran out the <portal> .
