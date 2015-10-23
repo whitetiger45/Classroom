@@ -27,6 +27,10 @@ func(UserWinner, "User Wins!", userScore)
 func(ADraw, "Draw!", drawCount)
 #undef func
 
+#define func(n) void get##n(std::string winner, std::string loser){std::cout << winner << " beats " << loser << "... ";}
+func(WinnerMessage)
+#undef func
+
 #define func(n, a, b, c) void score##n(){std::cout << "\nWins | Draws | Losses |\n  " << a << "  |   " << b << "   |   " << c << "    | \n";}
 func(Board, userScore, drawCount, computerScore)
 
@@ -61,12 +65,17 @@ int main()
         if((strcmp(userChoice.c_str(), choice[rock].c_str()) == 0) && (strcmp(computerChoice.c_str(), choice[paper].c_str()) == 0) 
             || (strcmp(userChoice.c_str(), choice[paper].c_str()) == 0) && (strcmp(computerChoice.c_str(), choice[scissors].c_str()) == 0)
             || (strcmp(userChoice.c_str(), choice[scissors].c_str()) == 0) && (strcmp(computerChoice.c_str(), choice[rock].c_str()) == 0))
+        {
             result_handler = signal(SIGINT, declareCompWinner);
+            getWinnerMessage(computerChoice, userChoice);
+        }
         else if(strcmp(userChoice.c_str(), computerChoice.c_str()) == 0)
             result_handler = signal(SIGINT, declareADraw);
         else
+        {
             result_handler = signal(SIGINT, declareUserWinner);
- 
+            getWinnerMessage(userChoice, computerChoice);
+        } 
         raise(SIGINT);
  
         askPlayAgain();
