@@ -21,7 +21,7 @@ sig_atomic_t computerScore = 0;
 sig_atomic_t userScore = 0;
 sig_atomic_t drawCount = 0;
 
-#define func(n, a, b) void declare##n(int param){std::cout << a <<"\n"; std::cout << ++b << "\n";}
+#define func(n, a, b) void declare##n(int param){std::cout << a <<"\n"; ++b;}
 func(CompWinner, "Computer Wins!", computerScore)
 func(UserWinner, "User Wins!", userScore)
 func(ADraw, "Draw!", drawCount)
