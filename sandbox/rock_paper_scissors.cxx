@@ -27,12 +27,13 @@ func(UserWinner, "User Wins!", userScore)
 func(ADraw, "Draw!", drawCount)
 #undef func
 
-#define func(n) void get##n(std::string winner, std::string loser){std::cout << winner << " beats " << loser << "... ";}
-func(WinnerMessage)
-#undef func
-
 #define func(n, a, b, c) void score##n(){std::cout << "\nWins | Draws | Losses |\n  " << a << "  |   " << b << "   |   " << c << "    | \n";}
 func(Board, userScore, drawCount, computerScore)
+
+auto getWinnerMessage = [] (std::string winnerChoice){if(winnerChoice =="paper")std::cout << "Paper covers Rock...";
+                                 else if(winnerChoice == "rock")std::cout << "Rock crushes Scissors...";
+                                 else
+                                 {std::cout << "Scissors cuts Paper...";}};
 
 using namespace std;
  
@@ -67,14 +68,14 @@ int main()
             || (strcmp(userChoice.c_str(), choice[scissors].c_str()) == 0) && (strcmp(computerChoice.c_str(), choice[rock].c_str()) == 0))
         {
             result_handler = signal(SIGINT, declareCompWinner);
-            getWinnerMessage(computerChoice, userChoice);
+            getWinnerMessage(computerChoice);
         }
         else if(strcmp(userChoice.c_str(), computerChoice.c_str()) == 0)
             result_handler = signal(SIGINT, declareADraw);
         else
         {
             result_handler = signal(SIGINT, declareUserWinner);
-            getWinnerMessage(userChoice, computerChoice);
+            getWinnerMessage(userChoice);
         } 
         raise(SIGINT);
  
