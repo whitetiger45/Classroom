@@ -9,16 +9,16 @@
 
 using namespace std;
 
-int main() 
+int main()
 {
-	word guess;
+    word guess;
 
-   	guess.setWord("hello");
-   	std::cout << "\nIncomplete Word: " << guess.showIncompleteWord();
+    guess.setWord("hello");
+    std::cout << "\nWord: " << guess.showWord();
     std::cout<<"\n";
-   	do{
-   		guess.printHangMan();
-   	}while(guess.getTriesLeft() != -1);
+    do{
+        guess.printHangMan();
+    }while(guess.getTriesLeft() != -1);
 
     return 0;
 }
