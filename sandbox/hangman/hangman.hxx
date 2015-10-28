@@ -8,118 +8,122 @@
 
 class word
 {
-    public:
+	public: 
+		
+		void setWord(std::string value)
+		{
+			m_guessCount = 0;
+			m_guessedLetters[0] = '\0';
+	  		std::size_t length = value.copy(m_word, value.length(), 0);
+  			m_word[length]='\0';
+  			m_wordLength = value.length();
+			for(int i = 0; i < value.length(); i++)
+				m_incompleteWord[i] = '_' ;
 
-        void setWord(std::string value)
-        {
-            m_word = value.c_str();
-            m_wordSize = value.length();
-            for(int i = 0; i < value.length(); i++)
-                m_incompleteWord[i] = '_' ;
-        }
+			m_incompleteWord[length] = '\0';
+		}
 
-        std::string showWord() const
-        {
-            const char * incomplete = m_incompleteWord;
-            std::string convert = incomplete;
-            convert = convert.substr(0, convert.length()-1);
-            //std::cout << "Length: " << convert.length();
-            return convert;
-        }
+		const char* showWord() const
+		{
+			return m_incompleteWord;
+		}
 
-        bool guessLetter(char value)
-        {
-            bool letterFound = false;
-            for(int i = 0; i < m_wordSize; i++)
-            {
-                //std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
-                if(m_word[i] == value)
-                {
-                    m_incompleteWord[i] = value;
-                    letterFound = true;
-                }
-            }
-            m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
-            return letterFound;
-        }
+		bool guessLetter(char value)
+		{
+			bool letterFound = false;
+			for(int i = 0; i < m_wordLength; i++)
+			{
+				std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
+				if(m_word[i] == value)
+				{
+					m_incompleteWord[i] = value;
+					letterFound = true;
+				}
+			}
+			m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
+			addCharToGuessedLetters(value);
+			return letterFound;
+		}
 
-        std::string getGuessedLetters() const
-        {
-            return m_guessedLetters;
-        }
+		std::string getGuessedLetters() const
+		{
+			return m_guessedLetters;
+		}
 
-        void addCharToGuessedLetters(char value)
-        {
-            m_guessedLetters += m_guessedLetters + ", ";
-        }
+		void addCharToGuessedLetters(char value)
+		{
+			m_guessedLetters[m_guessCount++] = value;
+			m_guessedLetters[m_guessCount] = '\0'; 
+		}
 
-        std::string getWord() const
-        {
-            return m_word;
-        }
+		std::string getWord() const
+		{
+			return m_word;
+		}
 
-        int getTriesLeft() const
-        {
-            return m_triesLeft;
-        }
+		int getTriesLeft() const
+		{
+			return m_triesLeft;
+		}
 
-        void subtractTry()
-        {
-            m_triesLeft--;
-        }
+		void subtractTry()
+		{
+			m_triesLeft--;
+		}
 
-        void printHangMan()
-        {
-                switch(m_triesLeft)
-                {
-                    case 6:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    \n|     \n|           \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 5:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 4:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 3:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|   /|\n|          \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 2:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 1:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|   /|\\\n|   /     \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    case 0:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
-                            m_triesLeft--;
-                            break;
-                    default:
-                            std::cout<< " ______\n";
-                            std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
-                }
-        }
+		void printHangMan()
+		{
+			    switch(m_triesLeft)
+			    {
+			    	case 6:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    \n|     \n|           \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 5:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 4:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 3:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\n|          \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 2:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 1:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\\\n|   /     \n|______\n";
+							m_triesLeft--;
+							break;
+					case 0:
+						    std::cout<< " ______\n";
+    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+    						m_triesLeft--;
+    						break;
+					default:
+						    std::cout<< " ______\n";
+    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+			    }
+		}
 
-    private:
-        int m_wordSize;
-        const char * m_word;
-        char m_incompleteWord[256];
-        std::string m_guessedLetters;
-        signed int m_triesLeft = 6;
-        std::vector<std::string> m_dictionary;
+	private:
+		char m_word[256];
+		char m_incompleteWord[256];
+		char m_guessedLetters[26];
+		int m_guessCount;
+		int m_wordLength;
+		signed int m_triesLeft = 6;
+		std::vector<std::string> m_dictionary;
 
 };
 
