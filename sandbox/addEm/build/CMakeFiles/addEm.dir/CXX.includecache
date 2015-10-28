@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kanubu/SiemensDesktop/addEm/addEm.cxx
+iostream
+-
+string
+-
+addEm.hxx
+/home/kanubu/SiemensDesktop/addEm/addEm.hxx
+
+/home/kanubu/SiemensDesktop/addEm/addEm.hxx
+cstring
+-
+iostream
+-
+iterator
+-
+list
+-
+string
+-
+
