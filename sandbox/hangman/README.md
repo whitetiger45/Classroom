@@ -1,8 +1,8 @@
+Creator: Bryan Kanu
+
 hangman (incomplete)
 
 Copyright protected
-
-Creator: Bryan Kanu
 ==============
 
 Instructions to build (built using cmake):
