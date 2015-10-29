@@ -91,11 +91,12 @@ public:
 
     void displayList(string outputFilename)//Overloaded function
     {
-        ofstream outputFile(outputFilename);
+        ofstream outputFile;//(outputFilename);
         m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
         //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
 
         m_myCompleteListIterator = m_myCompleteList.begin();
+        outputFile.open(outputFilename, ios::trunc);
         if (outputFile.is_open())
         {
             outputFile << "\nYour List:\n==========================\n" ;
@@ -129,8 +130,8 @@ public:
                     }
                 }
                 outputFile <<"\n==========================\n";
-                outputFile.close();
             }
+            outputFile.close();
             cout << "\nResults have been written to yourList.txt file\n";
         }
         else cout << "\nUnable to open file!\n"; 
