@@ -1,7 +1,9 @@
 #ifndef ADDEM_H
 #define ADDEM_H
 
+#include <cassert>
 #include <cstring>
+#include <cctype>//isalum -> checks if character is alphanumeric
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -19,8 +21,8 @@ public:
     typedef typename list< list<T> >::iterator myCompleteListIter;//library node iterator
     typedef list<T> Item;//item node
     typedef typename list<T>::iterator ItemNode;//item node iterator
-    typedef list< list<T> > Correspondance;//this is the node that will store the library nodes that contain the item nodes
-    typedef typename list< list<T> >::iterator CorrespondanceNode;//this will iterate through the correspondance list
+    typedef list< list<T> > Category;//this is the node that will store the library nodes that contain the item nodes
+    typedef typename list< list<T> >::iterator CategoryNode;//this will iterate through the correspondance list
 
 
     void insertItem(string subject, string category, string message)
@@ -72,7 +74,8 @@ public:
                     if(catCheck[found + (cat.length())] == '\n')
                     {
                         //std::cout << catCheck.substr(found, cat.length()) << "\nEnd Debug\n***************\n";
-                        if( catCheck[found-1] == ' ')
+                        //sanity check to make sure items that contain a word that is also the name of a category do not get printed in the wrong list
+                        if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
                         {
                             //cout<< *m_myCompleteListIterToItemIterator << "\n";//this line prints the entire item, we only want to print the subject and the message
                             std::cout << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
@@ -83,6 +86,74 @@ public:
             }
             cout<<"\n==========================\n";
         }
+    }
+
+    void displayCurrentListsAndSizes()//This will display list by listing the library in the order they appear in the Inbox from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of e-mails in the library.
+    {
+        m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
+        //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        unsigned int totalListCount = 0;
+        cout << "\nYour Lists:\n==========================\n" ;
+        for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
+        {
+            string cat = *m_libIter;
+            unsigned int count = librarySize(cat);
+            cout<< ++totalListCount << ") " << *m_libIter << " (" ;
+            if(count > 1)
+                cout << count << " items)\n";
+            else
+            cout << count << " item)\n";
+        }
+    }
+
+    void displaySpecificCategoryList(string category)
+    {
+        m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
+        //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        bool categoryPrinted = false;
+        
+        if(!categoryExists(category))
+        {
+            cout << "\nCategory you entered does not exist in the library!\n";
+            return;
+        }
+
+        m_libIter = searchLibraryNodes(category);
+        if(*m_libIter != category)
+            return;
+
+        unsigned int count = librarySize(category);
+        cout << "\nYour Lists:\n==========================\n" ;
+        cout<<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
+        for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+        {
+            string catCheck = *m_myCompleteListIterToItemIterator;
+            string subjectAsString("Subject: ");
+            string categoryAsString("Category: \n");
+            if(catCheck.find(category) != string::npos)
+            {
+                //std::cout << "\n***************\ndebugging: \n" << *m_myCompleteListIterToItemIterator << "\n";
+                //this is the sanity check for printing the complete list
+                size_t found = catCheck.find(category);
+                size_t findSubject = catCheck.find("Subject: \n");
+                if(catCheck[found + (category.length())] == '\n')
+                {
+                    //std::cout << catCheck.substr(found, cat.length()) << "\nEnd Debug\n***************\n";
+                    //sanity check to make sure items that contain a word that is also the name of a category do not get printed in the wrong list
+                    if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                    {
+                        //cout<< *m_myCompleteListIterToItemIterator << "\n";//this line prints the entire item, we only want to print the subject and the message
+                        std::cout << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
+                        std::cout << "Note: " << catCheck.substr(found+category.length()+1) << "\n";
+                    }
+                }
+            }
+        }
+        cout<<"\n==========================\n";
     }
 
     bool categoryExists(string category)
@@ -110,7 +181,8 @@ public:
                //this is the sanity check for making sure we have the correct count
                 size_t found = catCheck.find(category);
                 if(catCheck[found + (category.length())] == '\n')
-                    if( catCheck[found-1] == ' ')
+                    //sanity check to make sure items that contain a word that is also the name of a category do not update the count incorrectly
+                    if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
                         count++;
             }
         }
@@ -179,6 +251,12 @@ public:
         }
     }
 
+    void emptyEntireList()
+    {
+        m_myCompleteList.clear();
+        m_library.clear();
+        m_item.clear();
+    }
     Library m_library;//this is the library node for the complete list
     LibraryNode m_libIter;//this is the main library node iterator
     myCompleteList m_myCompleteList;
@@ -186,13 +264,13 @@ public:
     ItemNode m_myCompleteListIterToItemIterator;
     Item m_item;//this is the item node for the complete list
     ItemNode m_itemIter;//this is the item node iterator
-    Correspondance m_categoryNode;//this contains the library nodes that contain the items
-    CorrespondanceNode m_categoryNodeIterator;//this is the correspondance node iterator
-    LibraryNode m_correspondanceIterToLibraryIter;//this is used to dereference nodes of the correspondance node since they are nodes within nodes
+    Category m_categoryNode;//this contains the library nodes that contain the items
+    CategoryNode m_categoryNodeIterator;//this is the category node iterator
+    LibraryNode m_categoryIterToLibraryIter;//this is used to dereference nodes of the category node since they are nodes within nodes
 
 private:
 
-    LibraryNode searchLibraryNodes(string category)//Searches the Inbox for a library using category as the key for the search. It returns a pointer to the library node that matches the category, or the null pointer if no such node is found.   This function should be private, and will be needed for both insertions and deletion.
+    LibraryNode searchLibraryNodes(string category)//Searches the library for category using given string as the key for the search. It returns a pointer to the library node that matches the category, or the null pointer if no such node is found.   This function should be private, and will be needed for both insertions and deletion.
     {
         for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
             if(*m_libIter == category)

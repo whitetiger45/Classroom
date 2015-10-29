@@ -1,0 +1,7 @@
+# cmake
+build/CMakeCache.txt
+build/CMakeFiles*/
+build/cmake_install.cmake
+build/Makefile
+build/test
+build/test.cxx
