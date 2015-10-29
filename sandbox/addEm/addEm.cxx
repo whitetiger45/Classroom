@@ -12,6 +12,7 @@ func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n_______________
 func(RemoveCategoryPrompt, "Enter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
 func(NextPartOfWordPrompt, "\nEnter the next part of your word: ")
+func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\nUser: ")
 #undef func
 
 #define func(n, a) void add##n(){std::cout << a;}
@@ -34,18 +35,6 @@ int main()
     showTitle();
     myList<string> test;
     int userChoice = 0;
-    /*
-    test.insertItem("hello world", "list class", "this is a test");
-    test.insertItem("bob marley", "music", "just inputing random Items");
-    test.insertItem("Lebron James", "NBA", "Good game last night!");
-    test.insertItem("Junior Gong", "music", "what's with the new cd");
-    test.insertItem("stephen marley", "list class", "Item three");
-    test.displayList();
-    cout<< endl <<"Size of music: " << test.librarySize("music") << "\n";
-    test.deleteLibNodes("music");
-    cout << endl << "=====music deleted=====\n\n";
-    test.displayList();
-    cout << endl <<"=========================="<< endl;*/
     bool useApp = true;
     do
     {
@@ -53,7 +42,7 @@ int main()
         cin >> userChoice;
         if(!(isdigit(userChoice)))
             EXIT_FAILURE;
-        if(userChoice > 10 || userChoice < 0)
+        if(userChoice > 9 || userChoice < 0)
             userChoice = 0;
         switch(userChoice)
         {
@@ -141,19 +130,30 @@ int main()
             }
             case 8:
             {
-                ofstream outputFile("yourList.txt");
-                if (outputFile.is_open())
+                string fileName("yourList.txt");
+                int userSubChoice = 0;
+                test.displayList(fileName);
+                showExportFullListOrSpecificCategoryPrompt(); cin >> userSubChoice;
+                switch(userSubChoice)
                 {
-
-                    //todo 
-                    //1)overload display list function to take a file and write items to given file
-                    //2)add option to ask if user wants to print entire list or a specific category within this case so not to overload menu options
-                    //outputFile.close();
-                    outputFile << "This is a test line\n";
-                    cout << "\nResults have been written to yourList.txt file\n";
+                    case 1:
+                    {
+                        char userInputCategory[256];
+                        test.displayCurrentListsAndSizes();
+                        addCategory();
+                        cin.ignore(); 
+                        cin.getline(userInputCategory, 256);
+                        test.displaySpecificCategoryList(userInputCategory,fileName);
+                        break;
+                    }
+                    case 2:
+                    {
+                        test.displayList(fileName);
+                        break;
+                    }
+                    default:
+                        cout << "\nThe option you entered is invalid!\n";
                 }
-
-                else cout << "Unable to open file"; 
                 break;
             }
             case 9:
@@ -161,9 +161,10 @@ int main()
                 string line;
                 ifstream inputFile ("presidents.txt");
                 ofstream outputFile("results.txt");
-                std::smatch sm;
+                std::smatch sm, sm2;
                 int i = 0;
-                std::regex presLine("^([0-9]+). ([A-Za-z]+ ?[A-Z]*\.* [A-Za-z]+ ?[A-Za-z]*) .*.*.*((Democratic-Republican|Democrat|Republican|Whig|Federalist|Union)).*.*");
+                std::regex presLine("^([0-9]+). ([A-Za-z]+ ?[A-Z]*\.* [A-Za-z]+ ?[A-Za-z]*),* .*((Democratic-Republican|Democrat|Republican|Whig|Federalist|Union)).*((\t18(41\t*|81\t*))|(18[0-9][0-9].* ?[0-9] )|(17|18|19|20)[0-9]+ ?- ?((17|18|19|20)[0-9]*)*).*");
+                std::regex year("(\t[0-9]+|[0-9]+)?-?(.*)");
                 if (inputFile.is_open() && outputFile.is_open())
                 {
                     while ( getline (inputFile,line) )
@@ -171,8 +172,14 @@ int main()
                         std::regex_match (line,sm,presLine);
                         if(i++ == 0)
                             continue;
-                        outputFile << sm[1]  << ") Name: " << sm[2] << ", Party: " << sm[3] << "\n";
-                        test.insertItem(string(sm[2]), string(sm[3]), string(sm[1]));
+                        string yearLine = sm[5];
+                        std::regex_match (yearLine,sm2,year);
+                        outputFile << sm[1]  << ") Name: " << sm[2] << ", Party: " << sm[3] << ", Years: "<< sm[5] << "\n";
+                        string note = "# ";
+                        note += sm[1];
+                        note += "\nYears: ";
+                        note += sm[5];
+                        test.insertItem(string(sm[2]), string(sm[3]), note);
                     }
                     inputFile.close();
                     outputFile.close();

@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstring>
 #include <cctype>//isalum -> checks if character is alphanumeric
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -47,7 +48,7 @@ public:
         }
     }
 
-    void displayList()//This will display list by listing the library in the order they appear in the Inbox from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of e-mails in the library.
+    void displayList()//This will display list by listing the library in the order they appear in the Library from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of items in the library.
     {
         m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
         //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
@@ -87,6 +88,54 @@ public:
             cout<<"\n==========================\n";
         }
     }
+
+    void displayList(string outputFilename)//Overloaded function
+    {
+        ofstream outputFile(outputFilename);
+        m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
+        //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        if (outputFile.is_open())
+        {
+            outputFile << "\nYour List:\n==========================\n" ;
+            for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
+            {
+                string cat = *m_libIter;
+                unsigned int count = librarySize(cat);
+                outputFile <<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
+                for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+                {
+                    string catCheck = *m_myCompleteListIterToItemIterator;
+                    string subjectAsString("Subject: ");
+                    string categoryAsString("Category: \n");
+                    if(catCheck.find(cat) != string::npos)
+                    {
+                        //std::cout << "\n***************\ndebugging: \n" << *m_myCompleteListIterToItemIterator << "\n";
+                        //this is the sanity check for printing the complete list
+                        size_t found = catCheck.find(cat);
+                        size_t findSubject = catCheck.find("Subject: \n");
+                        if(catCheck[found + (cat.length())] == '\n')
+                        {
+                            //std::cout << catCheck.substr(found, cat.length()) << "\nEnd Debug\n***************\n";
+                            //sanity check to make sure items that contain a word that is also the name of a category do not get printed in the wrong list
+                            if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                            {
+                                //cout<< *m_myCompleteListIterToItemIterator << "\n";//this line prints the entire item, we only want to print the subject and the message
+                                outputFile << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
+                                outputFile << "Note: " << catCheck.substr(found+cat.length()+1) << "\n";
+                            }
+                        }
+                    }
+                }
+                outputFile <<"\n==========================\n";
+                outputFile.close();
+            }
+            cout << "\nResults have been written to yourList.txt file\n";
+        }
+        else cout << "\nUnable to open file!\n"; 
+    }
+
 
     void displayCurrentListsAndSizes()//This will display list by listing the library in the order they appear in the Inbox from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of e-mails in the library.
     {
@@ -154,6 +203,62 @@ public:
             }
         }
         cout<<"\n==========================\n";
+    }
+
+    void displaySpecificCategoryList(string category, string outputFilename)//overloaded function
+    {
+        ofstream outputFile(outputFilename);
+        m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
+        //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        bool categoryPrinted = false;
+        
+        if(!categoryExists(category))
+        {
+            cout << "\nCategory you entered does not exist in the library!\n";
+            return;
+        }
+
+        m_libIter = searchLibraryNodes(category);
+        if(*m_libIter != category)
+            return;
+
+        unsigned int count = librarySize(category);
+        if (outputFile.is_open())
+        {
+            outputFile << "\nYour Lists:\n==========================\n" ;
+            outputFile <<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
+            for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            {
+                string catCheck = *m_myCompleteListIterToItemIterator;
+                string subjectAsString("Subject: ");
+                string categoryAsString("Category: \n");
+                if(catCheck.find(category) != string::npos)
+                {
+                    //std::cout << "\n***************\ndebugging: \n" << *m_myCompleteListIterToItemIterator << "\n";
+                    //this is the sanity check for printing the complete list
+                    size_t found = catCheck.find(category);
+                    size_t findSubject = catCheck.find("Subject: \n");
+                    if(catCheck[found + (category.length())] == '\n')
+                    {
+                        //std::cout << catCheck.substr(found, cat.length()) << "\nEnd Debug\n***************\n";
+                        //sanity check to make sure items that contain a word that is also the name of a category do not get printed in the wrong list
+                        if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                        {
+                            //cout<< *m_myCompleteListIterToItemIterator << "\n";//this line prints the entire item, we only want to print the subject and the message
+                            outputFile << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
+                            outputFile << "Note: " << catCheck.substr(found+category.length()+1) << "\n";
+                        }
+                    }
+                }
+            }
+            outputFile <<"\n==========================\n";
+            outputFile.close();
+            cout << "\nResults have been written to yourList.txt file\n";
+        }
+        else cout << "\nUnable to open file!\n"; 
+
     }
 
     bool categoryExists(string category)
