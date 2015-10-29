@@ -6,33 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/home/kanubu/SiemensDesktop/addEm/addEm.cxx
-cctype
--
-fstream
--
-iostream
--
-string
--
-regex
--
-addEm.hxx
-/home/kanubu/SiemensDesktop/addEm/addEm.hxx
-
-/home/kanubu/SiemensDesktop/addEm/addEm.hxx
-cassert
--
-cstring
--
-cctype
--
-iostream
--
-iterator
--
-list
--
-string
--
-
