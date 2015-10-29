@@ -1,3 +1,10 @@
+addEm (incomplete)
+
+Copyright protected
+
+Creator: Bryan Kanu
+=====================
+
 To build this project (built using cmake):
 
 1) Clone repo
