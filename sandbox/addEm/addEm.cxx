@@ -131,8 +131,8 @@ int main()
             case 8:
             {
                 string fileName("yourList.txt");
+                remove(fileName.c_str());
                 int userSubChoice = 0;
-                test.displayList(fileName);
                 showExportFullListOrSpecificCategoryPrompt(); cin >> userSubChoice;
                 switch(userSubChoice)
                 {

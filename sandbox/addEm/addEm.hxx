@@ -2,6 +2,7 @@
 #define ADDEM_H
 
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 #include <cctype>//isalum -> checks if character is alphanumeric
 #include <fstream>
@@ -96,7 +97,7 @@ public:
         //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
 
         m_myCompleteListIterator = m_myCompleteList.begin();
-        outputFile.open(outputFilename, ios::trunc);
+        outputFile.open(outputFilename, ios::out | ios::trunc );
         if (outputFile.is_open())
         {
             outputFile << "\nYour List:\n==========================\n" ;
