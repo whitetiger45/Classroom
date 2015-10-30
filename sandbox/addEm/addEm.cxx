@@ -161,7 +161,8 @@ int main()
                 string line;
                 ifstream inputFile ("presidents.txt");
                 ofstream outputFile("results.txt");
-                std::smatch sm, sm2;
+                std::smatch sm;
+                std::cmatch cm;
                 int i = 0;
                 std::regex presLine("^([0-9]+). ([A-Za-z]+ ?[A-Z]*\.* [A-Za-z]+ ?[A-Za-z]*),* .*((Democratic-Republican|Democrat|Republican|Whig|Federalist|Union)).*((\t18(41\t*|81\t*))|(18[0-9][0-9].* ?[0-9] )|(17|18|19|20)[0-9]+ ?- ?((17|18|19|20)[0-9]*)*).*");
                 std::regex year("(\t[0-9]+|[0-9]+)?-?(.*)");
@@ -173,12 +174,44 @@ int main()
                         if(i++ == 0)
                             continue;
                         string yearLine = sm[5];
-                        std::regex_match (yearLine,sm2,year);
+                        std::regex_match (yearLine.c_str(),cm,year);
                         outputFile << sm[1]  << ") Name: " << sm[2] << ", Party: " << sm[3] << ", Years: "<< sm[5] << "\n";
                         string note = "# ";
                         note += sm[1];
                         note += "\nYears: ";
                         note += sm[5];
+                        std::string::size_type s_beginTerm;
+                        std::string::size_type s_endTerm;
+                        string beginTermString = cm.str(1);
+                        string endTermString = cm.str(2);
+                        if(strcmp(string(sm[2]).c_str(), "Barack Obama") == 0)
+                        {
+                            string numberOfYearsInOffice = to_string(8);
+                            note+= "\nYears in Office: " + numberOfYearsInOffice;
+                        }
+                        if(beginTermString != "" && endTermString != "")
+                        {
+                            try 
+                            {
+                                int beginTermInt = std::stoi (beginTermString, &s_beginTerm);
+                                int endTermInt = std::stoi (endTermString, &s_endTerm);
+                                //cout << "\n***\nX: " << x << "\nY: " << y << "\n\n***";
+                                if(endTermInt)
+                                {
+                                    string numberOfYearsInOffice = to_string(endTermInt - beginTermInt);
+                                    note+= "\nYears in Office: " + numberOfYearsInOffice;
+                                }
+                            }
+                            catch (const std::invalid_argument& ia) 
+                            {
+                                //std::cerr << "Invalid argument: " << ia.what() << '\n';
+                            }
+                        }
+                        else
+                        {
+                            string numberOfYearsInOffice = (cm.str(1) != "2009") ? to_string(1) : to_string(8);
+                            note+= "\nYears in Office: " + numberOfYearsInOffice;
+                        }
                         test.insertItem(string(sm[2]), string(sm[3]), note);
                     }
                     inputFile.close();
