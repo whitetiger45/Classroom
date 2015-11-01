@@ -209,7 +209,7 @@ int main()
                         }
                         else
                         {
-                            string numberOfYearsInOffice = (cm.str(1) != "2009") ? to_string(1) : to_string(8);
+                            string numberOfYearsInOffice = to_string(1);
                             note+= "\nYears in Office: " + numberOfYearsInOffice;
                         }
                         test.insertItem(string(sm[2]), string(sm[3]), note);
