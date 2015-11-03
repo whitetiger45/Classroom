@@ -164,6 +164,7 @@ int main()
                 std::smatch sm;
                 std::cmatch cm;
                 int i = 0;
+                int republicanYears = 0, democratYears = 0;
                 std::regex presLine("^([0-9]+). ([A-Za-z]+ ?[A-Z]*\.* [A-Za-z]+ ?[A-Za-z]*),* .*((Democratic-Republican|Democrat|Republican|Whig|Federalist|Union)).*((\t18(41\t*|81\t*))|(18[0-9][0-9].* ?[0-9] )|(17|18|19|20)[0-9]+ ?- ?((17|18|19|20)[0-9]*)*).*");
                 std::regex year("(\t[0-9]+|[0-9]+)?-?(.*)");
                 if (inputFile.is_open() && outputFile.is_open())
@@ -187,11 +188,12 @@ int main()
                         if(strcmp(string(sm[2]).c_str(), "Barack Obama") == 0)
                         {
                             string numberOfYearsInOffice = to_string(8);
-                            note+= "\nYears in Office: " + numberOfYearsInOffice;
+                            note+= "\nYears in Office: " + numberOfYearsInOffice + "\nTotal Years With A " +  string(sm[3]) + " In Office: ";
+                            note+= to_string(democratYears + 8) + "\n";
                         }
                         if(beginTermString != "" && endTermString != "")
                         {
-                            try 
+                            try
                             {
                                 int beginTermInt = std::stoi (beginTermString, &s_beginTerm);
                                 int endTermInt = std::stoi (endTermString, &s_endTerm);
@@ -199,18 +201,39 @@ int main()
                                 if(endTermInt)
                                 {
                                     string numberOfYearsInOffice = to_string(endTermInt - beginTermInt);
-                                    note+= "\nYears in Office: " + numberOfYearsInOffice;
+                                    note+= "\nYears in Office: " + numberOfYearsInOffice + "\nTotal Years With A " +  string(sm[3]) + " In Office: ";
+                                    int numberOfYearsInOfficeInt = endTermInt - beginTermInt;
+                                    if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0)
+                                    {
+                                        republicanYears += numberOfYearsInOfficeInt;
+                                        note += to_string(republicanYears) + "\n";
+                                    }
+                                    else if(strcmp(string(sm[3]).c_str(), "Democrat") == 0 || strcmp(string(sm[3]).c_str(), "Union") == 0)
+                                    {
+                                        democratYears += numberOfYearsInOfficeInt;
+                                        note += to_string(democratYears) + "\n";
+                                    }
                                 }
                             }
-                            catch (const std::invalid_argument& ia) 
+                            catch (const std::invalid_argument& ia)
                             {
                                 //std::cerr << "Invalid argument: " << ia.what() << '\n';
                             }
                         }
                         else
                         {
-                            string numberOfYearsInOffice = to_string(1);
-                            note+= "\nYears in Office: " + numberOfYearsInOffice;
+                            //string numberOfYearsInOffice = (cm.str(1) != "2009") ? to_string(1) : to_string(8);
+                            note+= "\nYears in Office: " + to_string(1) + "\nTotal Years With A " +  string(sm[3]) + " In Office: " ;
+                            if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0)
+                            {
+                                republicanYears += 1;
+                                note += to_string(republicanYears) + "\n";
+                            }
+                            else if(strcmp(string(sm[3]).c_str(), "Democrat") == 0 || strcmp(string(sm[3]).c_str(), "Union") == 0)
+                            {
+                                democratYears += 1;
+                                note += to_string(democratYears) + "\n";
+                            }
                         }
                         test.insertItem(string(sm[2]), string(sm[3]), note);
                     }
@@ -219,7 +242,7 @@ int main()
                     cout << "\nResults have been written to results.txt file\n";
                 }
 
-                else cout << "Unable to open file"; 
+                else cout << "Unable to open file";
                 break;
             }
             case 0:
