@@ -9,6 +9,9 @@
 
 #include "hangman.hxx"
 
+#define func(n,a) void ask##n(){std::cout << a << "\n";}
+func(ForLetter, "What letter would you like to guess: ")
+
 using namespace std;
 
 int main() 
@@ -33,16 +36,25 @@ int main()
    	guess.guessLetter('a');
    	//std::cout << "\nWord: " << guess.showWord();
     std::cout<<"\n";
-   	//do{
-   	//	guess.printHangMan();
-   	//}while(guess.getTriesLeft() != -1);
-   	guess.guessLetter('e');
-   	//std::cout << "\nWord: " << guess.showWord();
-    std::cout<<"\n";
-   	guess.guessLetter('i');
-   	std::cout << "\nWord: " << guess.showWord();
-    std::cout<<"\n";
-    std::cout<< "Guessed letters: " << guess.getGuessedLetters() << "\n";
+   	do{
+   		askForLetter();
+		char userGuess[1];
+		cin >> userGuess;
+   		if(!guess.guessLetter(userGuess[0]))
+	   		guess.printHangMan();
+   		std::cout << "\nWord: " << guess.showWord();
+   		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
+   		if(guess.showWord() == guess.getWord())
+   		{
+   			cout << "Correct!\nWord: "<< guess.getWord() << "\n";
+   		}
+   	}while(guess.getTriesLeft() != -1);
 
+   	if(guess.getTriesLeft() == -1)
+   	{
+   		cout << "You are out of guesses, the word was: " << guess.getWord();
+   	}
+    std::cout<<"\n";
+   
     return 0;
 }
