@@ -33,7 +33,7 @@ char response[] = {'n', 'y'};
 int main()
 {
     showTitle();
-    myList<string> test;
+    myList<string> app;
     int userChoice = 0;
     bool useApp = true;
     do
@@ -54,7 +54,7 @@ int main()
                 cin.ignore(); cin.getline(cat, 256);
                 addSubject(); cin.getline(subj, 256);
                 addNote(); cin.getline(note, 256);
-                test.insertItem(string(subj), string(cat), string(note));
+                app.insertItem(string(subj), string(cat), string(note));
 
                 askAddMoreToSameCategory();
                 cin >> user;
@@ -67,7 +67,7 @@ int main()
                     {
                         addSubject(); cin.ignore(); cin.getline(subj, 256);
                         addNote(); cin.getline(note, 256);
-                        test.insertItem(string(subj), string(cat), string(note));
+                        app.insertItem(string(subj), string(cat), string(note));
                         askAddMoreToSameCategory();
                         cin >> user;
                         //std::cout << "response loop [" << ++i << "]: " << user[0] << "\n";
@@ -78,21 +78,21 @@ int main()
             case 2:
             {
                 char userInputCategory[256];
-                test.displayCurrentListsAndSizes();
+                app.displayCurrentListsAndSizes();
                 addCategory(); 
                 cin.ignore(); 
                 cin.getline(userInputCategory, 256);
-                test.displaySpecificCategoryList(string(userInputCategory));
+                app.displaySpecificCategoryList(string(userInputCategory));
                 break;
             }
             case 3:
             {
-                test.displayList();
+                app.displayList();
                 break;
             }
             case 4:
             {
-                test.displayCurrentListsAndSizes();
+                app.displayCurrentListsAndSizes();
                 break;
             }
             case 5:
@@ -103,14 +103,14 @@ int main()
                 cin.getline(userInputCategory, 256);
                 showRemoveItemPrompt(); 
                 cin.getline(userInputSubject, 256);
-                test.deleteItem(string(userInputSubject), string(userInputCategory));
+                app.deleteItem(string(userInputSubject), string(userInputCategory));
                 break;
             }
             case 6:
             {
                 char cat[256];
                 showRemoveCategoryPrompt(); cin.ignore(); cin.getline(cat, 256);
-                test.deleteLibNodes(string(cat));
+                app.deleteLibNodes(string(cat));
                 break;
             }
             case 7:
@@ -123,7 +123,7 @@ int main()
                 bool userWantsToEmptyList = false;
                 userWantsToEmptyList = (user[0] == response[n]) ? false :true;
                 if(userWantsToEmptyList)
-                    test.emptyEntireList();
+                    app.emptyEntireList();
                 else
                     cout << "The list has not been cleared\n";
                 break;
@@ -139,16 +139,16 @@ int main()
                     case 1:
                     {
                         char userInputCategory[256];
-                        test.displayCurrentListsAndSizes();
+                        app.displayCurrentListsAndSizes();
                         addCategory();
                         cin.ignore(); 
                         cin.getline(userInputCategory, 256);
-                        test.displaySpecificCategoryList(userInputCategory,fileName);
+                        app.displaySpecificCategoryList(userInputCategory,fileName);
                         break;
                     }
                     case 2:
                     {
-                        test.displayList(fileName);
+                        app.displayList(fileName);
                         break;
                     }
                     default:
@@ -235,7 +235,7 @@ int main()
                                 note += to_string(democratYears) + "\n";
                             }
                         }
-                        test.insertItem(string(sm[2]), string(sm[3]), note);
+                        app.insertItem(string(sm[2]), string(sm[3]), note);
                     }
                     inputFile.close();
                     outputFile.close();
