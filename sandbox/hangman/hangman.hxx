@@ -71,6 +71,13 @@ class word
 			m_triesLeft--;
 		}
 
+		void resetTries()
+		{
+			m_triesLeft = 6;
+			for(auto x : m_guessedLetters)
+				x = ' ';
+		}
+
 		void printHangMan()
 		{
 			    switch(m_triesLeft)
@@ -121,7 +128,8 @@ class word
 		char m_incompleteWord[256];
 		char m_guessedLetters[26];
 		int m_guessCount;
-		int m_wordLength;
+		int m_wordLength = 0;
+		int m_roundsWon = 0;
 		signed int m_triesLeft = 6;
 		std::vector<std::string> m_dictionary;
 
