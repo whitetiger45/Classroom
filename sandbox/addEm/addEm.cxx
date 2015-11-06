@@ -11,7 +11,7 @@ func(Title, "Designer:Bryan Kanu\n\n       List Generator\n*********************
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
 func(RemoveCategoryPrompt, "Enter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
-func(NextPartOfWordPrompt, "\nEnter the next part of your word: ")
+func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\nUser: ")
 func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\nUser: ")
 #undef func
 
@@ -77,12 +77,32 @@ int main()
             }
             case 2:
             {
-                char userInputCategory[256];
+                char userInputCategory[256], userInputSubject[256];
+                int userInputSubMenuChoice = 0;
                 app.displayCurrentListsAndSizes();
-                addCategory(); 
-                cin.ignore(); 
-                cin.getline(userInputCategory, 256);
-                app.displaySpecificCategoryList(string(userInputCategory));
+                showDisplaySpecificSubjectFromCategoryPrompt();
+                cin >> userInputSubMenuChoice;
+                switch(userInputSubMenuChoice)
+                {
+                    case 1:
+                    {
+                        addCategory(); 
+                        cin.ignore(); cin.getline(userInputCategory, 256);
+                        addSubject(); cin.getline(userInputSubject, 256);
+                        app.displaySpecificSubjectOnly(string(userInputCategory), string(userInputSubject));
+                        break;
+                    }
+                    case 2:
+                    {
+                        addCategory(); 
+                        cin.ignore(); 
+                        cin.getline(userInputCategory, 256);
+                        app.displaySpecificCategoryList(string(userInputCategory));
+                        break;
+                    }
+                    default:
+                        cout << "\nThe option you entered is invalid!\n";
+                }
                 break;
             }
             case 3:
@@ -193,7 +213,7 @@ int main()
                         }
                         if(beginTermString != "" && endTermString != "")
                         {
-                            try
+                            try 
                             {
                                 int beginTermInt = std::stoi (beginTermString, &s_beginTerm);
                                 int endTermInt = std::stoi (endTermString, &s_endTerm);
@@ -203,7 +223,8 @@ int main()
                                     string numberOfYearsInOffice = to_string(endTermInt - beginTermInt);
                                     note+= "\nYears in Office: " + numberOfYearsInOffice + "\nTotal Years With A " +  string(sm[3]) + " In Office: ";
                                     int numberOfYearsInOfficeInt = endTermInt - beginTermInt;
-                                    if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0)
+                                    if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0
+                                        || strcmp(string(sm[3]).c_str(), "Federalist") == 0)
                                     {
                                         republicanYears += numberOfYearsInOfficeInt;
                                         note += to_string(republicanYears) + "\n";
@@ -215,7 +236,7 @@ int main()
                                     }
                                 }
                             }
-                            catch (const std::invalid_argument& ia)
+                            catch (const std::invalid_argument& ia) 
                             {
                                 //std::cerr << "Invalid argument: " << ia.what() << '\n';
                             }
@@ -224,7 +245,8 @@ int main()
                         {
                             //string numberOfYearsInOffice = (cm.str(1) != "2009") ? to_string(1) : to_string(8);
                             note+= "\nYears in Office: " + to_string(1) + "\nTotal Years With A " +  string(sm[3]) + " In Office: " ;
-                            if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0)
+                            if(strcmp(string(sm[3]).c_str(), "Republican") == 0 || strcmp(string(sm[3]).c_str(), "Whig") == 0
+                                || strcmp(string(sm[3]).c_str(), "Federalist") == 0)
                             {
                                 republicanYears += 1;
                                 note += to_string(republicanYears) + "\n";
@@ -242,7 +264,7 @@ int main()
                     cout << "\nResults have been written to results.txt file\n";
                 }
 
-                else cout << "Unable to open file";
+                else cout << "Unable to open file"; 
                 break;
             }
             case 0:

@@ -207,6 +207,58 @@ public:
         cout<<"\n==========================\n";
     }
 
+        void displaySpecificSubjectOnly(string category, string iSubject)
+    {
+        m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
+        //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        bool categoryPrinted = false;
+        
+        if(!categoryExists(category))
+        {
+            cout << "\nCategory you entered does not exist in the library!\n";
+            return;
+        }
+
+        m_libIter = searchLibraryNodes(category);
+        if(*m_libIter != category)
+            return;
+
+        unsigned int count = librarySize(category);
+        cout << "\nYour Item:\n==========================\n" ;
+        //cout<<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
+        cout<<"\n________________________\n";
+        for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+        {
+            string catCheck = *m_myCompleteListIterToItemIterator;
+            string subjectAsString("Subject: ");
+            string categoryAsString("Category: \n");
+            if(catCheck.find(category) != string::npos)
+            {
+                //std::cout << "\n***************\ndebugging: \n" << *m_myCompleteListIterToItemIterator << "\n";
+                //this is the sanity check for printing the complete list
+                size_t found = catCheck.find(category);
+                size_t findSubject = catCheck.find(iSubject);
+                if(findSubject != string::npos)
+                {
+                    if(catCheck[found + (category.length())] == '\n')
+                    {
+                        //std::cout << catCheck.substr(found, cat.length()) << "\nEnd Debug\n***************\n";
+                        //sanity check to make sure items that contain a word that is also the name of a category do not get printed in the wrong list
+                        if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                        {
+                            //cout<< *m_myCompleteListIterToItemIterator << "\n";//this line prints the entire item, we only want to print the subject and the message
+                            std::cout << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
+                            std::cout << "Note: " << catCheck.substr(found+category.length()+1) << "\n";
+                        }
+                    }
+                }
+            }
+        }
+        cout<<"\n==========================\n";
+    }
+
     void displaySpecificCategoryList(string category, string outputFilename)//overloaded function
     {
         ofstream outputFile(outputFilename);
