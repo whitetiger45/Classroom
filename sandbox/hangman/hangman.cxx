@@ -1,7 +1,7 @@
-#include <ctime>
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -53,9 +53,6 @@ int main()
        		{
        			cout << "Correct!\nWord: "<< guess.getWord() << "\n";
                 userWonRound = true;
-       			//askPlayAgain();
-        		//cin.ignore(); cin.getline(userResponse, 1);
-       			//playAgain = (userResponse[0] == response[n]) ? false : true;
        		}
    	    }while(guess.getTriesLeft() != -1 && !userWonRound);
 
@@ -66,6 +63,12 @@ int main()
 	    std::cout<<"\n";
 	    askPlayAgain();
         cin >> userResponse[0];
+        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y'))
+        {
+            cout << "You did not enter a valid response!\n";
+            askPlayAgain();
+            cin >> userResponse[0];
+        }
 	    playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)
         {
