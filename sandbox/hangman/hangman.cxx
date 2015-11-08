@@ -1,3 +1,4 @@
+#include <csignal>
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
@@ -14,6 +15,17 @@ func(ForLetter, "What letter would you like to guess: ")
 func(PlayAgain, "Would you like to play again? [n/y]: ")
 #undef func
 
+sig_atomic_t userScore = 0;
+sig_atomic_t totalGames = 0;
+
+#define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
+func(UserWinsRound, "You win!\nThe correct word was: ", userScore)
+func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
+#undef func
+
+#define func(n, a, b) void score##n(){ std::cout << "\nWins | Total Games Played Today |\n  " << a << "  |            " << b << "             |   \n";}
+func(Board, userScore, totalGames)
+
 char response[] = {'n', 'y'};
 enum {n, y};
 using namespace std;
@@ -27,6 +39,7 @@ int main()
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0;
+    void (*result_handler)(int);
     do
     { 
       	int count = 1;
@@ -51,15 +64,20 @@ int main()
        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
        		if(guess.showWord() == guess.getWord())
        		{
-       			cout << "Correct!\nWord: "<< guess.getWord() << "\n";
+       			//cout << "Correct!\nWord: "<< guess.getWord() << "\n";
                 userWonRound = true;
+                result_handler = signal(SIGINT, declareUserWinsRound);
+                //cout << guess.getWord();
        		}
    	    }while(guess.getTriesLeft() != -1 && !userWonRound);
 
 	   	if(guess.getTriesLeft() == -1)
 	   	{
-	   		cout << "You are out of guesses, the word was: " << guess.getWord();
+	   		//cout << "You are out of guesses, the word was: ";
+            result_handler = signal(SIGINT, declareOutOfGuesses);
 	   	}
+        raise(SIGINT);
+        cout << guess.getWord();
 	    std::cout<<"\n";
 	    askPlayAgain();
         cin >> userResponse[0];
@@ -76,5 +94,6 @@ int main()
             userWonRound = false;
         }
 	}while(playAgain);
+    scoreBoard();
     return 0;
 }
