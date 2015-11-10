@@ -34,14 +34,19 @@ class word
 			for(int i = 0; i < m_wordLength; i++)
 			{
 				//std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
-				if(m_word[i] == value)
+				if(m_word[i] == value )
 				{
 					m_incompleteWord[i] = value;
 					letterFound = true;
 				}
 			}
+			for(int i = 0; i < 27; i++)
+				if(m_guessedLetters[i] == value)
+					return true;
+
 			m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
 			addCharToGuessedLetters(value);
+
 			return letterFound;
 		}
 
