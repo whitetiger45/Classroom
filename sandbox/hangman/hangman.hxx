@@ -40,7 +40,7 @@ class word
 					letterFound = true;
 				}
 			}
-			for(int i = 0; i < 27; i++)
+			for(int i = 0; i < m_guessCount; i++)
 				if(m_guessedLetters[i] == value)
 					return true;
 

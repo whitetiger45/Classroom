@@ -26,7 +26,7 @@ func(UserWinsRound, "You win!\nThe correct word was: ", userScore, totalGames)
 func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
 #undef func
 
-#define func(n, a, b) void score##n(){ std::cout << "\nWins | Total Games Played This Round|\n  " << a << "  |                " << b << "             |   \n";}
+#define func(n, a, b) void score##n(){ std::cout << "\nWins | Total Games Played This Round|\n  " << a << "  |            " << b << "                 |   \n";}
 func(Board, userScore, totalGames)
 
 //todo: 
