@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cctype>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <typeinfo>
@@ -26,7 +27,7 @@ func(UserWinsRound, "You win!\nThe correct word was: ", userScore, totalGames)
 func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
 #undef func
 
-#define func(n, a, b) void score##n(){ std::cout << "\nWins | Total Games Played This Round|\n  " << a << "  |            " << b << "                 |   \n";}
+#define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
 
 //todo: 
