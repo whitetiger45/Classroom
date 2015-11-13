@@ -11,7 +11,6 @@
 
 #include "hangman.hxx"
 
-
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Menu, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
 #undef func
@@ -58,7 +57,7 @@ int main()
     bool userWonRound = false;
     char userResponse[1];
     char userGuess[1];
-    int getWordAtLocation = 0;
+    int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
     void (*result_handler)(int);
     showMenu();
     do
@@ -81,6 +80,13 @@ int main()
             cin >> userGuess[0];
        		if(!guess.guessLetter(userGuess[0]))
     	   		guess.printHangMan();
+          else
+            correctOrSameGuessCounter++;
+          if(correctOrSameGuessCounter == 5)
+          {
+            guess.displayHangMan();
+            correctOrSameGuessCounter = 0;
+          }
        		std::cout << "\nWord: " << guess.showWord();
        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
        		if(guess.showWord() == guess.getWord())
@@ -112,6 +118,7 @@ int main()
         if(playAgain)
         {
             guess.resetTries();
+            correctOrSameGuessCounter = 0;
             userWonRound = false;
         }
 	}while(playAgain);

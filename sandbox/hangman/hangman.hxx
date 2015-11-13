@@ -128,6 +128,45 @@ class word
 			    }
 		}
 
+		void displayHangMan()
+		{
+			    switch(m_triesLeft)
+			    {
+			    	case 6:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    \n|     \n|           \n|______\n";
+							break;
+			    	case 5:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
+								break;
+			    	case 4:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 3:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\n|          \n|______\n";
+							break;
+			    	case 2:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
+							m_triesLeft--;
+							break;
+			    	case 1:
+    					    std::cout<< " ______\n";
+							std::cout<< "|    |\n|    o\n|   /|\\\n|   /     \n|______\n";
+							break;
+					case 0:
+						    std::cout<< " ______\n";
+    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+    						break;
+					default:
+						    std::cout<< " ______\n";
+    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+			    }
+		}
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
