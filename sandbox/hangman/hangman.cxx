@@ -11,6 +11,11 @@
 
 #include "hangman.hxx"
 
+
+#define func(n, a) void show##n(){std::cout << a << "\n";}
+func(Menu, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+#undef func
+
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
 func(ForLetter, "What letter would you like to guess: ")
 func(PlayAgain, "Would you like to play again? [n/y]: ")
@@ -55,6 +60,7 @@ int main()
     char userGuess[1];
     int getWordAtLocation = 0;
     void (*result_handler)(int);
+    showMenu();
     do
     { 
       	int count = 1;
