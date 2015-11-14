@@ -52,7 +52,7 @@ int main()
     showTitle();
     do
     {
-        showMenu(); 
+        //showMenu(); 
       	int count = 1;
         srand(time(NULL));
       	getWordAtLocation = rand() % 173139;
