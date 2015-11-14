@@ -12,7 +12,8 @@
 #include "hangman.hxx"
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
-func(Menu, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Menu, "\n\t\t**Main Menu**\t\t\n1) Start\n2) Display scoreboard\nUser: ")
 #undef func
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
@@ -34,17 +35,6 @@ func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", t
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
 
-//todo: 
-//look into passing a string with the word to the function so it outputs the word in the same method that updates the scoreboard
-// int call_a_func(MathFunc call_this, int x, int y) 
-// {
-//     float output = call_this(x, y);
-//     return output;
-// }
-// int final_result = call_a_func(&mul, a, b);
-// cout<< a << " * " << b << " = " << final_result << "\n";
-
-
 char response[] = {'n', 'y'};
 enum {n, y};
 using namespace std;
@@ -59,9 +49,10 @@ int main()
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
     void (*result_handler)(int);
-    showMenu();
+    showTitle();
     do
-    { 
+    {
+        showMenu(); 
       	int count = 1;
         srand(time(NULL));
       	getWordAtLocation = rand() % 173139;
@@ -91,21 +82,17 @@ int main()
        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
        		if(guess.showWord() == guess.getWord())
        		{
-       			//cout << "Correct!\nWord: "<< guess.getWord() << "\n";
                 userWonRound = true;
                 result_handler = signal(SIGINT, declareUserWinsRound);
-                //cout << guess.getWord();
        		}
    	    }while(guess.getTriesLeft() != -1 && !userWonRound);
 
 	   	if(guess.getTriesLeft() == -1)
 	   	{
-	   		//cout << "You are out of guesses, the word was: ";
             result_handler = signal(SIGINT, declareOutOfGuesses);
 	   	}
         raise(SIGINT);
-        cout << guess.getWord();
-	    std::cout<<"\n";
+        cout << guess.getWord() << "\n";
 	    askPlayAgain();
         cin >> userResponse[0];
         while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y'))
