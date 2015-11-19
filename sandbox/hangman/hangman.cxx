@@ -12,7 +12,8 @@
 #include "hangman.hxx"
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
-func(Menu, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Menu, "***Main Menu***\n1: Start\n2: Scoreboard")
 #undef func
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
@@ -33,6 +34,13 @@ func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", t
 
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
+void (*result_handler)(int);
+typedef void (*getResultFunc)(int);
+void endOfMessage(getResultFunc result, std::string word)
+{
+    result_handler = signal(SIGINT, result);
+    std::cout << word << "\n";
+}
 
 char response[] = {'n', 'y'};
 enum {n, y};
@@ -47,8 +55,7 @@ int main()
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
-    void (*result_handler)(int);
-    showMenu();
+    showTitle();
     do
     { 
       	int count = 1;
@@ -85,20 +92,20 @@ int main()
        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
        		if(guess.showWord() == guess.getWord())
        		{
-       			//cout << "Correct!\nWord: "<< guess.getWord() << "\n";
                 userWonRound = true;
-                result_handler = signal(SIGINT, declareUserWinsRound);
-                //cout << guess.getWord();
+                //result_handler = signal(SIGINT, declareUserWinsRound);
+                endOfMessage(declareUserWinsRound, guess.getWord());
        		}
    	    }while(guess.getTriesLeft() != -1 && !userWonRound);
 
 	   	if(guess.getTriesLeft() == -1)
 	   	{
 	   		//cout << "You are out of guesses, the word was: ";
-          result_handler = signal(SIGINT, declareOutOfGuesses);
+          //result_handler = signal(SIGINT, declareOutOfGuesses);
+            endOfMessage(declareOutOfGuesses, guess.getWord());
 	   	}
         raise(SIGINT);
-        cout << guess.getWord();
+        //cout << guess.getWord();
 	    std::cout<<"\n";
 	    askPlayAgain();
         cin >> userResponse[0];
