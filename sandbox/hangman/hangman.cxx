@@ -34,17 +34,6 @@ func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", t
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
 
-//todo: 
-//look into passing a string with the word to the function so it outputs the word in the same method that updates the scoreboard
-// int call_a_func(MathFunc call_this, int x, int y) 
-// {
-//     float output = call_this(x, y);
-//     return output;
-// }
-// int final_result = call_a_func(&mul, a, b);
-// cout<< a << " * " << b << " = " << final_result << "\n";
-
-
 char response[] = {'n', 'y'};
 enum {n, y};
 using namespace std;
