@@ -34,12 +34,13 @@ func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", t
 
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
+
 void (*result_handler)(int);
 typedef void (*getResultFunc)(int);
-void endOfMessage(getResultFunc result, std::string word)
+
+void endOfRoundMessage(getResultFunc result)
 {
     result_handler = signal(SIGINT, result);
-    std::cout << word << "\n";
 }
 
 char response[] = {'n', 'y'};
@@ -93,20 +94,16 @@ int main()
        		if(guess.showWord() == guess.getWord())
        		{
                 userWonRound = true;
-                //result_handler = signal(SIGINT, declareUserWinsRound);
-                endOfMessage(declareUserWinsRound, guess.getWord());
+                endOfRoundMessage(declareUserWinsRound);
        		}
    	    }while(guess.getTriesLeft() != -1 && !userWonRound);
 
 	   	if(guess.getTriesLeft() == -1)
 	   	{
-	   		//cout << "You are out of guesses, the word was: ";
-          //result_handler = signal(SIGINT, declareOutOfGuesses);
-            endOfMessage(declareOutOfGuesses, guess.getWord());
+            endOfRoundMessage(declareOutOfGuesses);
 	   	}
         raise(SIGINT);
-        //cout << guess.getWord();
-	    std::cout<<"\n";
+        cout << guess.getWord() << "\n";
 	    askPlayAgain();
         cin >> userResponse[0];
         while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y'))
