@@ -53,8 +53,8 @@ int main()
 	string line;
     bool playAgain = false;
     bool userWonRound = false;
-    char userResponse[1];
-    char userGuess[1];
+    char userResponse[2];
+    char userGuess[2];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
     showTitle();
     do
@@ -73,15 +73,15 @@ int main()
             dictionaryFile.close();
     	}
     	do{
-       		askForLetter();
-          cin >> userGuess;
+            askForLetter();
+            scanf("%1s", userGuess);
           while(!isalpha(userGuess[0]))
           {
             askForLetter();
-            cin >> userGuess;
+            scanf("%1s", userGuess);
           }
-       		if(!guess.guessLetter(userGuess[0]))
-    	   		guess.printHangMan();
+        		if(!guess.guessLetter(userGuess[0]))
+           		guess.printHangMan();
           else
             correctOrSameGuessCounter++;
           if(correctOrSameGuessCounter == 5)
@@ -89,30 +89,30 @@ int main()
             guess.displayHangMan();
             correctOrSameGuessCounter = 0;
           }
-       		std::cout << "\nWord: " << guess.showWord();
-       		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
-       		if(guess.showWord() == guess.getWord())
-       		{
+        		std::cout << "\nWord: " << guess.showWord();
+        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
+        		if(guess.showWord() == guess.getWord())
+        		{
                 userWonRound = true;
                 endOfRoundMessage(declareUserWinsRound);
-       		}
-   	    }while(guess.getTriesLeft() != -1 && !userWonRound);
+        		}
+            }while(guess.getTriesLeft() != -1 && !userWonRound);
 
-	   	if(guess.getTriesLeft() == -1)
-	   	{
+        	if(guess.getTriesLeft() == -1)
+        	{
             endOfRoundMessage(declareOutOfGuesses);
-	   	}
+        	}
         raise(SIGINT);
         cout << guess.getWord() << "\n";
-	    askPlayAgain();
-        cin >> userResponse[0];
+        askPlayAgain();
+        scanf("%1s", userResponse);
         while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y'))
         {
             cout << "You did not enter a valid response!\n";
             askPlayAgain();
             cin >> userResponse[0];
         }
-	    playAgain = (userResponse[0] == response[n]) ? false : true;
+        playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)
         {
             guess.resetTries();
