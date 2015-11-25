@@ -53,8 +53,8 @@ int main()
 	string line;
     bool playAgain = false;
     bool userWonRound = false;
-    char userResponse[2];
-    char userGuess[2];
+    char userResponse[1];
+    char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
     showTitle();
     do
@@ -74,13 +74,17 @@ int main()
     	}
     	do{
             askForLetter();
-            scanf("%1s", userGuess);
-          while(!isalpha(userGuess[0]))
+            cin >> userGuess;
+          while(!isalpha(userGuess[0]) || string(userGuess).size() > 1 )
           {
+            if(string(userGuess).size() > 1)
+                cout << "You entered more than one letter...please follow instructions.\n";
+            else
+                cout << "You entered something that doesn't make sense.\n";
             askForLetter();
-            scanf("%1s", userGuess);
+            cin >> userGuess;
           }
-        		if(!guess.guessLetter(userGuess[0]))
+          if(!guess.guessLetter(userGuess[0]))
            		guess.printHangMan();
           else
             correctOrSameGuessCounter++;
@@ -100,17 +104,20 @@ int main()
 
         	if(guess.getTriesLeft() == -1)
         	{
-            endOfRoundMessage(declareOutOfGuesses);
+                endOfRoundMessage(declareOutOfGuesses);
         	}
         raise(SIGINT);
         cout << guess.getWord() << "\n";
         askPlayAgain();
-        scanf("%1s", userResponse);
-        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y'))
+        cin >> userResponse;
+        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y') || (string(userResponse).size() > 1))
         {
-            cout << "You did not enter a valid response!\n";
+            if(string(userResponse).size() > 1)
+                cout << "You entered more than one letter...please follow instructions.\n";
+            else
+                cout << "You did not enter a valid response!\n";
             askPlayAgain();
-            cin >> userResponse[0];
+            cin >> userResponse;
         }
         playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)

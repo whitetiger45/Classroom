@@ -34,7 +34,7 @@ class word
 			for(int i = 0; i < m_wordLength; i++)
 			{
 				//std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
-				if(m_word[i] == value )
+				if(m_word[i] == value)
 				{
 					m_incompleteWord[i] = value;
 					letterFound = true;
