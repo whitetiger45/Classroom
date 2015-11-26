@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+typedef std::vector<std::string> HangmanDictionary;
 class word
 {
 	public: 
@@ -139,11 +140,10 @@ class word
 			    	case 5:
     					    std::cout<< " ______\n";
 							std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
-								break;
+							break;
 			    	case 4:
     					    std::cout<< " ______\n";
 							std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
-							m_triesLeft--;
 							break;
 			    	case 3:
     					    std::cout<< " ______\n";
@@ -152,7 +152,6 @@ class word
 			    	case 2:
     					    std::cout<< " ______\n";
 							std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
-							m_triesLeft--;
 							break;
 			    	case 1:
     					    std::cout<< " ______\n";
@@ -175,7 +174,7 @@ class word
 		int m_wordLength = 0;
 		int m_roundsWon = 0;
 		signed int m_triesLeft = 6;
-		std::vector<std::string> m_dictionary;
+		HangmanDictionary m_dictionary;
 
 };
 

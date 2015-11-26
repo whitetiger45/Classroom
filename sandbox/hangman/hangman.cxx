@@ -84,10 +84,13 @@ int main()
             askForLetter();
             cin >> userGuess;
           }
-          if(!guess.guessLetter(userGuess[0]))
-           		guess.printHangMan();
-          else
-            correctOrSameGuessCounter++;
+            if(!guess.guessLetter(userGuess[0]))
+            {
+                guess.subtractTry();
+                guess.displayHangMan();
+            }
+            else
+                correctOrSameGuessCounter++;
           if(correctOrSameGuessCounter == 5)
           {
             guess.displayHangMan();
