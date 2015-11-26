@@ -93,7 +93,9 @@ int main()
             guess.displayHangMan();
             correctOrSameGuessCounter = 0;
           }
-        		std::cout << "\nWord: " << guess.showWord();
+                for(auto c : string(guess.showWord()))
+                    cout << c << " ";
+                cout << "\n"; 
         		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
         		if(guess.showWord() == guess.getWord())
         		{
