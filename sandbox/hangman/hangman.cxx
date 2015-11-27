@@ -43,6 +43,7 @@ void endOfRoundMessage(getResultFunc result)
     result_handler = signal(SIGINT, result);
 }
 
+auto lineWrapper = [](std::string lineToWrap, char c){for(int i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
 char response[] = {'n', 'y'};
 enum {n, y};
 using namespace std;
@@ -98,16 +99,18 @@ int main()
           }
                 for(auto c : string(guess.showWord()))
                     cout << c << " ";
-                cout << "\n"; 
-        		std::cout<< "\nGuessed letters: " << guess.getGuessedLetters() << "\n";
+                cout << "\n";
+                lineWrapper(string("Guessed letters: [" + guess.getGuessedLetters() + "]\n"), '~');
+        		std::cout<< "Guessed letters: [" << guess.getGuessedLetters() << "]\n";
+                lineWrapper(string("Guessed letters: [" + guess.getGuessedLetters() + "]\n"), '~');
         		if(guess.showWord() == guess.getWord())
         		{
                 userWonRound = true;
                 endOfRoundMessage(declareUserWinsRound);
         		}
-            }while(guess.getTriesLeft() != -1 && !userWonRound);
+            }while(guess.getTriesLeft() != 0 && !userWonRound);
 
-        	if(guess.getTriesLeft() == -1)
+        	if(guess.getTriesLeft() == 0)
         	{
                 endOfRoundMessage(declareOutOfGuesses);
         	}
