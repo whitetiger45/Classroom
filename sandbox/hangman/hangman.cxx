@@ -14,6 +14,7 @@
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
 func(Menu, "***Main Menu***\n1: Start\n2: Scoreboard")
+func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
@@ -56,7 +57,7 @@ int main()
     bool userWonRound = false;
     char userResponse[1];
     char userGuess[1];
-    int getWordAtLocation = 0, correctOrSameGuessCounter = 0;
+    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0;
     showTitle();
     do
     { 
@@ -74,6 +75,18 @@ int main()
             dictionaryFile.close();
     	}
     	do{
+                /*here:
+                char userGuessWord[guess.getWord().size()];
+                bool guessSingleChar = true;*/
+                showSubMenu();
+                string userSubMenuResponse_str;
+                cout << "User: "; cin >> userSubMenuResponse_str;
+                while(!isdigit(userSubMenuResponse_str[0]))
+                {
+                   cout << "\nYou must enter a valid menu option (1-5)\n";
+                   showSubMenu(); cout << "User: "; cin >> userSubMenuResponse_str;
+                }
+                userSubMenuResponseI = stoi(userSubMenuResponse_str);
             askForLetter();
             cin >> userGuess;
           while(!isalpha(userGuess[0]) || string(userGuess).size() > 1 )
