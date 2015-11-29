@@ -20,6 +20,7 @@ func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
 func(ForLetter, "What letter would you like to guess: ")
 func(PlayAgain, "Would you like to play again? [n/y]: ")
+func(ForSuspectedWord, "What do you think the word is?")
 #undef func
 
 sig_atomic_t userScore = 0;
@@ -54,7 +55,7 @@ int main()
 	word guess;
 	string line;
     bool playAgain = false;
-    bool userWonRound = false;
+    bool userWonRound = false, userGuessedRightWord = false;
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0;
@@ -75,52 +76,77 @@ int main()
             dictionaryFile.close();
     	}
     	do{
-                /*here:
+                here:
                 char userGuessWord[guess.getWord().size()];
-                bool guessSingleChar = true;*/
+                bool guessSingleChar = true;
                 showSubMenu();
                 string userSubMenuResponse_str;
                 cout << "User: "; cin >> userSubMenuResponse_str;
                 while(!isdigit(userSubMenuResponse_str[0]))
                 {
-                   cout << "\nYou must enter a valid menu option (1-5)\n";
+                   cout << "\nYou must enter a valid menu option (1-7)\n";
                    showSubMenu(); cout << "User: "; cin >> userSubMenuResponse_str;
                 }
                 userSubMenuResponseI = stoi(userSubMenuResponse_str);
-            askForLetter();
-            cin >> userGuess;
-          while(!isalpha(userGuess[0]) || string(userGuess).size() > 1 )
-          {
-            if(string(userGuess).size() > 1)
-                cout << "You entered more than one letter...please follow instructions.\n";
-            else
-                cout << "You entered something that doesn't make sense.\n";
-            askForLetter();
-            cin >> userGuess;
-          }
-            if(!guess.guessLetter(userGuess[0]))
-            {
-                guess.subtractTry();
-                guess.displayHangMan();
-            }
-            else
+                switch(userSubMenuResponseI)
+                {
+                    case 1:
+                    {
+                            askForLetter();
+                            cout << "Enter a letter: ";cin >> userGuess;
+                            break;
+                    }
+                    default:
+                    {
+                        cout << "\nYou must enter a valid option (1-7)\nThe other options are still in development!\nComing soon!\n\n";
+                        if(userSubMenuResponseI == 7)
+                            break;
+                        else
+                            goto here;
+                    }
+                }
+                if(userSubMenuResponseI == 7 || guess.getTriesLeft() == 0 || userGuessedRightWord)
+                  break;
+              while((!isalpha(userGuess[0]) || string(userGuess).size() > 1) && guessSingleChar)
+              {
                 correctOrSameGuessCounter++;
-          if(correctOrSameGuessCounter == 5)
-          {
-            guess.displayHangMan();
-            correctOrSameGuessCounter = 0;
-          }
+                if(correctOrSameGuessCounter == 5)
+                {
+                  guess.displayHangMan();
+                  correctOrSameGuessCounter = 0;
+                }
+                if(string(userGuess).size() > 1)
+                    cout << "You entered more than one letter...please follow instructions.\n";
+                else
+                    cout << "You entered something that doesn't make sense.\n";
+                askForLetter();
+                cout << "Enter a letter: "; cin >> userGuess;
+              }
+              if(!guess.guessLetter(userGuess[0]) && guessSingleChar)
+              {
+                  guess.subtractTry();
+                  guess.displayHangMan();
+                  lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+                  cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
+                  lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+              }
+              else
+                correctOrSameGuessCounter++;
+              
+              if(correctOrSameGuessCounter == 5)
+              {
+                guess.displayHangMan();
+                correctOrSameGuessCounter = 0;
+              }
+                std::cout << "\nWord: " ;
                 for(auto c : string(guess.showWord()))
                     cout << c << " ";
                 cout << "\n";
-                lineWrapper(string("Guessed letters: [" + guess.getGuessedLetters() + "]\n"), '~');
-        		std::cout<< "Guessed letters: [" << guess.getGuessedLetters() << "]\n";
-                lineWrapper(string("Guessed letters: [" + guess.getGuessedLetters() + "]\n"), '~');
-        		if(guess.showWord() == guess.getWord())
-        		{
-                userWonRound = true;
-                endOfRoundMessage(declareUserWinsRound);
-        		}
+                if(guess.showWord() == guess.getWord())
+                {
+                    userWonRound = true;
+                    endOfRoundMessage(declareUserWinsRound);
+                }
             }while(guess.getTriesLeft() != 0 && !userWonRound);
 
         	if(guess.getTriesLeft() == 0)
@@ -147,7 +173,7 @@ int main()
             correctOrSameGuessCounter = 0;
             userWonRound = false;
         }
-	}while(playAgain);
+	}while(playAgain && (userSubMenuResponseI != 7 ));
     scoreBoard();
     return 0;
 }
