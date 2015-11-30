@@ -55,7 +55,7 @@ int main()
 	word guess;
 	string line;
     bool playAgain = false;
-    bool userWonRound = false, userGuessedRightWord = false;
+    bool userWonRound = false;
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0;
@@ -78,7 +78,7 @@ int main()
     	do{
                 here:
                 char userGuessWord[guess.getWord().size()];
-                bool guessSingleChar = true;
+                bool guessSingleChar = true, userGuessedRightWord = false;
                 showSubMenu();
                 string userSubMenuResponse_str;
                 cout << "User: "; cin >> userSubMenuResponse_str;
@@ -96,16 +96,14 @@ int main()
                             cout << "Enter a letter: ";cin >> userGuess;
                             break;
                     }
+
                     default:
                     {
-                        cout << "\nYou must enter a valid option (1-7)\nThe other options are still in development!\nComing soon!\n\n";
-                        if(userSubMenuResponseI == 7)
-                            break;
-                        else
-                            goto here;
+                        cout << "\nYou must enter a valid option (1-7)\n";
+                        goto here;
                     }
                 }
-                if(userSubMenuResponseI == 7 || guess.getTriesLeft() == 0 || userGuessedRightWord)
+                if(userSubMenuResponseI == 7 || guess.getTriesLeft() == 0 || userWonRound)
                   break;
               while((!isalpha(userGuess[0]) || string(userGuess).size() > 1) && guessSingleChar)
               {
