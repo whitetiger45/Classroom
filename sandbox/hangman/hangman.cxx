@@ -96,7 +96,60 @@ int main()
                             cout << "Enter a letter: ";cin >> userGuess;
                             break;
                     }
+                    case 2:
+                    {
+                            guessSingleChar = false;
+                            lineWrapper(string("\nUnfinished word: " + string(guess.showWord()) + "\n"), '*');
+                            cout << "Unfinished word: " << guess.showWord() << "\n";
 
+                            lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '-');
+                            cout << "Guessed letters: [" << guess.getGuessedLetters() << "]\n";
+                            lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+                            cout << "\n";
+
+                            askForSuspectedWord();
+                            cin.ignore(); cout << "Enter the full word: ";cin.getline(userGuessWord, 256);
+                            for(auto c : userGuessWord)
+                            {
+                                bool alreadyGuessed = false;
+                                if(!isalpha(c))
+                                  continue;
+                              for(auto w : string(guess.getGuessedLetters()))
+                                if(w == c)
+                                {
+                                    alreadyGuessed = true;
+                                    break;
+                                }
+
+                                if(alreadyGuessed)
+                                    continue;
+                                else if(!guess.guessLetter(c))
+                                    guess.subtractTry();
+                                if(guess.getTriesLeft() == 0)
+                                  break;
+                            }
+                            if(guess.showWord() == guess.getWord() && userGuessWord == guess.getWord())
+                            {
+                                userWonRound = true;
+                                userGuessedRightWord = true;
+                                endOfRoundMessage(declareUserWinsRound);
+                            }
+                            //cout << "\nGuessed word: " << userGuessWord << ", actual word: " << guess.getWord() << "\n";
+                            if(guess.getTriesLeft() != 0 && !userWonRound && guess.showWord() != guess.getWord())
+                            {
+                                cout << "\nYou didn't get the word correct, but you got some letters correct...keep going!\n";
+                                cout << "Unfinished word: " ;
+                                for(auto c : string(guess.showWord()))
+                                    cout << c << " ";
+                                cout << "\n"; 
+                                goto here;
+                            }
+                            else
+                            {
+                                userWonRound = true;
+                                break;
+                            }
+                    }
                     default:
                     {
                         cout << "\nYou must enter a valid option (1-7)\n";
