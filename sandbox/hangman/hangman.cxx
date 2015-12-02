@@ -150,6 +150,13 @@ int main()
                                 break;
                             }
                     }
+                    case 3:
+                    {
+                            cout << "\n";
+                            lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+                            cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
+                            lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+                    }
                     default:
                     {
                         cout << "\nYou must enter a valid option (1-7)\n";
