@@ -157,6 +157,10 @@ int main()
                             cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
                             lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
                     }
+                    case 7:
+                    {
+                        goto quit;
+                    }
                     default:
                     {
                         cout << "\nYou must enter a valid option (1-7)\n";
@@ -233,5 +237,6 @@ int main()
         }
 	}while(playAgain && (userSubMenuResponseI != 7 ));
     scoreBoard();
+    quit:
     return 0;
 }
