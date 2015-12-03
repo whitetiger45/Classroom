@@ -29,6 +29,17 @@ class word
 			return m_incompleteWord;
 		}
 
+		std::string incompleteWord() const
+		{
+			std::string ret;
+			for(auto c : std::string(m_incompleteWord))
+			{
+				ret = ret + " " + c;
+			}
+			//std::cout << "RET: " << ret << "\n";
+			return ret;
+		}
+
 		bool guessLetter(char value)
 		{
 			bool letterFound = false;

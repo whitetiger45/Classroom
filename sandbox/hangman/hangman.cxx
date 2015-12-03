@@ -157,6 +157,17 @@ int main()
                     cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
                 }
+                case 4:
+                {
+                    lineWrapper(string("Incomplete Word: " + string(guess.incompleteWord()) + "\n"), '~');
+                    cout << "Incomplete Word: ";
+                    for(auto c : string(guess.showWord()))
+                        cout << c << " ";
+                    cout << "\n"; 
+                    lineWrapper(string("Incomplete Word: " + string(guess.incompleteWord()) + "\n"), '~');
+
+                    goto here;
+                }
                 case 7:
                 {
                     goto quit;
