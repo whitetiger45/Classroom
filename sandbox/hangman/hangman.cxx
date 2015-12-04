@@ -165,8 +165,14 @@ int main()
                         cout << c << " ";
                     cout << "\n"; 
                     lineWrapper(string("Incomplete Word: " + string(guess.incompleteWord()) + "\n"), '~');
-
-                    goto here;
+                }
+                case 5:
+                {
+                    lineWrapper(string("Tries left: " + to_string(guess.getTriesLeft()) + "\n"), '~');
+                    cout << "Tries left: " << guess.getTriesLeft() << "\n";
+                    lineWrapper(string("Tries left: " + to_string(guess.getTriesLeft()) + "\n"), '~');
+                    cout << "\n";
+                    goto here;    
                 }
                 case 7:
                 {
