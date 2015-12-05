@@ -174,6 +174,12 @@ int main()
                     cout << "\n";
                     goto here;    
                 }
+                case 6:
+                {
+                    guess.displayHangMan();
+                    cout << "\n";
+                    goto here;
+                }
                 case 7:
                 {
                     goto quit;
