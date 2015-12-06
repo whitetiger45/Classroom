@@ -18,7 +18,7 @@ func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n
 #undef func
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
-func(ForLetter, "What letter would you like to guess: ")
+func(ForLetter, "What letter would you like to guess (Enter 1 to go back to main menu): ")
 func(PlayAgain, "Would you like to play again? [n/y]: ")
 func(ForSuspectedWord, "What do you think the word is?")
 #undef func
@@ -77,6 +77,10 @@ int main()
         }
         do{
             here:
+            if(guess.getTriesLeft() == 0)
+            {
+                goto outOfTries;
+            }
             char userGuessWord[guess.getWord().size()];
             bool guessSingleChar = true, userGuessedRightWord = false;
             showSubMenu();
@@ -84,16 +88,34 @@ int main()
             cout << "User: "; cin >> userSubMenuResponse_str;
             while(!isdigit(userSubMenuResponse_str[0]))
             {
-            cout << "\nYou must enter a valid menu option (1-7)\n";
-            showSubMenu(); cout << "User: "; cin >> userSubMenuResponse_str;
+                cout << "\nYou must enter a valid menu option (1-7)\n";
+                showSubMenu(); cout << "User: "; cin >> userSubMenuResponse_str;
             }
             userSubMenuResponseI = stoi(userSubMenuResponse_str);
             switch(userSubMenuResponseI)
             {
                 case 1:
                 {
+                    caseOneStart:
+                    string userGuess_str;
+                    int userGuess_i = 1;
                     askForLetter();
-                    cout << "Enter a letter: ";cin >> userGuess;
+                    cout << "U: "; cin >> userGuess_str;
+                    if(isdigit(userGuess_str[0]))
+                    {
+                        userGuess_i = stoi(userGuess_str);
+                        if(userGuess_i == 1)
+                            goto here;
+                        else
+                            goto caseOneStart;
+                    }
+                    else if(userGuess_str.size() > 1)
+                    {
+                        cout << "\n**You entered more than one character...please enter only one letter**\n";
+                        goto caseOneStart;
+                    }
+                    else
+                        userGuess[0] = userGuess_str[0];
                     break;
                 }
                 case 2:
@@ -114,28 +136,36 @@ int main()
                         bool alreadyGuessed = false;
                         if(!isalpha(c))
                           continue;
-                      for(auto w : string(guess.getGuessedLetters()))
-                        if(w == c)
+                        for(auto w : string(guess.getGuessedLetters()))
                         {
-                            alreadyGuessed = true;
-                            break;
+                            if(w == c)
+                            {
+                                alreadyGuessed = true;
+                                break;
+                            }
                         }
-
                         if(alreadyGuessed)
+                        {
                             continue;
+                        }
                         else if(!guess.guessLetter(c))
+                        {
                             guess.subtractTry();
+                        }
                         if(guess.getTriesLeft() == 0)
+                        {
                           break;
+                        }
                     }
                     if(guess.showWord() == guess.getWord() && userGuessWord == guess.getWord())
                     {
                         userWonRound = true;
                         userGuessedRightWord = true;
                         endOfRoundMessage(declareUserWinsRound);
+                        goto userDiscoveredTheWord;
                     }
                     //cout << "\nGuessed word: " << userGuessWord << ", actual word: " << guess.getWord() << "\n";
-                    if(guess.getTriesLeft() != 0 && !userWonRound && guess.showWord() != guess.getWord())
+                    if(guess.getTriesLeft() != 0 && guess.showWord() != guess.getWord())
                     {
                         cout << "\nYou didn't get the word correct, but you got some letters correct...keep going!\n";
                         cout << "Unfinished word: " ;
@@ -144,11 +174,8 @@ int main()
                         cout << "\n"; 
                         goto here;
                     }
-                    else
-                    {
-                        userWonRound = true;
+                    else if(guess.getTriesLeft() == 0)
                         break;
-                    }
                 }
                 case 3:
                 {
@@ -190,7 +217,7 @@ int main()
                     goto here;
                 }
             }
-            if(userSubMenuResponseI == 7 || guess.getTriesLeft() == 0 || userWonRound)
+            if(guess.getTriesLeft() == 0 || userWonRound)
                 break;
             while((!isalpha(userGuess[0]) || string(userGuess).size() > 1) && guessSingleChar)
             {
@@ -233,11 +260,12 @@ int main()
                 endOfRoundMessage(declareUserWinsRound);
             }
         }while(guess.getTriesLeft() != 0 && !userWonRound);
-
+        outOfTries:
         if(guess.getTriesLeft() == 0)
         {
             endOfRoundMessage(declareOutOfGuesses);
         }
+        userDiscoveredTheWord:
         raise(SIGINT);
         cout << guess.getWord() << "\n";
         askPlayAgain();
@@ -258,7 +286,7 @@ int main()
             correctOrSameGuessCounter = 0;
             userWonRound = false;
         }
-    }while(playAgain && (userSubMenuResponseI != 7 ));
+    }while(playAgain);
     scoreBoard();
     quit:
     return 0;
