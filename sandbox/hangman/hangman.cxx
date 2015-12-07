@@ -81,7 +81,7 @@ int main()
             {
                 goto outOfTries;
             }
-            char userGuessWord[guess.getWord().size()];
+            const char * userGuessWord;//[guess.getWord().size()];
             bool guessSingleChar = true, userGuessedRightWord = false;
             showSubMenu();
             string userSubMenuResponse_str;
@@ -120,6 +120,7 @@ int main()
                 }
                 case 2:
                 {
+                    caseTwoStart:
                     guessSingleChar = false;
                     lineWrapper(string("\nUnfinished word: " + string(guess.showWord()) + "\n"), '*');
                     cout << "Unfinished word: " << guess.showWord() << "\n";
@@ -130,8 +131,26 @@ int main()
                     cout << "\n";
 
                     askForSuspectedWord();
-                    cin.ignore(); cout << "Enter the full word: ";cin.getline(userGuessWord, 256);
-                    for(auto c : userGuessWord)
+                    cin.ignore(); cout << "Enter the full word (Enter 1 to go back to main menu): ";
+                    string userGuessWord_str;
+                    cin >> userGuessWord_str;
+                    if(isdigit(userGuessWord_str[0]))
+                    {
+                        int userGuessWord_i = stoi(userGuessWord_str);
+                        if(userGuessWord_i == 1)
+                            goto here;
+                        else
+                            goto caseTwoStart;
+                    }
+                    else if(ispunct(userGuessWord_str[0]))
+                    {
+                        cout <<  "\n**You entered something that doesn't make sense...**\n";
+                        goto caseTwoStart;
+                    }
+                    else
+                        //cin.getline(userGuessWord, 256);
+                        userGuessWord = userGuessWord_str.c_str();
+                    for(auto c : userGuessWord_str)
                     {
                         bool alreadyGuessed = false;
                         if(!isalpha(c))
