@@ -18,7 +18,7 @@ func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n
 #undef func
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
-func(ForLetter, "What letter would you like to guess (Enter 1 to go back to main menu): ")
+func(ForLetter, "\nWhat letter would you like to guess?\n(Enter 1 to go back to main menu)")
 func(PlayAgain, "Would you like to play again? [n/y]: ")
 func(ForSuspectedWord, "What do you think the word is?")
 #undef func
@@ -100,6 +100,10 @@ int main()
                     string userGuess_str;
                     int userGuess_i = 1;
                     askForLetter();
+                    cout << "\n";
+                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+                    cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
+                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
                     cout << "U: "; cin >> userGuess_str;
                     if(isdigit(userGuess_str[0]))
                     {
