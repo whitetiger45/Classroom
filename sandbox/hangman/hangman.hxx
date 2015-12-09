@@ -54,7 +54,10 @@ class word
 			}
 			for(int i = 0; i < m_guessCount; i++)
 				if(m_guessedLetters[i] == value)
+				{
+					std::cout << "\nYou already guessed that letter!\n";
 					return true;
+				}
 
 			m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
 			addCharToGuessedLetters(value);
