@@ -98,51 +98,6 @@ class word
 				x = ' ';
 		}
 
-		void printHangMan()
-		{
-			    switch(m_triesLeft)
-			    {
-			    	case 6:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    \n|     \n|           \n|______\n";
-							m_triesLeft--;
-							break;
-			    	case 5:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
-							m_triesLeft--;
-							break;
-			    	case 4:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
-							m_triesLeft--;
-							break;
-			    	case 3:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\n|          \n|______\n";
-							m_triesLeft--;
-							break;
-			    	case 2:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
-							m_triesLeft--;
-							break;
-			    	case 1:
-    					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\\\n|   /     \n|______\n";
-							m_triesLeft--;
-							break;
-					case 0:
-						    std::cout<< " ______\n";
-    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
-    						m_triesLeft--;
-    						break;
-					default:
-						    std::cout<< " ______\n";
-    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
-			    }
-		}
-
 		void displayHangMan()
 		{
 			    switch(m_triesLeft)
