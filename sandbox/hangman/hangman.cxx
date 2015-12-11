@@ -76,7 +76,7 @@ int main()
             dictionaryFile.close();
         }
         do{
-            here:
+            main_menu:
             if(guess.getTriesLeft() == 0)
             {
                 goto outOfTries;
@@ -109,7 +109,7 @@ int main()
                     {
                         userGuess_i = stoi(userGuess_str);
                         if(userGuess_i == 1)
-                            goto here;
+                            goto main_menu;
                         else
                             goto caseOneStart;
                     }
@@ -142,7 +142,7 @@ int main()
                     {
                         int userGuessWord_i = stoi(userGuessWord_str);
                         if(userGuessWord_i == 1)
-                            goto here;
+                            goto main_menu;
                         else
                             goto caseTwoStart;
                     }
@@ -195,7 +195,7 @@ int main()
                         for(auto c : string(guess.showWord()))
                             cout << c << " ";
                         cout << "\n"; 
-                        goto here;
+                        goto main_menu;
                     }
                     else if(guess.getTriesLeft() == 0)
                         break;
@@ -222,13 +222,13 @@ int main()
                     cout << "Tries left: " << guess.getTriesLeft() << "\n";
                     lineWrapper(string("Tries left: " + to_string(guess.getTriesLeft()) + "\n"), '~');
                     cout << "\n";
-                    goto here;    
+                    goto main_menu;    
                 }
                 case 6:
                 {
                     guess.displayHangMan();
                     cout << "\n";
-                    goto here;
+                    goto main_menu;
                 }
                 case 7:
                 {
@@ -237,7 +237,7 @@ int main()
                 default:
                 {
                     cout << "\nYou must enter a valid option (1-7)\n";
-                    goto here;
+                    goto main_menu;
                 }
             }
             if(guess.getTriesLeft() == 0 || userWonRound)
