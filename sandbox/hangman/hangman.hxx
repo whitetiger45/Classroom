@@ -22,6 +22,8 @@ class word
 				m_incompleteWord[i] = '_' ;
 
 			m_incompleteWord[length] = '\0';
+
+	        trackDictionaryLetters(value);
 		}
 
 		const char* showWord() const
@@ -135,6 +137,34 @@ class word
     						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
 			    }
 		}
+
+		void trackDictionaryLetters(std::string dictionaryWord)
+		{
+			    it = dictionaryWordLettersMap.begin();
+		        for(auto c: dictionaryWord)
+		        {
+		            it = dictionaryWordLettersMap.find(c);
+		            if(it != dictionaryWordLettersMap.end())
+		            {
+		                it->second++;
+		            }
+		            else
+		                dictionaryWordLettersMap[c] = 1;
+		             
+		            if(it->second > dictionaryLettersMapmostFrequentCount)
+		                dictionaryLettersMapmostFrequentCount = it->second;
+		        }
+		}
+
+		void getMostFrequentLetterFromDictionaryWord()
+		{
+			    for(it = dictionaryWordLettersMap.begin(); it != dictionaryWordLettersMap.end(); it++)
+			    {
+			        if(it->second == dictionaryLettersMapmostFrequentCount)
+			            std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << it->first << "\n# of times it appeard: " << it->second << "\n";
+			    }
+		}
+
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
@@ -144,6 +174,10 @@ class word
 		int m_roundsWon = 0;
 		signed int m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
+
+	    std::map<char,int> dictionaryWordLettersMap;
+	    std::map<char,int>::iterator it;
+	    int dictionaryLettersMapmostFrequentCount = 1;
 
 };
 

@@ -312,5 +312,6 @@ int main()
     }while(playAgain);
     scoreBoard();
     quit:
+    guess.getMostFrequentLetterFromDictionaryWord();
     return 0;
 }
