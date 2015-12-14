@@ -7,6 +7,9 @@
 #include <vector>
 
 typedef std::vector<std::string> HangmanDictionary;
+typedef	std::map<char,int> LetterTrackingMap;
+typedef std::map<char,int>::iterator LetterTrackingMapIT;
+
 class word
 {
 	public: 
@@ -140,28 +143,28 @@ class word
 
 		void trackDictionaryLetters(std::string dictionaryWord)
 		{
-			    it = dictionaryWordLettersMap.begin();
+			    dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin();
 		        for(auto c: dictionaryWord)
 		        {
-		            it = dictionaryWordLettersMap.find(c);
-		            if(it != dictionaryWordLettersMap.end())
+		            dictionaryWordLettersMapIT = dictionaryWordLettersMap.find(c);
+		            if(dictionaryWordLettersMapIT != dictionaryWordLettersMap.end())
 		            {
-		                it->second++;
+		                dictionaryWordLettersMapIT->second++;
 		            }
 		            else
 		                dictionaryWordLettersMap[c] = 1;
 		             
-		            if(it->second > dictionaryLettersMapmostFrequentCount)
-		                dictionaryLettersMapmostFrequentCount = it->second;
+		            if(dictionaryWordLettersMapIT->second > dictionaryLettersMapmostFrequentCount)
+		                dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
 		        }
 		}
 
 		void getMostFrequentLetterFromDictionaryWord()
 		{
-			    for(it = dictionaryWordLettersMap.begin(); it != dictionaryWordLettersMap.end(); it++)
+			    for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
 			    {
-			        if(it->second == dictionaryLettersMapmostFrequentCount)
-			            std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << it->first << "\n# of times it appeard: " << it->second << "\n";
+			        if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+			            std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
 			    }
 		}
 
@@ -175,8 +178,8 @@ class word
 		signed int m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
 
-	    std::map<char,int> dictionaryWordLettersMap;
-	    std::map<char,int>::iterator it;
+	    LetterTrackingMap dictionaryWordLettersMap;
+	    LetterTrackingMapIT dictionaryWordLettersMapIT;
 	    int dictionaryLettersMapmostFrequentCount = 1;
 
 };
