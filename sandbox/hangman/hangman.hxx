@@ -47,6 +47,9 @@ class word
 
 		bool guessLetter(char value)
 		{
+			if(isupper(value))
+				value = tolower(value);
+			
 			bool letterFound = false;
 			for(int i = 0; i < m_wordLength; i++)
 			{

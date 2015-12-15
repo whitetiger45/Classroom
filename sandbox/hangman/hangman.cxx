@@ -293,6 +293,8 @@ int main()
         cout << guess.getWord() << "\n";
         askPlayAgain();
         cin >> userResponse;
+        if(isupper(userResponse[0]))
+            userResponse[0] = tolower(userResponse[0]);
         while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y') || (string(userResponse).size() > 1))
         {
             if(string(userResponse).size() > 1)
@@ -301,6 +303,8 @@ int main()
                 cout << "You did not enter a valid response!\n";
             askPlayAgain();
             cin >> userResponse;
+            if(isupper(userResponse[0]))
+                userResponse[0] = tolower(userResponse[0]);
         }
         playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)
