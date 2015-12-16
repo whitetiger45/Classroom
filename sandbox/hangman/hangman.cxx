@@ -317,5 +317,6 @@ int main()
     scoreBoard();
     quit:
     guess.getMostFrequentLetterFromDictionaryWord();
+    guess.getFirstGuessAccuracy();
     return 0;
 }

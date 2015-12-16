@@ -27,6 +27,7 @@ class word
 			m_incompleteWord[length] = '\0';
 
 	        trackDictionaryLetters(value);
+	        numberOfGames++;
 		}
 
 		const char* showWord() const
@@ -49,8 +50,14 @@ class word
 		{
 			if(isupper(value))
 				value = tolower(value);
-			
+
+			if( getGuessedLetters() == "")
+			{
+				trackFirstGuessAccuracy(value);
+			}
+
 			bool letterFound = false;
+
 			for(int i = 0; i < m_wordLength; i++)
 			{
 				//std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
@@ -60,6 +67,7 @@ class word
 					letterFound = true;
 				}
 			}
+
 			for(int i = 0; i < m_guessCount; i++)
 				if(m_guessedLetters[i] == value)
 				{
@@ -171,6 +179,43 @@ class word
 			    }
 		}
 
+		void trackFirstGuessAccuracy(char value)
+		{
+			firstGuessLettersMapIT = firstGuessLettersMap.begin();
+			for(auto c: getWord())
+			{
+			   if(value == c)
+			   {			   
+					letterWasInWord++;					   
+					break;
+			   }
+			}
+		    firstGuessLettersMapIT = firstGuessLettersMap.find(value);
+		    if(firstGuessLettersMapIT != firstGuessLettersMap.end())
+		    {
+		        firstGuessLettersMapIT->second++;
+		    }
+		    else
+		        firstGuessLettersMap[value] = 1;
+		     
+		    if(firstGuessLettersMapIT->second > firstGuessLettersMapCount)
+		        firstGuessLettersMapCount = firstGuessLettersMapIT->second;
+		}
+
+		void getFirstGuessAccuracy()
+		{
+			for(firstGuessLettersMapIT = firstGuessLettersMap.begin(); firstGuessLettersMapIT != firstGuessLettersMap.end(); firstGuessLettersMapIT++)
+			{
+				if(firstGuessLettersMapIT->second == firstGuessLettersMapCount)
+				{
+					std::cout << "\nMost frequent letter(s) to be guessed first: " << firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< firstGuessLettersMapIT->second<<"\n";
+					std::cout << "\nFirst guess accuracy: " <<(letterWasInWord/numberOfGames) * 100 << "%\n\n";
+				}
+			}
+		}
+
+
+
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
@@ -184,6 +229,13 @@ class word
 	    LetterTrackingMap dictionaryWordLettersMap;
 	    LetterTrackingMapIT dictionaryWordLettersMapIT;
 	    int dictionaryLettersMapmostFrequentCount = 1;
+
+	    LetterTrackingMap firstGuessLettersMap;
+	    LetterTrackingMapIT firstGuessLettersMapIT;
+	    int firstGuessLettersMapCount = 1;
+	    double letterWasInWord = 0.00;
+	    double numberOfGames = 0.00;
+
 
 };
 
