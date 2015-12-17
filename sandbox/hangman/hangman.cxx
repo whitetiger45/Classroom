@@ -120,7 +120,9 @@ int main()
                         goto caseOneStart;
                     }
                     else
+                    {
                         userGuess[0] = userGuess_str[0];
+                    }
                     break;
                 }
                 case 2:
@@ -243,7 +245,7 @@ int main()
             }
             if(guess.getTriesLeft() == 0 || userWonRound)
                 break;
-            while((!isalpha(userGuess[0]) || string(userGuess).size() > 1) && guessSingleChar)
+            /*while(!isalpha(userGuess[0]) && guessSingleChar)
             {
                 correctOrSameGuessCounter++;
                 if(correctOrSameGuessCounter == 5)
@@ -251,13 +253,15 @@ int main()
                   guess.displayHangMan();
                   correctOrSameGuessCounter = 0;
                 }
+                
                 if(string(userGuess).size() > 1)
                     cout << "You entered more than one letter...please follow instructions.\n";
                 else
                     cout << "You entered something that doesn't make sense.\n";
+                //cout << string(userGuess).size() << "\n";
                 askForLetter();
                 cout << "Enter a letter: "; cin >> userGuess;
-            }
+            }*/
             if(!guess.guessLetter(userGuess[0]) && guessSingleChar)
             {
                 guess.subtractTry();
@@ -317,7 +321,12 @@ int main()
     }while(playAgain);
     scoreBoard();
     quit:
-    guess.getMostFrequentLetterFromDictionaryWord();
+    
+    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
+    cout << "**Stats**\n";
+    cout << guess.getMostFrequentLetterFromDictionaryWord();
     guess.getFirstGuessAccuracy();
+    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
+
     return 0;
 }

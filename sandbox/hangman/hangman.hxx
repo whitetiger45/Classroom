@@ -169,14 +169,19 @@ class word
 		                dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
 		        }
 		}
-
-		void getMostFrequentLetterFromDictionaryWord()
+		std::string getMostFrequentLetterFromDictionaryWord()
 		{
-			    for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
-			    {
-			        if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
-			            std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
-			    }
+		std::string ret;
+		   for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
+		   {
+		       if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+		       {
+		           ret = "\nMost frequent letter(s) to appear in the dictionary words this session: ";
+		           ret+= dictionaryWordLettersMapIT->first;
+		           ret+= "\n# of times it appeard: " + std::to_string(dictionaryWordLettersMapIT->second) + "\n";
+		       }
+		   }
+		   return ret;
 		}
 
 		void trackFirstGuessAccuracy(char value)
