@@ -101,6 +101,7 @@ int main()
                     int userGuess_i = 1;
                     askForLetter();
                     cout << "\n";
+                    cout << "Word: " << guess.incompleteWord() <<  "\n";
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
                     cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
