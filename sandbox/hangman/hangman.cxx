@@ -322,8 +322,18 @@ int main()
     scoreBoard();
     quit:
     
-    guess.getMostFrequentLetterFromDictionaryWord();
+    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
+    
+    cout << "**Stats**\n";
+
+    if(guess.checkDictionaryMapLettersEqualToMaxCount() == 1)
+        cout << guess.getMostFrequentLetterFromDictionaryWord();
+    else
+        guess.printMostFrequentLettersFromDictionaryWord();
+
     guess.getFirstGuessAccuracy();
+
+    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
 
     return 0;
 }

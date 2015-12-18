@@ -227,7 +227,6 @@ public:
 
         unsigned int count = librarySize(category);
         cout << "\nYour Item:\n==========================\n" ;
-        //cout<<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
         cout<<"\n________________________\n";
         for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
         {
