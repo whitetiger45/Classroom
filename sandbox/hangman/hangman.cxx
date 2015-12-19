@@ -58,7 +58,7 @@ int main()
     bool userWonRound = false;
     char userResponse[1];
     char userGuess[1];
-    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0;
+    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
     showTitle();
     do
     { 
@@ -262,6 +262,10 @@ int main()
                 askForLetter();
                 cout << "Enter a letter: "; cin >> userGuess;
             }*/
+            bool alreadyGuessed = false;
+            for(auto c : guess.getGuessedLetters())
+                if(userGuess[0] == c)
+                    alreadyGuessed = true;
             if(!guess.guessLetter(userGuess[0]) && guessSingleChar)
             {
                 guess.subtractTry();
@@ -269,9 +273,17 @@ int main()
                 lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
                 cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
                 lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+                streak = 0;
             }
             else
+            {
                 correctOrSameGuessCounter++;
+                if(!alreadyGuessed)
+                    streak++;
+                
+                if(streak > guess.getMaxStreak())
+                    guess.setMaxStreak(streak);
+            }
 
             if(correctOrSameGuessCounter == 5)
             {
@@ -323,7 +335,7 @@ int main()
     quit:
     
     lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
-    
+
     cout << "**Stats**\n";
 
     if(guess.checkDictionaryMapLettersEqualToMaxCount() == 1)
@@ -332,7 +344,7 @@ int main()
         guess.printMostFrequentLettersFromDictionaryWord();
 
     guess.getFirstGuessAccuracy();
-
+    cout << "\nRecord streak for this round: " << guess.getMaxStreak() << "\n";
     lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
 
     return 0;

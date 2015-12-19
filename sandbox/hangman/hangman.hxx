@@ -193,7 +193,7 @@ class word
 		           std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
 		    }
 		}
-		
+
 		int checkDictionaryMapLettersEqualToMaxCount()
 		{
 			int total = 0;
@@ -237,6 +237,16 @@ class word
 			}
 		}
 
+		void setMaxStreak(int currentStreak)
+		{
+			m_streak = currentStreak;
+		}
+
+		int getMaxStreak()
+		{
+			return m_streak;
+		}
+
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
@@ -244,6 +254,7 @@ class word
 		int m_guessCount;
 		int m_wordLength = 0;
 		int m_roundsWon = 0;
+		int m_streak = 0;
 		signed int m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
 
