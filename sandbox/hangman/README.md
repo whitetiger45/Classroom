@@ -1,19 +1,11 @@
-Creator: Bryan Kanu
+bryan kanu
 
-hangman (incomplete)
+hangman
 
-Copyright protected
+copyright protected
 
 ==============
 
-Instructions to build (built using cmake):
+OS: Linux 14.04.1-Ubuntu x86_64 GNU/Linux
 
-1) clone repo
-
-2) mkdir build
-
-3) cd build
-
-4) cmake ..
-
-5) make
+built using cmake
