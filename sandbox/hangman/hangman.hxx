@@ -42,7 +42,6 @@ class word
 			{
 				ret = ret + " " + c;
 			}
-			//std::cout << "RET: " << ret << "\n";
 			return ret;
 		}
 
@@ -60,7 +59,6 @@ class word
 
 			for(int i = 0; i < m_wordLength; i++)
 			{
-				//std::cout<< "\nWord: " << m_incompleteWord << "\nm_word[" << i << "]: " << m_word[i] << "\n";
 				if(m_word[i] == value)
 				{
 					m_incompleteWord[i] = value;
@@ -267,7 +265,6 @@ class word
 	    int firstGuessLettersMapCount = 1;
 	    double letterWasInWord = 0.00;
 	    double numberOfGames = 0.00;
-
 
 };
 

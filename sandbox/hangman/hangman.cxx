@@ -64,8 +64,10 @@ int main()
     { 
         int count = 1;
         srand(time(NULL));
+
         getWordAtLocation = rand() % 173139;
         ifstream dictionaryFile ("dictionary.txt");
+
         if(dictionaryFile.is_open())
         {
             while ( getline (dictionaryFile,line) && count != getWordAtLocation)
@@ -75,23 +77,31 @@ int main()
             guess.setWord(line);
             dictionaryFile.close();
         }
+
         do{
+
             main_menu:
+
             if(guess.getTriesLeft() == 0)
             {
                 goto outOfTries;
             }
-            const char * userGuessWord;//[guess.getWord().size()];
+
+            const char * userGuessWord;
             bool guessSingleChar = true, userGuessedRightWord = false;
+
             showSubMenu();
             string userSubMenuResponse_str;
             cout << "User: "; cin >> userSubMenuResponse_str;
+
             while(!isdigit(userSubMenuResponse_str[0]))
             {
                 cout << "\nYou must enter a valid menu option (1-7)\n";
                 showSubMenu(); cout << "User: "; cin >> userSubMenuResponse_str;
             }
+
             userSubMenuResponseI = stoi(userSubMenuResponse_str);
+
             switch(userSubMenuResponseI)
             {
                 case 1:
@@ -99,12 +109,15 @@ int main()
                     caseOneStart:
                     string userGuess_str;
                     int userGuess_i = 1;
+
                     askForLetter();
                     cout << "\n";
                     cout << "Word: " << guess.incompleteWord() <<  "\n";
+
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
                     cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+
                     cout << "U: "; cin >> userGuess_str;
                     if(isdigit(userGuess_str[0]))
                     {
@@ -190,7 +203,6 @@ int main()
                         endOfRoundMessage(declareUserWinsRound);
                         goto userDiscoveredTheWord;
                     }
-                    //cout << "\nGuessed word: " << userGuessWord << ", actual word: " << guess.getWord() << "\n";
                     if(guess.getTriesLeft() != 0 && guess.showWord() != guess.getWord())
                     {
                         cout << "\nYou didn't get the word correct, but you got some letters correct...keep going!\n";
@@ -243,29 +255,16 @@ int main()
                     goto main_menu;
                 }
             }
+
             if(guess.getTriesLeft() == 0 || userWonRound)
                 break;
-            /*while(!isalpha(userGuess[0]) && guessSingleChar)
-            {
-                correctOrSameGuessCounter++;
-                if(correctOrSameGuessCounter == 5)
-                {
-                  guess.displayHangMan();
-                  correctOrSameGuessCounter = 0;
-                }
-                
-                if(string(userGuess).size() > 1)
-                    cout << "You entered more than one letter...please follow instructions.\n";
-                else
-                    cout << "You entered something that doesn't make sense.\n";
-                //cout << string(userGuess).size() << "\n";
-                askForLetter();
-                cout << "Enter a letter: "; cin >> userGuess;
-            }*/
+
             bool alreadyGuessed = false;
+
             for(auto c : guess.getGuessedLetters())
                 if(userGuess[0] == c)
                     alreadyGuessed = true;
+
             if(!guess.guessLetter(userGuess[0]) && guessSingleChar)
             {
                 guess.subtractTry();
@@ -290,28 +289,39 @@ int main()
                 guess.displayHangMan();
                 correctOrSameGuessCounter = 0;
             }
+
             std::cout << "\nWord: " ;
+
             for(auto c : string(guess.showWord()))
                 cout << c << " ";
+
             cout << "\n";
+
             if(guess.showWord() == guess.getWord())
             {
                 userWonRound = true;
                 endOfRoundMessage(declareUserWinsRound);
             }
         }while(guess.getTriesLeft() != 0 && !userWonRound);
+
         outOfTries:
+
         if(guess.getTriesLeft() == 0)
         {
             endOfRoundMessage(declareOutOfGuesses);
         }
+
         userDiscoveredTheWord:
+
         raise(SIGINT);
+
         cout << guess.getWord() << "\n";
+
         askPlayAgain();
         cin >> userResponse;
         if(isupper(userResponse[0]))
             userResponse[0] = tolower(userResponse[0]);
+
         while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y') || (string(userResponse).size() > 1))
         {
             if(string(userResponse).size() > 1)
@@ -331,7 +341,9 @@ int main()
             userWonRound = false;
         }
     }while(playAgain);
+
     scoreBoard();
+
     quit:
     
     lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
