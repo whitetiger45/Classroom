@@ -296,6 +296,7 @@ int main()
                 cout << c << " ";
 
             cout << "\n";
+            cout << "Streak: " << streak << "\n";
 
             if(guess.showWord() == guess.getWord())
             {
