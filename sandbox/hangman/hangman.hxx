@@ -207,7 +207,8 @@ class word
 			{
 			   if(value == c)
 			   {			   
-					letterWasInWord++;					   
+					letterWasInWord++;
+					std::cout << "\nExcellent start!\n";					   
 					break;
 			   }
 			}
