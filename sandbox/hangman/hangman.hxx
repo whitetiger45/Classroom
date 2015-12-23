@@ -1,6 +1,8 @@
 #ifndef HANGMAN_HXX
 #define HANGMAN_HXX
 
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <map>
 #include <string>
@@ -202,13 +204,21 @@ class word
 		}
 		void trackFirstGuessAccuracy(char value)
 		{
+			std::map<int, std::string> firstGuessMessageMap;
+
+			firstGuessMessageMap[0] = "\nExcellent start!\n";
+			firstGuessMessageMap[1] = "\nGood guess!\n";
+			firstGuessMessageMap[2] = "\nKeep it up!\n";
+			firstGuessMessageMap[3] = "\nWow...nice!\n";
 			firstGuessLettersMapIT = firstGuessLettersMap.begin();
+			srand(time(NULL));
+
 			for(auto c: getWord())
 			{
 			   if(value == c)
 			   {			   
 					letterWasInWord++;
-					std::cout << "\nExcellent start!\n";					   
+					std::cout << firstGuessMessageMap[rand() % 4];			   
 					break;
 			   }
 			}
