@@ -17,7 +17,7 @@ public:
     }
  
 private: 
-    map<string, bool> m = {{"a", true}, {"b", true}, {"c", false}, {"not found", false}};
+    map<string, bool> m = {{"a", true}, {"b", true}, {"c", false}};
     map<string, bool>::iterator mit;
 };
   
