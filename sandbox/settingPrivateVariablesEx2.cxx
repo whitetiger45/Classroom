@@ -13,13 +13,11 @@ public:
  
     bool& getVal(std::string val)
     {
-        for(mit = m.begin(); mit != m.end(); mit++)
-            if(mit->first == val)
-                return mit->second;
+        return m.find(val)->second;
     }
  
 private: 
-    map<string, bool> m = {{"a", true}, {"b", true}, {"c", false}};
+    map<string, bool> m = {{"a", true}, {"b", true}, {"c", false}, {"not found", false}};
     map<string, bool>::iterator mit;
 };
   
@@ -33,6 +31,7 @@ int main()
     cout << "GetVal a: " << sp->getVal("a") << "\n";
     sp->SetIndividualFlag( sp->getVal("a"));
     cout << "a after set flag: " << sp->getVal("a") << "\n";
+    cout << "checking for flag that doesnt exist: " << sp->getVal("f") << "\n";
 
     
     return 0;
