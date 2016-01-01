@@ -17,7 +17,8 @@ func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n_______
 
 #define func(n, a) void add##n(){std::cout << a;}
 func(Subject, "Enter a subject: ")
-func(Category, "Enter a category: ")
+func(Category_Case1, "\n*Type 'back' at any time to return to main menu*\nEnter a category: ")
+func(Category, "\nEnter a category: ")
 func(Note, "Enter your note: ")
 #undef func
 
@@ -38,6 +39,7 @@ int main()
     bool useApp = true;
     do
     {
+        mainMenu:
         showMenu();
         cin >> userChoice;
         if(!(isdigit(userChoice)))
@@ -46,14 +48,27 @@ int main()
             userChoice = 0;
         switch(userChoice)
         {
+//--------------------------------------------------------------------------------------------------------------------
             case 1:
             {
                 char cat[256], subj[256], note[256], user[2];
                 bool userWantsToAddAnotherItemToSameCategory = false;
-                addCategory(); 
+                addCategory_Case1(); 
                 cin.ignore(); cin.getline(cat, 256);
+
+                if(string(cat) == "back" || string(cat) == "Back")
+                    goto mainMenu;
+
                 addSubject(); cin.getline(subj, 256);
+                
+                if(string(subj) == "back" || string(subj) == "Back")
+                    goto mainMenu;
+
                 addNote(); cin.getline(note, 256);
+
+                if(string(note) == "back" || string(note) == "Back")
+                    goto mainMenu;
+
                 app.insertItem(string(subj), string(cat), string(note));
 
                 askAddMoreToSameCategory();
@@ -75,6 +90,7 @@ int main()
                     }
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 2:
             {
                 char userInputCategory[256], userInputSubject[256];
