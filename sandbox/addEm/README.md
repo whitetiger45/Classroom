@@ -6,20 +6,6 @@ Copyright protected
 
 =====================
 
-To build this project (built using cmake):
+OS: Linux 14.04.1-Ubuntu x86_64 GNU/Linux
 
-1) Clone repo
-
-2) cd to newly cloned repo
-
-3) mkdir build
-
-4) mv presidents.txt ../build/
-
-5) cd build/
-
-6) cmake ..
-
-7) make
-
-8) run program with ./addEm
+built using cmake
