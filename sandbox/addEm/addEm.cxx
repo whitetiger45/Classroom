@@ -11,7 +11,7 @@ func(Title, "Designer:Bryan Kanu\n\n       List Generator\n*********************
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
 func(RemoveCategoryPrompt, "Enter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
-func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\nUser: ")
+func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
 func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\nUser: ")
 #undef func
 
@@ -116,11 +116,16 @@ int main()
                         app.displaySpecificCategoryList(string(userInputCategory));
                         break;
                     }
+                    case 3:
+                    {
+                        goto mainMenu;
+                    }
                     default:
                         cout << "\nThe option you entered is invalid!\n";
                 }
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 3:
             {
                 app.displayList();
