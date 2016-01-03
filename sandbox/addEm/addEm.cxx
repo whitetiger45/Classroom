@@ -9,6 +9,7 @@
 #define func(n, a) void show##n(){std::cout << a ;}
 func(Title, "Designer:Bryan Kanu\n\n       List Generator\n***************************\n")
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
+func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnter a category: ")
 func(RemoveCategoryPrompt, "Enter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
 func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
@@ -17,7 +18,6 @@ func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n_______
 
 #define func(n, a) void add##n(){std::cout << a;}
 func(Subject, "Enter a subject: ")
-func(Category_Case1, "\n*Type 'back' at any time to return to main menu*\nEnter a category: ")
 func(Category, "\nEnter a category: ")
 func(Note, "Enter your note: ")
 #undef func
@@ -53,7 +53,7 @@ int main()
             {
                 char cat[256], subj[256], note[256], user[2];
                 bool userWantsToAddAnotherItemToSameCategory = false;
-                addCategory_Case1(); 
+                showCategory_SubMenu(); 
                 cin.ignore(); cin.getline(cat, 256);
 
                 if(string(cat) == "back" || string(cat) == "Back")
@@ -93,6 +93,7 @@ int main()
 //--------------------------------------------------------------------------------------------------------------------
             case 2:
             {
+                caseTwoSubMenu:
                 char userInputCategory[256], userInputSubject[256];
                 int userInputSubMenuChoice = 0;
                 app.displayCurrentListsAndSizes();
@@ -102,8 +103,12 @@ int main()
                 {
                     case 1:
                     {
-                        addCategory(); 
+                        showCategory_SubMenu(); 
                         cin.ignore(); cin.getline(userInputCategory, 256);
+
+                        if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                            goto caseTwoSubMenu;
+
                         addSubject(); cin.getline(userInputSubject, 256);
                         app.displaySpecificSubjectOnly(string(userInputCategory), string(userInputSubject));
                         break;
