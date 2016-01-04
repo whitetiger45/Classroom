@@ -110,6 +110,9 @@ int main()
                             goto caseTwoSubMenu;
 
                         addSubject(); cin.getline(userInputSubject, 256);
+                        if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
+                            goto caseTwoSubMenu;
+                            
                         app.displaySpecificSubjectOnly(string(userInputCategory), string(userInputSubject));
                         break;
                     }
