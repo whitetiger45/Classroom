@@ -118,9 +118,13 @@ int main()
                     }
                     case 2:
                     {
-                        addCategory(); 
+                        showCategory_SubMenu();
                         cin.ignore(); 
                         cin.getline(userInputCategory, 256);
+
+                        if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                            goto caseTwoSubMenu;
+
                         app.displaySpecificCategoryList(string(userInputCategory));
                         break;
                     }
