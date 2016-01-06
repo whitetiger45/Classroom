@@ -151,12 +151,24 @@ int main()
             case 5:
             {
                 char userInputSubject[256], userInputCategory[256];
+                app.displayCurrentListsAndSizes();
                 showRemoveCategoryPrompt();
                 cin.ignore(); 
                 cin.getline(userInputCategory, 256);
+
+                if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                    goto mainMenu;
+                else if(!(app.categoryExists(userInputCategory)))
+                {
+                    cout << "\nThe category you entered does not exist!\n";
+                    goto mainMenu;
+                }
+                
+                app.displaySpecificCategoryList(string(userInputCategory));
                 showRemoveItemPrompt(); 
                 cin.getline(userInputSubject, 256);
                 app.deleteItem(string(userInputSubject), string(userInputCategory));
+
                 break;
             }
             case 6:
