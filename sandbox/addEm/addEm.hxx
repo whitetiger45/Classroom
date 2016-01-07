@@ -207,7 +207,7 @@ public:
         cout<<"\n==========================\n";
     }
 
-        void displaySpecificSubjectOnly(string category, string iSubject)
+    void displaySpecificSubjectOnly(string category, string iSubject)
     {
         m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
         //http://stackoverflow.lib/questions/12280593/accessing-elements-of-a-list-of-lists-in-c
@@ -377,6 +377,7 @@ public:
 
     void deleteItem(string subject, string category)
     {
+        //todo ** add check to make sure category exists
         if(librarySize(category) == 1)
         {
             deleteLibNodes(category);
@@ -399,7 +400,7 @@ public:
                 m_libIter =  m_library.erase(temp);//this one uses the searchLibrarysNodes method
         }
 
-    //to remove a single item from doubly linked list item node
+//to remove a single item from doubly linked list item node
         for(m_itemIter = m_item.begin(); m_itemIter != m_item.end(); m_itemIter++)
         {
             string subj = *m_itemIter;
@@ -415,6 +416,7 @@ public:
         m_library.clear();
         m_item.clear();
     }
+
     Library m_library;//this is the library node for the complete list
     LibraryNode m_libIter;//this is the main library node iterator
     myCompleteList m_myCompleteList;

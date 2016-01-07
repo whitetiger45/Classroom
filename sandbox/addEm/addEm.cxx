@@ -10,7 +10,7 @@
 func(Title, "Designer:Bryan Kanu\n\n       List Generator\n***************************\n")
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
 func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnter a category: ")
-func(RemoveCategoryPrompt, "Enter the category you would like to remove from the list: ")
+func(RemoveCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
 func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
 func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\nUser: ")
@@ -78,16 +78,16 @@ int main()
                     user[0] = response[n];
                 int i = 0;
                 userWantsToAddAnotherItemToSameCategory = (user[0] == response[n]) ? false : true;
-                    while(userWantsToAddAnotherItemToSameCategory)
-                    {
-                        addSubject(); cin.ignore(); cin.getline(subj, 256);
-                        addNote(); cin.getline(note, 256);
-                        app.insertItem(string(subj), string(cat), string(note));
-                        askAddMoreToSameCategory();
-                        cin >> user;
-                        //std::cout << "response loop [" << ++i << "]: " << user[0] << "\n";
-                        userWantsToAddAnotherItemToSameCategory = (user[0] == response[n]) ? false : true;
-                    }
+                while(userWantsToAddAnotherItemToSameCategory)
+                {
+                    addSubject(); cin.ignore(); cin.getline(subj, 256);
+                    addNote(); cin.getline(note, 256);
+                    app.insertItem(string(subj), string(cat), string(note));
+                    askAddMoreToSameCategory();
+                    cin >> user;
+                    //std::cout << "response loop [" << ++i << "]: " << user[0] << "\n";
+                    userWantsToAddAnotherItemToSameCategory = (user[0] == response[n]) ? false : true;
+                }
                 break;
             }
 //--------------------------------------------------------------------------------------------------------------------
@@ -143,11 +143,13 @@ int main()
                 app.displayList();
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 4:
             {
                 app.displayCurrentListsAndSizes();
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 5:
             {
                 char userInputSubject[256], userInputCategory[256];
@@ -167,17 +169,25 @@ int main()
                 app.displaySpecificCategoryList(string(userInputCategory));
                 showRemoveItemPrompt(); 
                 cin.getline(userInputSubject, 256);
+
+                if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                    goto mainMenu;
+
                 app.deleteItem(string(userInputSubject), string(userInputCategory));
 
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 6:
             {
                 char cat[256];
                 showRemoveCategoryPrompt(); cin.ignore(); cin.getline(cat, 256);
+                if(string(cat) == "back" || string(cat) == "Back")
+                    goto mainMenu;
                 app.deleteLibNodes(string(cat));
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 7:
             {
                 char user[2];
@@ -193,6 +203,7 @@ int main()
                     cout << "The list has not been cleared\n";
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 8:
             {
                 string fileName("yourList.txt");
@@ -221,6 +232,7 @@ int main()
                 }
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 9:
             {
                 string line;
@@ -312,11 +324,13 @@ int main()
                 else cout << "Unable to open file"; 
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             case 0:
             {
                 useApp = false;
                 break;
             }
+//--------------------------------------------------------------------------------------------------------------------
             default: 
                 cout << "\nPlease enter a valid selection!\n";
         }
