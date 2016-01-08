@@ -216,9 +216,11 @@ int main()
                     {
                         char userInputCategory[256];
                         app.displayCurrentListsAndSizes();
-                        addCategory();
+                        showCategory_SubMenu();
                         cin.ignore(); 
                         cin.getline(userInputCategory, 256);
+                        if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                            goto mainMenu;
                         app.displaySpecificCategoryList(userInputCategory,fileName);
                         break;
                     }
