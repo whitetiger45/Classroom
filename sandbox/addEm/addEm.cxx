@@ -13,7 +13,7 @@ func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnte
 func(RemoveCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category you would like to remove from the list: ")
 func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
 func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
-func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\nUser: ")
+func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\n3: Return to main menu\nUser: ")
 #undef func
 
 #define func(n, a) void add##n(){std::cout << a;}
@@ -228,6 +228,10 @@ int main()
                     {
                         app.displayList(fileName);
                         break;
+                    }
+                    case 3: 
+                    {
+                        goto mainMenu;
                     }
                     default:
                         cout << "\nThe option you entered is invalid!\n";
