@@ -81,7 +81,12 @@ int main()
                 while(userWantsToAddAnotherItemToSameCategory)
                 {
                     addSubject(); cin.ignore(); cin.getline(subj, 256);
+
+                    if(string(subj) == "back" || string(subj) == "Back")
+                        goto mainMenu;
+
                     addNote(); cin.getline(note, 256);
+
                     app.insertItem(string(subj), string(cat), string(note));
                     askAddMoreToSameCategory();
                     cin >> user;
