@@ -87,6 +87,9 @@ int main()
 
                     addNote(); cin.getline(note, 256);
 
+                    if(string(note) == "back" || string(note) == "Back")
+                        goto mainMenu;
+
                     app.insertItem(string(subj), string(cat), string(note));
                     askAddMoreToSameCategory();
                     cin >> user;
