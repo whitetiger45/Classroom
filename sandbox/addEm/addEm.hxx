@@ -169,10 +169,17 @@ public:
         
         if(!categoryExists(category))
         {
-            cout << "\nCategory you entered does not exist in the library!\n";
-            return;
+            if(islower(category[0]))
+            {
+                category[0] = toupper(category[0]);
+                if(!categoryExists(category))
+                {
+                    cout << "\nCategory you entered does not exist in the library!\n";
+                    return;
+                }
+            }
         }
-
+        
         m_libIter = searchLibraryNodes(category);
         if(*m_libIter != category)
             return;
