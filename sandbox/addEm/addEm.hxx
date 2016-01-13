@@ -167,11 +167,20 @@ public:
         m_myCompleteListIterator = m_myCompleteList.begin();
         bool categoryPrinted = false;
         
-        if(!categoryExists(category))
+       if(!categoryExists(category))
         {
             if(islower(category[0]))
             {
                 category[0] = toupper(category[0]);
+                if(!categoryExists(category))
+                {
+                    cout << "\nCategory you entered does not exist in the library!\n";
+                    return;
+                }
+            }
+            else if(isupper(category[0]))
+            {
+                category[0] = tolower(category[0]);
                 if(!categoryExists(category))
                 {
                     cout << "\nCategory you entered does not exist in the library!\n";
