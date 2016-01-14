@@ -167,7 +167,7 @@ public:
         m_myCompleteListIterator = m_myCompleteList.begin();
         bool categoryPrinted = false;
         
-       if(!categoryExists(category))
+       /*if(!categoryExists(category))
         {
             if(islower(category[0]))
             {
@@ -188,10 +188,34 @@ public:
                 }
             }
         }
-        
+
         m_libIter = searchLibraryNodes(category);
         if(*m_libIter != category)
-            return;
+            return;*/
+
+        //used the searchLibrary nodes since it is called anyways, this speeds up the search and display of the category.
+        m_libIter = searchLibraryNodes(category);
+
+        if(m_libIter == LibraryNode(NULL))
+        {
+            if(islower(category[0]))
+            {
+                category[0] = toupper(category[0]);
+            }
+            else if(isupper(category[0]))
+            {
+                category[0] = tolower(category[0]);
+
+            }
+            
+            m_libIter = searchLibraryNodes(category);
+
+            if(m_libIter == LibraryNode(NULL))
+            {
+                cout << "\nCategory you entered does not exist in the library!\n";
+                return;
+            }
+        }
 
         unsigned int count = librarySize(category);
         cout << "\nYour Lists:\n==========================\n" ;
