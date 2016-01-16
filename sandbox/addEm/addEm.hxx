@@ -159,6 +159,27 @@ public:
         }
     }
 
+   std::string convertCategoryNumberToString(int categoryNumber)//convert an integer given by user to the string that the number represents in the list
+    {
+        m_categoryNodeIterator = m_categoryNode.begin();
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        unsigned int listItemCategoryNumber = 1;
+        for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
+        {
+            if(listItemCategoryNumber == categoryNumber)
+            {
+                string cat = *m_libIter;
+                return cat;
+            }
+            else
+                listItemCategoryNumber++;
+        }
+        if(m_libIter == m_library.end())
+            cout << "\nNumber you entered exceeds the number of categories in your list!\n";
+
+        return string("");
+    }
+
     void displaySpecificCategoryList(string category)
     {
         m_categoryNodeIterator = m_categoryNode.begin();//first iterate through main list
