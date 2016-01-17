@@ -116,6 +116,16 @@ int main()
 
                         if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
                             goto caseTwoSubMenu;
+                        else if(isdigit(userInputCategory[0]))
+                        {
+                            int x = atoi(userInputCategory);
+                            string retrievedCategoryValue = app.convertCategoryNumberToString(x);
+                            //cout << "\nTest: " << retrievedCategoryValue << "\n";//debug line to determine value retrieved
+                            size_t length = retrievedCategoryValue.copy(userInputCategory, retrievedCategoryValue.length(), 0);
+                            userInputCategory[length]='\0';
+                            cout << "Category: " << userInputCategory << "\n";
+                        }
+
 
                         addSubject(); cin.getline(userInputSubject, 256);
                         if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
