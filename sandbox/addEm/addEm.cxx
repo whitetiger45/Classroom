@@ -207,9 +207,18 @@ int main()
             case 6:
             {
                 char cat[256];
+                app.displayCurrentListsAndSizes();
                 showRemoveCategoryPrompt(); cin.ignore(); cin.getline(cat, 256);
                 if(string(cat) == "back" || string(cat) == "Back")
                     goto mainMenu;
+                else if(isdigit(cat[0]))
+                {
+                    int x = atoi(cat);
+                    string retrievedCategoryValue = app.convertCategoryNumberToString(x);
+                    size_t length = retrievedCategoryValue.copy(cat, retrievedCategoryValue.length(), 0);
+                    cat[length]='\0';
+                    cout << "\nCategory: " << cat << "\n";
+                }
                 app.deleteLibNodes(string(cat));
                 break;
             }
