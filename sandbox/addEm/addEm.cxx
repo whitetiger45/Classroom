@@ -11,9 +11,9 @@ func(Title, "Designer:Bryan Kanu\n\n       List Generator\n*********************
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
 func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnter a category: ")
 func(RemoveCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category you would like to remove from the list: ")
-func(RemoveItemPrompt, "Enter the item you would like to remove from the list: ")
+func(RemoveItemPrompt, "*Type 'back' to return to menu*\nEnter the item you would like to remove from the list: ")
 func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
-func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\n3: Return to main menu\nUser: ")
+func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\n3: Return to main menu\n\nUser: ")
 #undef func
 
 #define func(n, a) void add##n(){std::cout << a;}
@@ -104,13 +104,13 @@ int main()
                 caseTwoSubMenu:
                 char userInputCategory[256], userInputSubject[256];
                 int userInputSubMenuChoice = 0;
-                app.displayCurrentListsAndSizes();
                 showDisplaySpecificSubjectFromCategoryPrompt();
                 cin >> userInputSubMenuChoice;
                 switch(userInputSubMenuChoice)
                 {
                     case 1:
                     {
+                        app.displayCurrentListsAndSizes();
                         showCategory_SubMenu(); 
                         cin.ignore(); cin.getline(userInputCategory, 256);
 
@@ -123,9 +123,11 @@ int main()
                             //cout << "\nTest: " << retrievedCategoryValue << "\n";//debug line to determine value retrieved
                             size_t length = retrievedCategoryValue.copy(userInputCategory, retrievedCategoryValue.length(), 0);
                             userInputCategory[length]='\0';
-                            cout << "Category: " << userInputCategory << "\n";
+                            cout << "\nCategory: " << userInputCategory << "\n";
                         }
 
+                        //display the entire category so the user doesn't have to guess spelling of a specific item to display
+                        app.displaySpecificCategoryList(string(userInputCategory));
 
                         addSubject(); cin.getline(userInputSubject, 256);
                         if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
@@ -136,6 +138,7 @@ int main()
                     }
                     case 2:
                     {
+                        app.displayCurrentListsAndSizes();
                         showCategory_SubMenu();
                         cin.ignore(); 
                         cin.getline(userInputCategory, 256);
@@ -186,7 +189,16 @@ int main()
 
                 if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
                     goto mainMenu;
-                else if(!(app.categoryExists(userInputCategory)))
+                else if(isdigit(userInputCategory[0]))
+                {
+                    int x = atoi(userInputCategory);
+                    string retrievedCategoryValue = app.convertCategoryNumberToString(x);
+                    size_t length = retrievedCategoryValue.copy(userInputCategory, retrievedCategoryValue.length(), 0);
+                    userInputCategory[length]='\0';
+                    cout << "\nCategory: " << userInputCategory << "\n";
+                }
+                
+                if(!(app.categoryExists(userInputCategory)))
                 {
                     cout << "\nThe category you entered does not exist!\n";
                     goto mainMenu;
@@ -196,7 +208,7 @@ int main()
                 showRemoveItemPrompt(); 
                 cin.getline(userInputSubject, 256);
 
-                if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
+                if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
                     goto mainMenu;
 
                 app.deleteItem(string(userInputSubject), string(userInputCategory));
