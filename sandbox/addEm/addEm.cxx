@@ -268,6 +268,14 @@ int main()
                         cin.getline(userInputCategory, 256);
                         if(string(userInputCategory) == "back" || string(userInputCategory) == "Back")
                             goto mainMenu;
+                        else if(isdigit(userInputCategory[0]))
+                        {
+                            int x = atoi(userInputCategory);
+                            string retrievedCategoryValue = app.convertCategoryNumberToString(x);
+                            size_t length = retrievedCategoryValue.copy(userInputCategory, retrievedCategoryValue.length(), 0);
+                            userInputCategory[length]='\0';
+                            cout << "\nCategory: " << userInputCategory << "\n";
+                        }
                         app.displaySpecificCategoryList(userInputCategory,fileName);
                         break;
                     }
