@@ -364,11 +364,76 @@ public:
     bool categoryExists(string category)
     {//a bool method for checking if a category already has been created
         for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
+        {
             if(*m_libIter == category)
             {
                 return true;
             }
+        }
         return false;
+    }
+
+    bool subjectExists(string iCategory, string& iSubject)
+    {//a bool method for checking if a subject exists in
+
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        bool subjectFound = false, updatedCaseSensitivity = false;
+
+        searchList:
+
+        for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+        {
+            string catCheck = *m_myCompleteListIterToItemIterator;
+            string subjectAsString("Subject: ");
+            string categoryAsString("Category: \n");
+            if(catCheck.find(iCategory) != string::npos)
+            {
+                size_t found = catCheck.find(iCategory);
+                size_t findSubject = catCheck.find(iSubject);
+                if(findSubject != string::npos)
+                {
+                    if(catCheck[found + (iCategory.length())] == '\n')
+                    {
+                        if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                        {
+                            subjectFound = true;
+                            return subjectFound;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(!subjectFound && !updatedCaseSensitivity)
+        {
+            int whiteSpaceCount = 0;
+
+            for(auto c: iSubject)
+                if(isspace(c))
+                    whiteSpaceCount++;
+
+            if(islower(iSubject[0]))
+                iSubject[0] = toupper(iSubject[0]);
+            for(int i = 1; i < iSubject.size(); i++)
+            {
+                if(isspace(iSubject[i]))
+                {
+                    if(islower(iSubject[i+1]))
+                    {
+                        iSubject[i+1] = toupper(iSubject[i+1]);
+                        whiteSpaceCount--;
+                        if(whiteSpaceCount == 0)
+                        {
+                            updatedCaseSensitivity = true;
+                            goto searchList;
+                        }
+                    }
+                }
+            }
+        }
+
+        cout << "\n***Subject not found!***\n";
+        return subjectFound;
     }
 
     unsigned int librarySize(string category)

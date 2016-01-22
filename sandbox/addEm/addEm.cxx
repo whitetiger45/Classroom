@@ -102,7 +102,7 @@ int main()
             case 2:
             {
                 caseTwoSubMenu:
-                char userInputCategory[256], userInputSubject[256];
+                char userInputCategory[256], userInputSubject_char[256];
                 int userInputSubMenuChoice = 0;
                 showDisplaySpecificSubjectFromCategoryPrompt();
                 cin >> userInputSubMenuChoice;
@@ -129,11 +129,20 @@ int main()
                         //display the entire category so the user doesn't have to guess spelling of a specific item to display
                         app.displaySpecificCategoryList(string(userInputCategory));
 
-                        addSubject(); cin.getline(userInputSubject, 256);
-                        if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
+                        addSubject(); cin.getline(userInputSubject_char, 256);
+                        string userInputSubject_str;
+
+                        if(string(userInputSubject_char) == "back" || string(userInputSubject_char) == "Back")
                             goto caseTwoSubMenu;
-                            
-                        app.displaySpecificSubjectOnly(string(userInputCategory), string(userInputSubject));
+                        else 
+                            userInputSubject_str= string(userInputSubject_char);
+                        
+                        if(!app.subjectExists(string(userInputCategory), userInputSubject_str))
+                        {
+                            goto caseTwoSubMenu;
+                        }
+                        //cout << "\n\n\n*****(begin debug)****\nSubject: " << inputSubject << "\n\n(end debug)\n***********\n\n\n";
+                        app.displaySpecificSubjectOnly(string(userInputCategory), userInputSubject_str);
                         break;
                     }
                     case 2:
