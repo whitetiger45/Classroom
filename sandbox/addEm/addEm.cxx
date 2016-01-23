@@ -11,6 +11,7 @@ func(Title, "Designer:Bryan Kanu\n\n       List Generator\n*********************
 func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
 func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnter a category: ")
 func(RemoveCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category you would like to remove from the list: ")
+func(RemoveItemFromCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category that contains an item you want to remove: ")
 func(RemoveItemPrompt, "*Type 'back' to return to menu*\nEnter the item you would like to remove from the list: ")
 func(DisplaySpecificSubjectFromCategoryPrompt, "\nWould you like to:\n__________________________\n\n1: Display specific item from a specific category\n2: Display the entire category\n3: Return to main menu\n\nUser: ")
 func(ExportFullListOrSpecificCategoryPrompt, "\nPlease select an option\n__________________________\n1: Export a specific category only\n2: Export all\n3: Return to main menu\n\nUser: ")
@@ -190,9 +191,9 @@ int main()
 //--------------------------------------------------------------------------------------------------------------------
             case 5:
             {
-                char userInputSubject[256], userInputCategory[256];
+                char userInputSubject_char[256], userInputCategory[256];
                 app.displayCurrentListsAndSizes();
-                showRemoveCategoryPrompt();
+                showRemoveItemFromCategoryPrompt();
                 cin.ignore(); 
                 cin.getline(userInputCategory, 256);
 
@@ -215,12 +216,20 @@ int main()
                 
                 app.displaySpecificCategoryList(string(userInputCategory));
                 showRemoveItemPrompt(); 
-                cin.getline(userInputSubject, 256);
+                cin.getline(userInputSubject_char, 256);
+                string userInputSubject_str;
 
-                if(string(userInputSubject) == "back" || string(userInputSubject) == "Back")
+                if(string(userInputSubject_char) == "back" || string(userInputSubject_char) == "Back")
                     goto mainMenu;
+                else 
+                    userInputSubject_str= string(userInputSubject_char);
+                
+                if(!app.subjectExists(string(userInputCategory), userInputSubject_str))
+                {
+                    goto mainMenu;
+                }
 
-                app.deleteItem(string(userInputSubject), string(userInputCategory));
+                app.deleteItem(userInputSubject_str, string(userInputCategory));
 
                 break;
             }
