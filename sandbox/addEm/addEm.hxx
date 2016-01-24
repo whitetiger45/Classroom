@@ -26,6 +26,7 @@ public:
     typedef list< list<T> > Category;//this is the node that will store the library nodes that contain the item nodes
     typedef typename list< list<T> >::iterator CategoryNode;//this will iterate through the correspondance list
 
+//---------------------------------------------------------------------------------------------------------------
 
     void insertItem(string subject, string category, string message)
     {
@@ -48,6 +49,7 @@ public:
             m_categoryNode.push_front(m_library);
         }
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void displayList()//This will display list by listing the library in the order they appear in the Library from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of items in the library.
     {
@@ -89,6 +91,7 @@ public:
             cout<<"\n==========================\n";
         }
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void displayList(string outputFilename)//Overloaded function
     {
@@ -137,7 +140,7 @@ public:
         }
         else cout << "\nUnable to open file!\n"; 
     }
-
+//---------------------------------------------------------------------------------------------------------------
 
     void displayCurrentListsAndSizes()//This will display list by listing the library in the order they appear in the Inbox from the most recent to the oldest, i.e., from beginning of doubly-linked list of librarys, displaying the category and the number of e-mails in the library.
     {
@@ -158,6 +161,7 @@ public:
             cout << count << " item)\n";
         }
     }
+//---------------------------------------------------------------------------------------------------------------
 
    std::string convertCategoryNumberToString(int categoryNumber)//convert an integer given by user to the string that the number represents in the list
     {
@@ -179,6 +183,7 @@ public:
 
         return string("");
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void displaySpecificCategoryList(string category)
     {
@@ -241,6 +246,7 @@ public:
         }
         cout<<"\n==========================\n";
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void displaySpecificSubjectOnly(string category, string iSubject)
     {
@@ -304,7 +310,73 @@ public:
         }
         cout<<"\n==========================\n";
     }
+//---------------------------------------------------------------------------------------------------------------
+    void subjectSearch(string& iSubject)
+    {
+        m_myCompleteListIterator = m_myCompleteList.begin();
+        bool subjectFound = false, updatedCaseSensitivity = false;
+        string searchedSubject;
+        cout<<"\n________________________\n";
+        searchList:
+        for(m_libIter = m_library.begin(); m_libIter != m_library.end(); m_libIter++)
+        {
+            string cat = *m_libIter; 
+            for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            {
+                string catCheck = *m_myCompleteListIterToItemIterator;
+                string categoryAsString("Category: \n");
+                if(catCheck.find(cat) != string::npos)
+                {
+                    size_t found = catCheck.find(cat);
+                    size_t findSubject = catCheck.find(iSubject);
+                    if(findSubject != string::npos)
+                    {
+                        if(catCheck[found + (cat.length())] == '\n')
+                        {
+                            if( catCheck[found-1] == ' ' && !(isalnum(catCheck[found-2])))
+                            {
+                                std::cout << catCheck.substr(0, (found - categoryAsString.length())) << "\n";
+                                std::cout << "Note: " << catCheck.substr(found+cat.length()+1) << "\n";
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+  
+        if(!subjectFound && !updatedCaseSensitivity)
+        {
+            int whiteSpaceCount = 0;
 
+            for(auto c: iSubject)
+                if(isspace(c))
+                    whiteSpaceCount++;
+
+            if(islower(iSubject[0]))
+                iSubject[0] = toupper(iSubject[0]);
+            for(int i = 1; i < iSubject.size(); i++)
+            {
+                if(isspace(iSubject[i]))
+                {
+                    if(islower(iSubject[i+1]))
+                    {
+                        iSubject[i+1] = toupper(iSubject[i+1]);
+                        whiteSpaceCount--;
+                        if(whiteSpaceCount == 0)
+                        {
+                            updatedCaseSensitivity = true;
+                            goto searchList;
+                        }
+                    }
+                }
+            }
+        }
+
+        cout << "\n***Subject not found!***\n";
+        return;
+    }
+//---------------------------------------------------------------------------------------------------------------
     void displaySpecificCategoryList(string category, string outputFilename)//overloaded function
     {
         ofstream outputFile(outputFilename);
@@ -360,6 +432,7 @@ public:
         else cout << "\nUnable to open file!\n"; 
 
     }
+//---------------------------------------------------------------------------------------------------------------
 
     bool categoryExists(string category)
     {//a bool method for checking if a category already has been created
@@ -372,6 +445,7 @@ public:
         }
         return false;
     }
+//---------------------------------------------------------------------------------------------------------------
 
     bool subjectExists(string iCategory, string& iSubject)
     {//a bool method for checking if a subject exists in
@@ -435,6 +509,7 @@ public:
         cout << "\n***Subject not found!***\n";
         return subjectFound;
     }
+//---------------------------------------------------------------------------------------------------------------
 
     unsigned int librarySize(string category)
     {//get the number of items that relate to a specific category
@@ -458,6 +533,7 @@ public:
         }
         return count;
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void deleteLibNodes(string category)
     {
@@ -486,6 +562,7 @@ public:
                 m_itemIter =  m_item.erase(m_itemIter);
         }
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void deleteItem(string subject, string category)
     {
@@ -521,6 +598,7 @@ public:
                 m_itemIter =  m_item.erase(m_itemIter);
         }
     }
+//---------------------------------------------------------------------------------------------------------------
 
     void emptyEntireList()
     {
@@ -528,6 +606,7 @@ public:
         m_library.clear();
         m_item.clear();
     }
+//---------------------------------------------------------------------------------------------------------------
 
     Library m_library;//this is the library node for the complete list
     LibraryNode m_libIter;//this is the main library node iterator
@@ -541,6 +620,7 @@ public:
     LibraryNode m_categoryIterToLibraryIter;//this is used to dereference nodes of the category node since they are nodes within nodes
 
 private:
+//---------------------------------------------------------------------------------------------------------------
 
     LibraryNode searchLibraryNodes(string category)//Searches the library for category using given string as the key for the search. It returns a pointer to the library node that matches the category, or the null pointer if no such node is found.   This function should be private, and will be needed for both insertions and deletion.
     {
@@ -550,6 +630,7 @@ private:
 
         return LibraryNode(NULL);
     }
+//---------------------------------------------------------------------------------------------------------------
 
     ItemNode searchItemNodes(string category)//Searches the Items for an item with category as the key for the search. It returns a pointer to the library node that matches the category, or the null pointer if no such node is found.   This function should be private, and will be needed for both insertions and deletion.
     {
@@ -565,6 +646,7 @@ private:
         }
         return pointer;
     }
+//---------------------------------------------------------------------------------------------------------------
 
     ItemNode searchMyCompleteListNodes(string category)
     {
