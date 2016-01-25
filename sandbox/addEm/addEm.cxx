@@ -8,7 +8,7 @@
 
 #define func(n, a) void show##n(){std::cout << a ;}
 func(Title, "Designer:Bryan Kanu\n\n       List Generator\n***************************\n")
-func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n0: Exit application\n\nUser: ")
+func(Menu, "\n        *Main Menu*\n\nWhat would you like to do?\n__________________________\n\n1: Add item to list\n2: Display category and its associated items\n3: Display all lists\n4: Display categories & size of lists\n5: Remove item from list\n6: Remove category from list\n7: Clear all list contents\n8: Export your list to a text file\n9: Run sample program (read input from file & create lists)\n10: Search for an item\n0: Exit application\n\nUser: ")
 func(Category_SubMenu, "\n*Type 'back' at any time to return to last menu*\nEnter a category: ")
 func(RemoveCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category you would like to remove from the list: ")
 func(RemoveItemFromCategoryPrompt, "\n*Type 'back' to return to last menu*\nEnter the category that contains an item you want to remove: ")
@@ -45,7 +45,7 @@ int main()
         cin >> userChoice;
         if(!(isdigit(userChoice)))
             EXIT_FAILURE;
-        if(userChoice > 9 || userChoice < 0)
+        if(userChoice > 10 || userChoice < 0)
             userChoice = 0;
         switch(userChoice)
         {
@@ -401,6 +401,22 @@ int main()
                 }
 
                 else cout << "Unable to open file"; 
+                break;
+            }
+//--------------------------------------------------------------------------------------------------------------------
+            case 10:
+            {
+                char userInputSubject_char[256];
+                string userInputSubject_str;
+                cin.ignore();
+                addSubject(); cin.getline(userInputSubject_char, 256);
+
+                if(string(userInputSubject_char) == "back" || string(userInputSubject_char) == "Back")
+                    goto mainMenu;
+                else 
+                    userInputSubject_str= string(userInputSubject_char);
+                
+                app.subjectSearch(userInputSubject_str);
                 break;
             }
 //--------------------------------------------------------------------------------------------------------------------
