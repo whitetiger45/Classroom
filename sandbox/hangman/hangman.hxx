@@ -52,7 +52,7 @@ class word
 			if(isupper(value))
 				value = tolower(value);
 
-			if( getGuessedLetters() == "")
+			if( getGuessedLetters() == "" )
 			{
 				trackFirstGuessAccuracy(value);
 			}
@@ -202,6 +202,12 @@ class word
 					total++;
 			return total;
 		}
+
+		void setFirstGuessWasCorrectValue()
+		{
+			m_firstGuessWasCorrect = true;
+		}
+
 		void trackFirstGuessAccuracy(char value)
 		{
 			std::map<int, std::string> firstGuessMessageMap;
@@ -218,11 +224,14 @@ class word
 			   if(value == c)
 			   {			   
 					letterWasInWord++;
-					std::cout << firstGuessMessageMap[rand() % 4];			   
+					std::cout << firstGuessMessageMap[rand() % 4];
+					setFirstGuessWasCorrectValue();
 					break;
 			   }
 			}
+
 		    firstGuessLettersMapIT = firstGuessLettersMap.find(value);
+
 		    if(firstGuessLettersMapIT != firstGuessLettersMap.end())
 		    {
 		        firstGuessLettersMapIT->second++;
@@ -256,6 +265,16 @@ class word
 			return m_streak;
 		}
 
+		bool checkIfFirstGuessWasCorrect() const
+		{
+			return m_firstGuessWasCorrect;
+		}
+
+		void resetFirstGuessWasCorrectValue()
+		{
+			m_firstGuessWasCorrect = false;
+		}
+
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
@@ -273,6 +292,7 @@ class word
 
 	    LetterTrackingMap firstGuessLettersMap;
 	    LetterTrackingMapIT firstGuessLettersMapIT;
+	    bool m_firstGuessWasCorrect = false;
 	    int firstGuessLettersMapCount = 1;
 	    double letterWasInWord = 0.00;
 	    double numberOfGames = 0.00;
