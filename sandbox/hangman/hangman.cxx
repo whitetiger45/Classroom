@@ -112,6 +112,7 @@ int main()
 
                     askForLetter();
                     cout << "\n";
+                    guess.displayHangMan();
                     cout << "Word: " << guess.incompleteWord() <<  "\n";
 
                     lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
@@ -276,19 +277,19 @@ int main()
             }
             else
             {
-                correctOrSameGuessCounter++;
                 if(!alreadyGuessed)
                     streak++;
                 
                 if(streak > guess.getMaxStreak())
                     guess.setMaxStreak(streak);
+                guess.displayHangMan();
             }
 
-            if(correctOrSameGuessCounter == 5)
-            {
-                guess.displayHangMan();
-                correctOrSameGuessCounter = 0;
-            }
+            // if(correctOrSameGuessCounter == 5)
+            // {
+            //     guess.displayHangMan();
+            //     correctOrSameGuessCounter = 0;
+            // }
 
             std::cout << "\nWord: " ;
 
