@@ -8,9 +8,41 @@
 #include <string>
 #include <vector>
 
+#define func(n, a) void show##n(){std::cout << a << "\n";}
+func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Menu, "***Main Menu***\n1: Start\n2: Scoreboard")
+func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
+#undef func
+
+#define func(n,a) void ask##n(){std::cout << a << "\n";}
+func(ForLetter, "\nWhat letter would you like to guess?\n(Enter 1 to go back to main menu)")
+func(PlayAgain, "\n(Type 's' to see your current stat)\nPlay again? [n/y/s]: ")
+func(ForSuspectedWord, "What do you think the word is?")
+#undef func
+
+//------------------------------------------------------------------------------------------------------------------------
+//scoreboard stuff
+sig_atomic_t userScore = 0;
+sig_atomic_t totalGames = 0;
+
+#define func(n, a, b, c) void declare##n(int param){std::cout << a ; ++b; ++c;}
+func(UserWinsRound, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScore, totalGames)
+#undef func
+
+#define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
+func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
+#undef func
+
+
+#define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
+func(Board, userScore, totalGames)
+//------------------------------------------------------------------------------------------------------------------------
+
 typedef std::vector<std::string> HangmanDictionary;
 typedef	std::map<char,int> LetterTrackingMap;
 typedef std::map<char,int>::iterator LetterTrackingMapIT;
+
+auto lineWrapper = [](std::string lineToWrap, char c){for(int i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
 
 class word
 {
@@ -29,7 +61,7 @@ class word
 			m_incompleteWord[length] = '\0';
 
 	        trackDictionaryLetters(value);
-	        numberOfGames++;
+	        m_numberOfGames++;
 		}
 
 		const char* showWord() const
@@ -216,41 +248,41 @@ class word
 			firstGuessMessageMap[1] = "\nGood guess!\n";
 			firstGuessMessageMap[2] = "\nKeep it up!\n";
 			firstGuessMessageMap[3] = "\nWow...nice!\n";
-			firstGuessLettersMapIT = firstGuessLettersMap.begin();
+			m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin();
 			srand(time(NULL));
 
 			for(auto c: getWord())
 			{
 			   if(value == c)
 			   {			   
-					letterWasInWord++;
+					m_letterWasInWord++;
 					std::cout << firstGuessMessageMap[rand() % 4];
 					setFirstGuessWasCorrectValue();
 					break;
 			   }
 			}
 
-		    firstGuessLettersMapIT = firstGuessLettersMap.find(value);
+		    m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.find(value);
 
-		    if(firstGuessLettersMapIT != firstGuessLettersMap.end())
+		    if(m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end())
 		    {
-		        firstGuessLettersMapIT->second++;
+		        m_m_firstGuessLettersMapIT->second++;
 		    }
 		    else
-		        firstGuessLettersMap[value] = 1;
+		        m_firstGuessLettersMap[value] = 1;
 		     
-		    if(firstGuessLettersMapIT->second > firstGuessLettersMapCount)
-		        firstGuessLettersMapCount = firstGuessLettersMapIT->second;
+		    if(m_m_firstGuessLettersMapIT->second > m_m_firstGuessLettersMapCount)
+		        m_m_firstGuessLettersMapCount = m_m_firstGuessLettersMapIT->second;
 		}
 
 		void getFirstGuessAccuracy()
 		{
-			for(firstGuessLettersMapIT = firstGuessLettersMap.begin(); firstGuessLettersMapIT != firstGuessLettersMap.end(); firstGuessLettersMapIT++)
+			for(m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin(); m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end(); m_m_firstGuessLettersMapIT++)
 			{
-				if(firstGuessLettersMapIT->second == firstGuessLettersMapCount)
+				if(m_m_firstGuessLettersMapIT->second == m_m_firstGuessLettersMapCount)
 				{
-					std::cout << "\nMost frequent letter(s) to be guessed first: " << firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< firstGuessLettersMapIT->second<<"\n";
-					std::cout << "\nFirst guess accuracy: " <<(letterWasInWord/numberOfGames) * 100 << "%\n\n";
+					std::cout << "\nMost frequent letter(s) to be guessed first: " << m_m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_m_firstGuessLettersMapIT->second<<"\n";
+					std::cout << "\nFirst guess accuracy: " <<(m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
 				}
 			}
 		}
@@ -275,6 +307,32 @@ class word
 			m_firstGuessWasCorrect = false;
 		}
 
+		void incrementFirstGuessToWonRoundConversionTracker()
+		{
+			m_firstGuessToWonRoundConversionTracker++;
+		}
+
+		void getStats()
+		{
+			std::cout << std::endl; scoreBoard(); std::cout << std::endl;	
+
+		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+
+		    std::cout << "**Stats**\n";
+
+		    if(checkDictionaryMapLettersEqualToMaxCount() == 1)
+		        std::cout << getMostFrequentLetterFromDictionaryWord();
+		    else
+		        printMostFrequentLettersFromDictionaryWord();
+
+		    std::cout << "\n# of times first guess was correct and user won the round: ";
+		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
+		    getFirstGuessAccuracy();
+		    std::cout << "Record streak: " << getMaxStreak() << "\n";
+
+		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+		}
+
 	private:
 		char m_word[256];
 		char m_incompleteWord[256];
@@ -290,12 +348,13 @@ class word
 	    LetterTrackingMapIT dictionaryWordLettersMapIT;
 	    int dictionaryLettersMapmostFrequentCount = 1;
 
-	    LetterTrackingMap firstGuessLettersMap;
-	    LetterTrackingMapIT firstGuessLettersMapIT;
+	    LetterTrackingMap m_firstGuessLettersMap;
+	    LetterTrackingMapIT m_m_firstGuessLettersMapIT;
 	    bool m_firstGuessWasCorrect = false;
-	    int firstGuessLettersMapCount = 1;
-	    double letterWasInWord = 0.00;
-	    double numberOfGames = 0.00;
+	    int m_m_firstGuessLettersMapCount = 1;
+	    double m_letterWasInWord = 0.00;
+	    double m_numberOfGames = 0.00;
+	    int m_firstGuessToWonRoundConversionTracker = 0;
 
 };
 

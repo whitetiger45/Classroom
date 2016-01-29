@@ -11,32 +11,6 @@
 
 #include "hangman.hxx"
 
-#define func(n, a) void show##n(){std::cout << a << "\n";}
-func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
-func(Menu, "***Main Menu***\n1: Start\n2: Scoreboard")
-func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
-#undef func
-
-#define func(n,a) void ask##n(){std::cout << a << "\n";}
-func(ForLetter, "\nWhat letter would you like to guess?\n(Enter 1 to go back to main menu)")
-func(PlayAgain, "Would you like to play again? [n/y]: ")
-func(ForSuspectedWord, "What do you think the word is?")
-#undef func
-
-sig_atomic_t userScore = 0;
-sig_atomic_t totalGames = 0;
-
-#define func(n, a, b, c) void declare##n(int param){std::cout << a ; ++b; ++c;}
-func(UserWinsRound, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScore, totalGames)
-#undef func
-
-#define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
-func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
-#undef func
-
-#define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
-func(Board, userScore, totalGames)
-
 void (*result_handler)(int);
 typedef void (*getResultFunc)(int);
 
@@ -45,8 +19,7 @@ void endOfRoundMessage(getResultFunc result)
     result_handler = signal(SIGINT, result);
 }
 
-auto lineWrapper = [](std::string lineToWrap, char c){for(int i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
-char response[] = {'n', 'y'};
+char response[] = {'n', 'y', 's'};
 enum {n, y};
 using namespace std;
 
@@ -58,7 +31,7 @@ int main()
     bool userWonRound = false;
     char userResponse[1];
     char userGuess[1];
-    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0, firstGuessToWonRoundConversionTracker = 0;
+    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
     showTitle();
     do
     { 
@@ -285,12 +258,6 @@ int main()
                 guess.displayHangMan();
             }
 
-            // if(correctOrSameGuessCounter == 5)
-            // {
-            //     guess.displayHangMan();
-            //     correctOrSameGuessCounter = 0;
-            // }
-
             std::cout << "\nWord: " ;
 
             for(auto c : string(guess.showWord()))
@@ -304,7 +271,8 @@ int main()
                 userWonRound = true;
                 endOfRoundMessage(declareUserWinsRound);
                 if(guess.checkIfFirstGuessWasCorrect())
-                    firstGuessToWonRoundConversionTracker++;
+                    guess.incrementFirstGuessToWonRoundConversionTracker();
+                    // guess.firstGuessToWonRoundConversionTracker++;
             }
         }while(guess.getTriesLeft() != 0 && !userWonRound);
 
@@ -321,12 +289,13 @@ int main()
 
         cout << guess.getWord() << "\n";
 
+        endOfRoundMenu:
         askPlayAgain();
         cin >> userResponse;
         if(isupper(userResponse[0]))
             userResponse[0] = tolower(userResponse[0]);
 
-        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y') || (string(userResponse).size() > 1))
+        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y' && userResponse[0] != 's') || (string(userResponse).size() > 1))
         {
             if(string(userResponse).size() > 1)
                 cout << "You entered more than one letter...please follow instructions.\n";
@@ -337,7 +306,24 @@ int main()
             if(isupper(userResponse[0]))
                 userResponse[0] = tolower(userResponse[0]);
         }
-        playAgain = (userResponse[0] == response[n]) ? false : true;
+
+        switch(userResponse[0])
+        {
+            case 'n':
+                    playAgain = false;
+                    break;
+            case 'y':
+                    playAgain = true;
+                    break;
+            case 's': 
+                    guess.getStats();
+                    goto endOfRoundMenu;
+            default: 
+                    cout << "\nInvalid entry!\n";
+                    goto endOfRoundMenu;
+
+        }
+        // playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)
         {
             guess.resetTries();
@@ -351,20 +337,20 @@ int main()
 
     quit:
     
-    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
+    // lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
 
-    cout << "**Stats**\n";
+    // cout << "**Stats**\n";
 
-    if(guess.checkDictionaryMapLettersEqualToMaxCount() == 1)
-        cout << guess.getMostFrequentLetterFromDictionaryWord();
-    else
-        guess.printMostFrequentLettersFromDictionaryWord();
+    // if(guess.checkDictionaryMapLettersEqualToMaxCount() == 1)
+    //     cout << guess.getMostFrequentLetterFromDictionaryWord();
+    // else
+    //     guess.printMostFrequentLettersFromDictionaryWord();
 
-    cout << "\n# of times first guess was correct and user won the round: " << firstGuessToWonRoundConversionTracker << "\n";
-    guess.getFirstGuessAccuracy();
-    cout << "Record streak for this round: " << guess.getMaxStreak() << "\n";
+    // cout << "\n# of times first guess was correct and user won the round: " << firstGuessToWonRoundConversionTracker << "\n";
+    // guess.getFirstGuessAccuracy();
+    // cout << "Record streak for this round: " << guess.getMaxStreak() << "\n";
 
-    lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
+    // lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
 
     return 0;
 }
