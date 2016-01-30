@@ -88,9 +88,9 @@ int main()
                     guess.displayHangMan();
                     cout << "Word: " << guess.incompleteWord() <<  "\n";
 
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
-                    cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
+                    cout << "Guessed letters: {" << guess.getGuessedLetters() <<  "}\n";
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
 
                     cout << "U: "; cin >> userGuess_str;
                     if(isdigit(userGuess_str[0]))
@@ -119,9 +119,9 @@ int main()
                     lineWrapper(string("\nUnfinished word: " + string(guess.showWord()) + "\n"), '*');
                     cout << "Unfinished word: " << guess.showWord() << "\n";
 
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '-');
-                    cout << "Guessed letters: [" << guess.getGuessedLetters() << "]\n";
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '-');
+                    cout << "Guessed letters: {" << guess.getGuessedLetters() << "}\n";
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '*');
                     cout << "\n";
 
                     askForSuspectedWord();
@@ -192,9 +192,9 @@ int main()
                 case 3:
                 {
                     cout << "\n";
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
-                    cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
-                    lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '~');
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
+                    cout << "Guessed letters: {" << guess.getGuessedLetters() <<  "}\n";
+                    lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
                 }
                 case 4:
                 {
@@ -243,9 +243,9 @@ int main()
             {
                 guess.subtractTry();
                 guess.displayHangMan();
-                lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
-                cout << "Guessed letters: [" << guess.getGuessedLetters() <<  "]\n";
-                lineWrapper(string("\nGuessed letters: [" + guess.getGuessedLetters() +  "]"), '*');
+                lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '*');
+                cout << "Guessed letters: {" << guess.getGuessedLetters() <<  "}\n";
+                lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '*');
                 streak = 0;
             }
             else
