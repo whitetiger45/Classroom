@@ -28,11 +28,37 @@ int main()
     word guess;
     string line;
     bool playAgain = false;
-    bool userWonRound = false;
+    bool userWonRound = false, survivorModeEnabled = false;
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
     showTitle();
+
+    gameModeMenu:
+    showMenu();
+    string userGameModeMenuResponse_str;
+    cout << "User: "; cin >> userGameModeMenuResponse_str;
+
+    while(!isdigit(userGameModeMenuResponse_str[0]))
+    {
+        cout << "\nYou must enter a valid menu option (1-2)\n";
+        showMenu(); cout << "User: "; cin >> userGameModeMenuResponse_str;
+    }
+
+    int userGameModeMenuResponse_I = 1;
+    userGameModeMenuResponse_I = stoi(userGameModeMenuResponse_str);
+    switch(userGameModeMenuResponse_I)
+    {
+        case 1:
+                break;
+        case 2:
+                survivorModeEnabled = true;
+                break;
+        default:
+                cout << "\nInvalid entry!\n";
+                goto gameModeMenu;
+    }
+
     do
     { 
         int count = 1;
@@ -52,6 +78,7 @@ int main()
         }
 
         do{
+
 
             main_menu:
 
@@ -290,21 +317,32 @@ int main()
         cout << guess.getWord() << "\n";
 
         endOfRoundMenu:
-        askPlayAgain();
-        cin >> userResponse;
-        if(isupper(userResponse[0]))
-            userResponse[0] = tolower(userResponse[0]);
 
-        while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y' && userResponse[0] != 's') || (string(userResponse).size() > 1))
+        if(survivorModeEnabled)
         {
-            if(string(userResponse).size() > 1)
-                cout << "You entered more than one letter...please follow instructions.\n";
+            if(userWonRound)
+                userResponse[0] = 'y';
             else
-                cout << "You did not enter a valid response!\n";
+                userResponse[0] = 'n';
+        }
+        else
+        {
             askPlayAgain();
             cin >> userResponse;
             if(isupper(userResponse[0]))
                 userResponse[0] = tolower(userResponse[0]);
+
+            while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y' && userResponse[0] != 's') || (string(userResponse).size() > 1))
+            {
+                if(string(userResponse).size() > 1)
+                    cout << "You entered more than one letter...please follow instructions.\n";
+                else
+                    cout << "You did not enter a valid response!\n";
+                askPlayAgain();
+                cin >> userResponse;
+                if(isupper(userResponse[0]))
+                    userResponse[0] = tolower(userResponse[0]);
+            }
         }
 
         switch(userResponse[0])
@@ -333,7 +371,9 @@ int main()
         }
     }while(playAgain);
 
-    scoreBoard();
+    //scoreBoard();
+    if(survivorModeEnabled)
+        guess.getStats();
 
     quit:
     
