@@ -50,10 +50,12 @@ int main()
     switch(userGameModeMenuResponse_I)
     {
         case 1:
-                break;
-        case 2:
                 survivorModeEnabled = true;
                 break;
+        case 2:
+                break;
+        case 3: 
+                goto quit;
         default:
                 cout << "\nInvalid entry!\n";
                 goto gameModeMenu;

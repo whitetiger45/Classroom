@@ -10,7 +10,7 @@
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
-func(Menu, "***Main Menu***\n1: Regular Mode\n2: Survival Mode")
+func(Menu, "\n     Main Menu\n     =========    \n1: Survival Mode\n2: Regular Mode\n3: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
