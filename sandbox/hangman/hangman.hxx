@@ -9,8 +9,9 @@
 #include <vector>
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
-func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
-func(Menu, "\n     Main Menu\n     =========    \n1: Survival Mode\n2: Regular Mode\n3: Quit\n")
+// func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
+func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t______\n\t|    |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
+func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
@@ -325,9 +326,11 @@ class word
 		    else
 		        printMostFrequentLettersFromDictionaryWord();
 
-		    std::cout << "\n# of times first guess was correct and user won the round: ";
-		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 		    getFirstGuessAccuracy();
+
+		    std::cout << "# of times first guess was correct and user won the round: ";
+		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
+
 		    std::cout << "Record streak: " << getMaxStreak() << "\n";
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
