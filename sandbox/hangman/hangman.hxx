@@ -9,8 +9,7 @@
 #include <vector>
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
-// func(Title, "**********\nH        *\n a       *\n  n      *\n   g     *\n    m    *\n     a   *\n      n  *\n**********")
-func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t______\n\t|    |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
+func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t ______\n\t|     |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
 func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
@@ -153,35 +152,35 @@ class word
 			    {
 			    	case 6:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    \n|     \n|           \n|______\n";
+							std::cout<< "|     |\n|    \n|     \n|           \n|______\n";
 							break;
 			    	case 5:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|     \n|          \n|______\n";
+							std::cout<< "|     |\n|     o\n|     \n|          \n|______\n";
 							break;
 			    	case 4:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|    |\n|          \n|______\n";
+							std::cout<< "|     |\n|     o\n|     |\n|          \n|______\n";
 							break;
 			    	case 3:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\n|          \n|______\n";
+							std::cout<< "|     |\n|     o\n|    /|\n|          \n|______\n";
 							break;
 			    	case 2:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\\ \n|        \n|______\n";
+							std::cout<< "|     |\n|     o\n|    /|\\ \n|        \n|______\n";
 							break;
 			    	case 1:
     					    std::cout<< " ______\n";
-							std::cout<< "|    |\n|    o\n|   /|\\\n|   /     \n|______\n";
+							std::cout<< "|     |\n|     o\n|    /|\\\n|    /     \n|______\n";
 							break;
 					case 0:
 						    std::cout<< " ______\n";
-    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+    						std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
     						break;
 					default:
 						    std::cout<< " ______\n";
-    						std::cout<< "|    |\n|    o\n|   /|\\\n|   / \\  \n|______\n";
+    						std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
 			    }
 		}
 

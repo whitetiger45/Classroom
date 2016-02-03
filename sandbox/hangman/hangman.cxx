@@ -301,7 +301,6 @@ int main()
                 endOfRoundMessage(declareUserWinsRound);
                 if(guess.checkIfFirstGuessWasCorrect())
                     guess.incrementFirstGuessToWonRoundConversionTracker();
-                    // guess.firstGuessToWonRoundConversionTracker++;
             }
         }while(guess.getTriesLeft() != 0 && !userWonRound);
 
@@ -379,20 +378,5 @@ int main()
 
     quit:
     
-    // lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
-
-    // cout << "**Stats**\n";
-
-    // if(guess.checkDictionaryMapLettersEqualToMaxCount() == 1)
-    //     cout << guess.getMostFrequentLetterFromDictionaryWord();
-    // else
-    //     guess.printMostFrequentLettersFromDictionaryWord();
-
-    // cout << "\n# of times first guess was correct and user won the round: " << firstGuessToWonRoundConversionTracker << "\n";
-    // guess.getFirstGuessAccuracy();
-    // cout << "Record streak for this round: " << guess.getMaxStreak() << "\n";
-
-    // lineWrapper(guess.getMostFrequentLetterFromDictionaryWord(), '=');
-
     return 0;
 }
