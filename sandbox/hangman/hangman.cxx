@@ -56,6 +56,10 @@ int main()
                 break;
         case 2:
                 survivorModeEnabled = false;
+                guess.resetTries();
+                correctOrSameGuessCounter = 0;
+                userWonRound = false;
+                guess.resetFirstGuessWasCorrectValue();
                 break;
         case 3: 
                 goto quit;
