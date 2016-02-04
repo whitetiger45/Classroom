@@ -363,9 +363,7 @@ int main()
             default: 
                     cout << "\nInvalid entry!\n";
                     goto endOfRoundMenu;
-
         }
-        // playAgain = (userResponse[0] == response[n]) ? false : true;
         if(playAgain)
         {
             guess.resetTries();
@@ -381,6 +379,8 @@ int main()
         guess.getStats();
         goto gameModeMenu;
     }
+    else 
+        scoreBoard();
 
 
     quit:
