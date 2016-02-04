@@ -32,6 +32,8 @@ int main()
     char userResponse[1];
     char userGuess[1];
     int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
+    guess.setUsersMaxStreakOfAllTime();
+
     showTitle();
 
     gameModeMenu:
@@ -53,6 +55,7 @@ int main()
                 survivorModeEnabled = true;
                 break;
         case 2:
+                survivorModeEnabled = false;
                 break;
         case 3: 
                 goto quit;
