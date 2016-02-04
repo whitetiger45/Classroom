@@ -374,7 +374,11 @@ int main()
 
     //scoreBoard();
     if(survivorModeEnabled)
+    {
         guess.getStats();
+        goto gameModeMenu;
+    }
+
 
     quit:
     
