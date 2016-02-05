@@ -3,9 +3,11 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
+#include <regex>
 #include <vector>
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
@@ -16,7 +18,7 @@ func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
 func(ForLetter, "\nWhat letter would you like to guess?\n(Enter 1 to go back to main menu)")
-func(PlayAgain, "\n(Type 's' to see your current stat)\nPlay again? [n/y/s]: ")
+func(PlayAgain, "\n(Type 's' to see your current stats)\nPlay again? [n/y/s]: ")
 func(ForSuspectedWord, "What do you think the word is?")
 #undef func
 
@@ -312,6 +314,49 @@ class word
 			m_firstGuessToWonRoundConversionTracker++;
 		}
 
+		int getUsersBestStreakOfAllTime() const
+		{
+			return m_maxStreakOfAllTime;
+		}
+
+		void setUsersMaxStreakOfAllTime()
+		{
+			std::ifstream recordBook("hangManRecordBook.txt");
+			std::string line;
+            std::regex bestStreak("Best streak of all time: ([0-9])");
+            std::cmatch cm;
+            std::string::size_type maxStreak_str;
+			if(recordBook.is_open())
+			{
+                try 
+                {
+	            	getline(recordBook,line);
+	        	 	std::regex_match ( line.c_str(), cm, bestStreak );
+	        	 	std::string recordStreak_str = cm.str(1);
+					m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
+	        	 	//std::cout << "\n" << cm.str(0) << "\n";
+	        	 }catch(const std::invalid_argument& ia){}
+        	}
+            recordBook.close();
+		}
+		void updateUsersMaxStreakOfAllTime()
+		{
+			std::string fileName("hangManRecordBook.txt");
+
+			if(getMaxStreak() > getUsersBestStreakOfAllTime())
+                remove(fileName.c_str());
+            else 
+            	return;
+
+            std::ofstream recordBook(fileName);
+            if(recordBook.is_open())
+            	recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
+
+            recordBook.close();
+
+            setUsersMaxStreakOfAllTime();
+		}
+
 		void getStats()
 		{
 			std::cout << std::endl; scoreBoard(); std::cout << std::endl;	
@@ -330,7 +375,9 @@ class word
 		    std::cout << "# of times first guess was correct and user won the round: ";
 		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
-		    std::cout << "Record streak: " << getMaxStreak() << "\n";
+		    updateUsersMaxStreakOfAllTime();
+		    std::cout << "\nRecord streak: " << getMaxStreak() << "\n";
+		    std::cout << "\nRecord streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 		}
@@ -339,24 +386,25 @@ class word
 		char m_word[256];
 		char m_incompleteWord[256];
 		char m_guessedLetters[26];
-		int m_guessCount;
-		int m_wordLength = 0;
-		int m_roundsWon = 0;
-		int m_streak = 0;
+		signed int m_guessCount;
+		signed int m_wordLength = 0;
+		signed int m_roundsWon = 0;
+		signed int m_streak = 0;
+		signed int m_maxStreakOfAllTime = 0;
 		signed int m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
 
 	    LetterTrackingMap dictionaryWordLettersMap;
 	    LetterTrackingMapIT dictionaryWordLettersMapIT;
-	    int dictionaryLettersMapmostFrequentCount = 1;
+	    signed int dictionaryLettersMapmostFrequentCount = 1;
 
 	    LetterTrackingMap m_firstGuessLettersMap;
 	    LetterTrackingMapIT m_m_firstGuessLettersMapIT;
 	    bool m_firstGuessWasCorrect = false;
-	    int m_m_firstGuessLettersMapCount = 1;
+	    signed int m_m_firstGuessLettersMapCount = 1;
 	    double m_letterWasInWord = 0.00;
 	    double m_numberOfGames = 0.00;
-	    int m_firstGuessToWonRoundConversionTracker = 0;
+	    signed int m_firstGuessToWonRoundConversionTracker = 0;
 
 };
 
