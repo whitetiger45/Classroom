@@ -10,6 +10,14 @@
 #include <regex>
 #include <vector>
 
+typedef bool tf;
+typedef char l;
+typedef double d;
+typedef signed int si;
+typedef	std::map<l,si> LetterTrackingMap;
+typedef std::map<l,si>::iterator LetterTrackingMapIT;
+typedef std::vector<std::string> HangmanDictionary;
+
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t ______\n\t|     |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
 func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Quit\n")
@@ -36,20 +44,17 @@ func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", t
 #undef func
 
 
-#define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(double(double(a)/double(b)) * 100) << "\%      \n";}
+#define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(d(d(a)/d(b)) * 100) << "\%      \n";}
 func(Board, userScore, totalGames)
 //------------------------------------------------------------------------------------------------------------------------
 
-typedef std::vector<std::string> HangmanDictionary;
-typedef	std::map<char,int> LetterTrackingMap;
-typedef std::map<char,int>::iterator LetterTrackingMapIT;
-
-auto lineWrapper = [](std::string lineToWrap, char c){for(int i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
+auto lineWrapper = [](std::string lineToWrap, l c){for(si i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
 
 class word
 {
 	public: 
-		
+//-----------------------------------------------------------------------------------------------------------------------
+
 		void setWord(std::string value)
 		{
 			m_guessCount = 0;
@@ -57,7 +62,7 @@ class word
 	  		std::size_t length = value.copy(m_word, value.length(), 0);
   			m_word[length]='\0';
   			m_wordLength = value.length();
-			for(int i = 0; i < value.length(); i++)
+			for(si i = 0; i < value.length(); i++)
 				m_incompleteWord[i] = '_' ;
 
 			m_incompleteWord[length] = '\0';
@@ -65,11 +70,13 @@ class word
 	        trackDictionaryLetters(value);
 	        m_numberOfGames++;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		const char* showWord() const
+		const l* showWord() const
 		{
 			return m_incompleteWord;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		std::string incompleteWord() const
 		{
@@ -80,8 +87,9 @@ class word
 			}
 			return ret;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		bool guessLetter(char value)
+		tf guessLetter(l value)
 		{
 			if(isupper(value))
 				value = tolower(value);
@@ -91,9 +99,9 @@ class word
 				trackFirstGuessAccuracy(value);
 			}
 
-			bool letterFound = false;
+			tf letterFound = false;
 
-			for(int i = 0; i < m_wordLength; i++)
+			for(si i = 0; i < m_wordLength; i++)
 			{
 				if(m_word[i] == value)
 				{
@@ -102,7 +110,7 @@ class word
 				}
 			}
 
-			for(int i = 0; i < m_guessCount; i++)
+			for(si i = 0; i < m_guessCount; i++)
 				if(m_guessedLetters[i] == value)
 				{
 					std::cout << "\nYou already guessed that letter!\n";
@@ -110,36 +118,42 @@ class word
 				}
 
 			m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
-			addCharToGuessedLetters(value);
+			addlToGuessedLetters(value);
 
 			return letterFound;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		std::string getGuessedLetters() const
 		{
 			return m_guessedLetters;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		void addCharToGuessedLetters(char value)
+		void addlToGuessedLetters(l value)
 		{
 			m_guessedLetters[m_guessCount++] = value;
 			m_guessedLetters[m_guessCount] = '\0'; 
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		std::string getWord() const
 		{
 			return m_word;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		int getTriesLeft() const
+		si getTriesLeft() const
 		{
 			return m_triesLeft;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void subtractTry()
 		{
 			m_triesLeft--;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void resetTries()
 		{
@@ -147,6 +161,7 @@ class word
 			for(auto x : m_guessedLetters)
 				x = ' ';
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void displayHangMan()
 		{
@@ -185,6 +200,7 @@ class word
     						std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
 			    }
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void trackDictionaryLetters(std::string dictionaryWord)
 		{
@@ -203,6 +219,7 @@ class word
 		                dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
 		        }
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
         std::string getMostFrequentLetterFromDictionaryWord()
         {
@@ -218,6 +235,7 @@ class word
            }
            return ret;
         }
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void printMostFrequentLettersFromDictionaryWord()
 		{
@@ -227,24 +245,27 @@ class word
 		           std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
 		    }
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		int checkDictionaryMapLettersEqualToMaxCount()
+		si checkDictionaryMapLettersEqualToMaxCount()
 		{
-			int total = 0;
+			si total = 0;
 			for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
 				if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
 					total++;
 			return total;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void setFirstGuessWasCorrectValue()
 		{
 			m_firstGuessWasCorrect = true;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		void trackFirstGuessAccuracy(char value)
+		void trackFirstGuessAccuracy(l value)
 		{
-			std::map<int, std::string> firstGuessMessageMap;
+			std::map<si, std::string> firstGuessMessageMap;
 
 			firstGuessMessageMap[0] = "\nExcellent start!\n";
 			firstGuessMessageMap[1] = "\nGood guess!\n";
@@ -276,6 +297,7 @@ class word
 		    if(m_m_firstGuessLettersMapIT->second > m_m_firstGuessLettersMapCount)
 		        m_m_firstGuessLettersMapCount = m_m_firstGuessLettersMapIT->second;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void getFirstGuessAccuracy()
 		{
@@ -288,75 +310,126 @@ class word
 				}
 			}
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		void setMaxStreak(int currentStreak)
+		void setMaxStreak(si currentStreak)
 		{
 			m_streak = currentStreak;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		int getMaxStreak()
+		si getMaxStreak()
 		{
 			return m_streak;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		bool checkIfFirstGuessWasCorrect() const
+		tf checkIfFirstGuessWasCorrect() const
 		{
 			return m_firstGuessWasCorrect;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void resetFirstGuessWasCorrectValue()
 		{
 			m_firstGuessWasCorrect = false;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 		void incrementFirstGuessToWonRoundConversionTracker()
 		{
 			m_firstGuessToWonRoundConversionTracker++;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		int getUsersBestStreakOfAllTime() const
+		si setRecordNumberOfGames(si newHighScore)
+		{
+			m_recordNumberOfGamesWon = newHighScore;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		si getRecordNumberOfGamesWon() const
+		{
+			return m_recordNumberOfGamesWon;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		si getUsersBestStreakOfAllTime() const
 		{
 			return m_maxStreakOfAllTime;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
-		void setUsersMaxStreakOfAllTime()
+		void setUserRecords()
 		{
 			std::ifstream recordBook("hangManRecordBook.txt");
 			std::string line;
             std::regex bestStreak("Best streak of all time: ([0-9])");
+            std::regex mostGamesWon("Record number of games won: ([0-9])");
             std::cmatch cm;
-            std::string::size_type maxStreak_str;
+            std::string::size_type maxStreak_str, recordNumberOfGames_str;
 			if(recordBook.is_open())
 			{
                 try 
                 {
-	            	getline(recordBook,line);
-	        	 	std::regex_match ( line.c_str(), cm, bestStreak );
-	        	 	std::string recordStreak_str = cm.str(1);
-					m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
-	        	 	//std::cout << "\n" << cm.str(0) << "\n";
+	            	while(getline(recordBook,line))
+	            	{
+		        	 	if(std::regex_match ( line.c_str(), cm, bestStreak ))
+		        	 	{
+			        	 	std::string recordStreak_str = cm.str(1);
+							m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
+							continue;
+						}
+
+						//get record games won
+		        	 	 if(std::regex_match ( line.c_str(), cm, mostGamesWon))
+		        	 	{
+		        	 		// std::cout << "** Games Debug: " << cm.str(1) << " **\n";
+		        	 		std::string recordWins_str = cm.str(1);
+		        	 		setRecordNumberOfGames(std::stoi (recordWins_str , &recordNumberOfGames_str));
+		        	 	}
+	        	 	}
 	        	 }catch(const std::invalid_argument& ia){}
         	}
             recordBook.close();
 		}
-		void updateUsersMaxStreakOfAllTime()
+//-----------------------------------------------------------------------------------------------------------------------
+
+		void updateRecordBook()
 		{
 			std::string fileName("hangManRecordBook.txt");
+            setUserRecords();
 
 			if(getMaxStreak() > getUsersBestStreakOfAllTime())
+			{
+				if(userScore > getRecordNumberOfGamesWon())
+					setRecordNumberOfGames(userScore);
+
                 remove(fileName.c_str());
-            else 
-            	return;
+			}
+            else if(userScore > getRecordNumberOfGamesWon())
+            	remove(fileName.c_str());
+        	else return;
 
             std::ofstream recordBook(fileName);
             if(recordBook.is_open())
-            	recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
+            {
+            	if( getMaxStreak() > getUsersBestStreakOfAllTime() )
+            		recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
+            	else recordBook << "Best streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
+
+            	if( userScore > getRecordNumberOfGamesWon())
+            		recordBook << "\nRecord number of games won: " << userScore << "\n";
+            	else
+            		recordBook << "\nRecord number of games won: " << getRecordNumberOfGamesWon() << "\n";
+            }
 
             recordBook.close();
 
-            setUsersMaxStreakOfAllTime();
+            setUserRecords();
 		}
-
+//-----------------------------------------------------------------------------------------------------------------------
+		
 		void getStats()
 		{
 			std::cout << std::endl; scoreBoard(); std::cout << std::endl;	
@@ -364,6 +437,8 @@ class word
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 
 		    std::cout << "**Stats**\n";
+
+		    std::cout << "\nRecord number of games won: " << getRecordNumberOfGamesWon() << "\n";
 
 		    if(checkDictionaryMapLettersEqualToMaxCount() == 1)
 		        std::cout << getMostFrequentLetterFromDictionaryWord();
@@ -375,36 +450,40 @@ class word
 		    std::cout << "# of times first guess was correct and user won the round: ";
 		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
-		    updateUsersMaxStreakOfAllTime();
-		    std::cout << "\nRecord streak: " << getMaxStreak() << "\n";
-		    std::cout << "\nRecord streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
+		    updateRecordBook();
+
+		    std::cout << "\nCurrent best streak: " << getMaxStreak();
+		    std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 		}
+//-----------------------------------------------------------------------------------------------------------------------
 
 	private:
-		char m_word[256];
-		char m_incompleteWord[256];
-		char m_guessedLetters[26];
-		signed int m_guessCount;
-		signed int m_wordLength = 0;
-		signed int m_roundsWon = 0;
-		signed int m_streak = 0;
-		signed int m_maxStreakOfAllTime = 0;
-		signed int m_triesLeft = 6;
+
+		l m_word[256];
+		l m_incompleteWord[256];
+		l m_guessedLetters[26];
+		si m_guessCount;
+		si m_wordLength = 0;
+		si m_roundsWon = 0;
+		si m_streak = 0;
+		si m_maxStreakOfAllTime = 0;
+		si m_recordNumberOfGamesWon = 0;
+		si m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
 
 	    LetterTrackingMap dictionaryWordLettersMap;
 	    LetterTrackingMapIT dictionaryWordLettersMapIT;
-	    signed int dictionaryLettersMapmostFrequentCount = 1;
+	    si dictionaryLettersMapmostFrequentCount = 1;
 
 	    LetterTrackingMap m_firstGuessLettersMap;
 	    LetterTrackingMapIT m_m_firstGuessLettersMapIT;
-	    bool m_firstGuessWasCorrect = false;
-	    signed int m_m_firstGuessLettersMapCount = 1;
-	    double m_letterWasInWord = 0.00;
-	    double m_numberOfGames = 0.00;
-	    signed int m_firstGuessToWonRoundConversionTracker = 0;
+	    tf m_firstGuessWasCorrect = false;
+	    si m_m_firstGuessLettersMapCount = 1;
+	    d m_letterWasInWord = 0.00;
+	    d m_numberOfGames = 0.00;
+	    si m_firstGuessToWonRoundConversionTracker = 0;
 
 };
 

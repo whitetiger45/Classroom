@@ -11,28 +11,29 @@
 
 #include "hangman.hxx"
 
-void (*result_handler)(int);
-typedef void (*getResultFunc)(int);
+void (*result_handler)(si);
+typedef void (*getResultFunc)(si);
 
 void endOfRoundMessage(getResultFunc result)
 {
     result_handler = signal(SIGINT, result);
 }
 
-char response[] = {'n', 'y', 's'};
+l response[] = {'n', 'y', 's'};
 enum {n, y};
+
 using namespace std;
 
-int main() 
+si main() 
 {
     word guess;
     string line;
-    bool playAgain = false;
-    bool userWonRound = false, survivorModeEnabled = false;
-    char userResponse[1];
-    char userGuess[1];
-    int getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
-    guess.setUsersMaxStreakOfAllTime();
+    tf playAgain = false;
+    tf userWonRound = false, survivorModeEnabled = false;
+    l userResponse[1];
+    l userGuess[1];
+    si getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
+    guess.setUserRecords();
 
     showTitle();
 
@@ -47,12 +48,16 @@ int main()
         showMenu(); cout << "User: "; cin >> userGameModeMenuResponse_str;
     }
 
-    int userGameModeMenuResponse_I = 1;
+    si userGameModeMenuResponse_I = 1;
     userGameModeMenuResponse_I = stoi(userGameModeMenuResponse_str);
     switch(userGameModeMenuResponse_I)
     {
         case 1:
                 survivorModeEnabled = true;
+                guess.resetTries();
+                correctOrSameGuessCounter = 0;
+                userWonRound = false;
+                guess.resetFirstGuessWasCorrectValue();
                 break;
         case 2:
                 survivorModeEnabled = false;
@@ -70,7 +75,7 @@ int main()
 
     do
     { 
-        int count = 1;
+        si count = 1;
         srand(time(NULL));
 
         getWordAtLocation = rand() % 173139;
@@ -96,8 +101,8 @@ int main()
                 goto outOfTries;
             }
 
-            const char * userGuessWord;
-            bool guessSingleChar = true, userGuessedRightWord = false;
+            const l * userGuessWord;
+            tf guessSinglel = true, userGuessedRightWord = false;
 
             showSubMenu();
             string userSubMenuResponse_str;
@@ -117,7 +122,7 @@ int main()
                 {
                     caseOneStart:
                     string userGuess_str;
-                    int userGuess_i = 1;
+                    si userGuess_i = 1;
 
                     askForLetter();
                     cout << "\n";
@@ -139,7 +144,7 @@ int main()
                     }
                     else if(userGuess_str.size() > 1)
                     {
-                        cout << "\n**You entered more than one character...please enter only one letter**\n";
+                        cout << "\n**You entered more than one lacter...please enter only one letter**\n";
                         goto caseOneStart;
                     }
                     else
@@ -151,7 +156,7 @@ int main()
                 case 2:
                 {
                     caseTwoStart:
-                    guessSingleChar = false;
+                    guessSinglel = false;
                     lineWrapper(string("\nUnfinished word: " + string(guess.showWord()) + "\n"), '*');
                     cout << "Unfinished word: " << guess.showWord() << "\n";
 
@@ -166,7 +171,7 @@ int main()
                     cin >> userGuessWord_str;
                     if(isdigit(userGuessWord_str[0]))
                     {
-                        int userGuessWord_i = stoi(userGuessWord_str);
+                        si userGuessWord_i = stoi(userGuessWord_str);
                         if(userGuessWord_i == 1)
                             goto main_menu;
                         else
@@ -182,7 +187,7 @@ int main()
                         userGuessWord = userGuessWord_str.c_str();
                     for(auto c : userGuessWord_str)
                     {
-                        bool alreadyGuessed = false;
+                        tf alreadyGuessed = false;
                         if(!isalpha(c))
                           continue;
                         for(auto w : string(guess.getGuessedLetters()))
@@ -269,13 +274,13 @@ int main()
             if(guess.getTriesLeft() == 0 || userWonRound)
                 break;
 
-            bool alreadyGuessed = false;
+            tf alreadyGuessed = false;
 
             for(auto c : guess.getGuessedLetters())
                 if(userGuess[0] == c)
                     alreadyGuessed = true;
 
-            if(!guess.guessLetter(userGuess[0]) && guessSingleChar)
+            if(!guess.guessLetter(userGuess[0]) && guessSinglel)
             {
                 guess.subtractTry();
                 guess.displayHangMan();
@@ -340,7 +345,8 @@ int main()
             if(isupper(userResponse[0]))
                 userResponse[0] = tolower(userResponse[0]);
 
-            while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y' && userResponse[0] != 's') || (string(userResponse).size() > 1))
+            while(!isalpha(userResponse[0]) || (userResponse[0] != 'n' && userResponse[0] != 'y' 
+                                                && userResponse[0] != 's' && userResponse[0] != 'm') || (string(userResponse).size() > 1))
             {
                 if(string(userResponse).size() > 1)
                     cout << "You entered more than one letter...please follow instructions.\n";
