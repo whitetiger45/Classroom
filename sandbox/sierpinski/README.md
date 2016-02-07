@@ -6,8 +6,6 @@ OS: Linux 14.04.1-Ubuntu x86_64 GNU/Linux
 
 built using cmake
 
-This program accepts a parameter on the command line which it will use to determine if you want to run again or not
-
 To execute:
 ==============
 (1) clone
