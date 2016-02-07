@@ -1,1 +1,0 @@
-/home/ironlion23/Autinity/Classroom/sandbox/sierpinski/build/CMakeFiles/sierpinski.dir

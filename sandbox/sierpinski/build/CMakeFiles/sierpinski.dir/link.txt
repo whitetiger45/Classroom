@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++14    CMakeFiles/sierpinski.dir/sierpinkiTriangle.cxx.o  -o sierpinski -rdynamic 
