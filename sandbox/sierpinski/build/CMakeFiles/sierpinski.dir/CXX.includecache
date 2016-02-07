@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ironlion23/Autinity/Classroom/sandbox/sierpinski/sierpinkiTriangle.cxx
+algorithm
+-
+bitset
+-
+ctime
+-
+iostream
+-
+iterator
+-
+list
+-
+string
+-
+
