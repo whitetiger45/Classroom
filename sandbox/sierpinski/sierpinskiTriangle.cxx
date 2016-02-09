@@ -102,8 +102,12 @@ void sierpinskiHazardDown(int n, OutIt result)
     }
 }
  
-int main()
+int main(int argc, char ** argv)
 {
+    string userSays; 
+    if(argc >= 2)
+        userSays = argv[1];
+
     runAgain:
     srand(time(NULL));
     sierpinskiDwn(rand() % 5, ostream_iterator<string>(cout, "\n"));
@@ -111,9 +115,13 @@ int main()
     sierpinskiHazardDown(rand() % 5, ostream_iterator<string>(cout, "\n"));
     sierpinskiHazardUp(rand() % 5, ostream_iterator<string>(cout, "\n"));
 
-    std::cout << "Run again? [y/n]: "; 
-    string userSays; 
-    cin >> userSays;
+    
+    if(userSays == "")
+    {
+        std::cout << "Run again? [y/n]: "; 
+        cin >> userSays;
+    }
+
     if(userSays == "y" || userSays == "Y")
         goto runAgain;
     else 
