@@ -26,7 +26,7 @@ func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n
 
 #define func(n,a) void ask##n(){std::cout << a << "\n";}
 func(ForLetter, "\nWhat letter would you like to guess?\n(Enter 1 to go back to main menu)")
-func(PlayAgain, "\n(Type 's' to see your current stats)\nPlay again? [n/y/s]: ")
+func(PlayAgain, "\n(Type 's' to see your current stats and 'm' to return to mode selection menu)\nPlay again? [n/y/s/m]: ")
 func(ForSuspectedWord, "What do you think the word is?")
 #undef func
 

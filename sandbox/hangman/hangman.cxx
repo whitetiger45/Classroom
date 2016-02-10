@@ -370,6 +370,8 @@ si main()
             case 's': 
                     guess.getStats();
                     goto endOfRoundMenu;
+            case 'm':
+                    goto gameModeMenu;
             default: 
                     cout << "\nInvalid entry!\n";
                     goto endOfRoundMenu;
