@@ -19,7 +19,7 @@ void endOfRoundMessage(getResultFunc result)
     result_handler = signal(SIGINT, result);
 }
 
-l response[] = {'n', 'y', 's'};
+l response[] = {'n', 'y', 's', 'm'};
 enum {n, y};
 
 using namespace std;
@@ -34,6 +34,8 @@ si main()
     l userGuess[1];
     si getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
     guess.setUserRecords();
+    // cout << "***D/Records\nSurvivor: " << guess.getRecordNumberOfGamesWonSurvivorMode();
+    // cout << "\nRegular: " << guess.getRecordNumberOfGamesWonRegularMode() << "\n***\n";
 
     showTitle();
 
@@ -53,18 +55,24 @@ si main()
     switch(userGameModeMenuResponse_I)
     {
         case 1:
-                survivorModeEnabled = true;
+                // survivorModeEnabled = true;
                 guess.resetTries();
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
+                if(!guess.survivorModeEnabled())
+                    guess.setSurvivorMode();
+                // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 2:
-                survivorModeEnabled = false;
+                // survivorModeEnabled = false;
                 guess.resetTries();
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
+                if(guess.survivorModeEnabled())
+                    guess.setSurvivorMode();
+                // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 3: 
                 goto quit;
@@ -215,7 +223,10 @@ si main()
                     {
                         userWonRound = true;
                         userGuessedRightWord = true;
-                        endOfRoundMessage(declareUserWinsRound);
+                        if(guess.survivorModeEnabled())
+                            endOfRoundMessage(declareUserWinsRoundSurvivorMode);
+                        else 
+                            endOfRoundMessage(declareUserWinsRoundRegularMode);
                         goto userDiscoveredTheWord;
                     }
                     if(guess.getTriesLeft() != 0 && guess.showWord() != guess.getWord())
@@ -310,7 +321,12 @@ si main()
             if(guess.showWord() == guess.getWord())
             {
                 userWonRound = true;
-                endOfRoundMessage(declareUserWinsRound);
+
+                if(guess.survivorModeEnabled())
+                    endOfRoundMessage(declareUserWinsRoundSurvivorMode);
+                else 
+                    endOfRoundMessage(declareUserWinsRoundRegularMode);
+
                 if(guess.checkIfFirstGuessWasCorrect())
                     guess.incrementFirstGuessToWonRoundConversionTracker();
             }
@@ -331,7 +347,7 @@ si main()
 
         endOfRoundMenu:
 
-        if(survivorModeEnabled)
+        if(guess.survivorModeEnabled())
         {
             if(userWonRound)
                 userResponse[0] = 'y';
@@ -386,13 +402,14 @@ si main()
     }while(playAgain);
 
     //scoreBoard();
-    if(survivorModeEnabled)
+    if(guess.survivorModeEnabled())
     {
         guess.getStats();
+        guess.resetSurvivorModeScore();
         goto gameModeMenu;
     }
     else 
-        scoreBoard();
+        scoreBoardRegularMode();
 
 
     quit:

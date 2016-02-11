@@ -32,20 +32,23 @@ func(ForSuspectedWord, "What do you think the word is?")
 
 //------------------------------------------------------------------------------------------------------------------------
 //scoreboard stuff
-sig_atomic_t userScore = 0;
+sig_atomic_t userScoreSurvivorMode = 0;
+sig_atomic_t userScoreRegularMode = 0;
 sig_atomic_t totalGames = 0;
 
 #define func(n, a, b, c) void declare##n(int param){std::cout << a ; ++b; ++c;}
-func(UserWinsRound, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScore, totalGames)
+func(UserWinsRoundSurvivorMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreSurvivorMode, totalGames)
+func(UserWinsRoundRegularMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreRegularMode, totalGames)
 #undef func
 
 #define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
-func(OutOfGuesses, "Sorry, you are out of guesses...\nThe correct word was: ", totalGames)
+func(OutOfGuesses, "\nSorry, you are out of guesses...\nThe correct word was: ", totalGames)
 #undef func
 
 
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(d(d(a)/d(b)) * 100) << "\%      \n";}
-func(Board, userScore, totalGames)
+func(BoardSurvivorMode, userScoreSurvivorMode, totalGames)
+func(BoardRegularMode, userScoreRegularMode, totalGames)
 //------------------------------------------------------------------------------------------------------------------------
 
 auto lineWrapper = [](std::string lineToWrap, l c){for(si i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
@@ -342,16 +345,47 @@ class word
 		}
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si setRecordNumberOfGames(si newHighScore)
+		void setRecordNumberOfGamesSurvivorMode(si newHighScore)
 		{
-			m_recordNumberOfGamesWon = newHighScore;
+			m_recordNumberOfGamesWonSurvivorMode = newHighScore;
 		}
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getRecordNumberOfGamesWon() const
+		void setRecordNumberOfGamesRegularMode(si newHighScore)
 		{
-			return m_recordNumberOfGamesWon;
+			m_recordNumberOfGamesWonRegularMode = newHighScore;
 		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		si getRecordNumberOfGamesWonSurvivorMode() const
+		{
+			return m_recordNumberOfGamesWonSurvivorMode;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		si getRecordNumberOfGamesWonRegularMode() const
+		{
+			return m_recordNumberOfGamesWonRegularMode;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		void resetSurvivorModeScore()
+		{
+			userScoreSurvivorMode = 0;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		void setSurvivorMode()
+		{
+			m_survivorModeEnabled = (m_survivorModeEnabled) ? false : true;
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+		tf survivorModeEnabled()
+		{
+			return m_survivorModeEnabled;
+		}
+
 //-----------------------------------------------------------------------------------------------------------------------
 
 		si getUsersBestStreakOfAllTime() const
@@ -365,28 +399,47 @@ class word
 			std::ifstream recordBook("hangManRecordBook.txt");
 			std::string line;
             std::regex bestStreak("Best streak of all time: ([0-9])");
-            std::regex mostGamesWon("Record number of games won: ([0-9])");
+            std::regex mostGamesWonSurvivorMode("Record number of games won \\(Survivor\\): ([0-9])");
+            std::regex mostGamesWonRegularMode("Record number of games won \\(Regular\\): ([0-9])");
+            std::regex mostGamesWonRegularModeOld("Record number of games won: ([0-9])");
             std::cmatch cm;
-            std::string::size_type maxStreak_str, recordNumberOfGames_str;
+            std::string::size_type maxStreak_str, recordNumberOfGamesSurvivorMode_str, recordNumberOfGamesRegular_str;
 			if(recordBook.is_open())
 			{
                 try 
                 {
 	            	while(getline(recordBook,line))
 	            	{
+	            		if(line == "")
+	            			continue;
+
 		        	 	if(std::regex_match ( line.c_str(), cm, bestStreak ))
 		        	 	{
 			        	 	std::string recordStreak_str = cm.str(1);
 							m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
 							continue;
 						}
-
-						//get record games won
-		        	 	 if(std::regex_match ( line.c_str(), cm, mostGamesWon))
+						// std::cout << "Line: " << line << "\n";
+						//get record number of games won survivor mode
+		        	 	if(std::regex_match ( line.c_str(), cm, mostGamesWonSurvivorMode ))
 		        	 	{
-		        	 		// std::cout << "** Games Debug: " << cm.str(1) << " **\n";
-		        	 		std::string recordWins_str = cm.str(1);
-		        	 		setRecordNumberOfGames(std::stoi (recordWins_str , &recordNumberOfGames_str));
+		        	 		// std::cout << "** Games Debug Survivor: " << cm.str(1) << "\n";
+		        	 		std::string recordWinsSurvivorMode_str = cm.str(1);
+		        	 		setRecordNumberOfGamesSurvivorMode(std::stoi (recordWinsSurvivorMode_str , &recordNumberOfGamesSurvivorMode_str));
+		        	 		continue;
+		        	 	}
+
+		        	 	//get record number of regular games won
+		        	 	if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularMode ))
+		        	 	{
+		        	 		// std::cout << "** Games Debug Regular: " << cm.str(0) << " **\n";
+		        	 		std::string recordWinsRegularMode_str = cm.str(1);
+		        	 		setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
+		        	 	}
+		        	 	else if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularModeOld ))
+		        	 	{
+		        	 		std::string recordWinsRegularMode_str = cm.str(1);
+		        	 		setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
 		        	 	}
 	        	 	}
 	        	 }catch(const std::invalid_argument& ia){}
@@ -402,14 +455,27 @@ class word
 
 			if(getMaxStreak() > getUsersBestStreakOfAllTime())
 			{
-				if(userScore > getRecordNumberOfGamesWon())
-					setRecordNumberOfGames(userScore);
+				if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
+				{
+					setRecordNumberOfGamesSurvivorMode(userScoreSurvivorMode);
+					resetSurvivorModeScore();
+				}
+				
+				if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+					setRecordNumberOfGamesRegularMode(userScoreRegularMode);
 
                 remove(fileName.c_str());
 			}
-            else if(userScore > getRecordNumberOfGamesWon())
+            else if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
+            {
+				if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+					setRecordNumberOfGamesRegularMode(userScoreRegularMode);
+
             	remove(fileName.c_str());
-        	else return;
+            }
+        	else if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+            	remove(fileName.c_str());
+    		else return;
 
             std::ofstream recordBook(fileName);
             if(recordBook.is_open())
@@ -418,10 +484,13 @@ class word
             		recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
             	else recordBook << "Best streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
-            	if( userScore > getRecordNumberOfGamesWon())
-            		recordBook << "\nRecord number of games won: " << userScore << "\n";
-            	else
-            		recordBook << "\nRecord number of games won: " << getRecordNumberOfGamesWon() << "\n";
+            	if( userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
+            		recordBook << "\nRecord number of games won (Survivor): " << userScoreSurvivorMode << "\n";
+            	else recordBook << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode() << "\n";
+
+            	if( userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+            		recordBook << "\nRecord number of games won (Regular): " << userScoreRegularMode << "\n";
+            	else recordBook << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
             }
 
             recordBook.close();
@@ -431,14 +500,23 @@ class word
 //-----------------------------------------------------------------------------------------------------------------------
 		
 		void getStats()
-		{
-			std::cout << std::endl; scoreBoard(); std::cout << std::endl;	
+		{	
+			updateRecordBook();
+			
+			std::cout << std::endl; 
+			if(survivorModeEnabled()) 
+				scoreBoardSurvivorMode();
+			else
+				scoreBoardRegularMode();
+
+			std::cout << std::endl;	
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 
 		    std::cout << "**Stats**\n";
 
-		    std::cout << "\nRecord number of games won: " << getRecordNumberOfGamesWon() << "\n";
+		    std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
+		    std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
 
 		    if(checkDictionaryMapLettersEqualToMaxCount() == 1)
 		        std::cout << getMostFrequentLetterFromDictionaryWord();
@@ -461,6 +539,7 @@ class word
 
 	private:
 
+		tf m_survivorModeEnabled = false;
 		l m_word[256];
 		l m_incompleteWord[256];
 		l m_guessedLetters[26];
@@ -469,7 +548,8 @@ class word
 		si m_roundsWon = 0;
 		si m_streak = 0;
 		si m_maxStreakOfAllTime = 0;
-		si m_recordNumberOfGamesWon = 0;
+		si m_recordNumberOfGamesWonSurvivorMode = 0;
+		si m_recordNumberOfGamesWonRegularMode = 0;
 		si m_triesLeft = 6;
 		HangmanDictionary m_dictionary;
 
