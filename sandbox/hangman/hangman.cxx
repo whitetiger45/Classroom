@@ -315,8 +315,7 @@ si main()
             for(auto c : string(guess.showWord()))
                 cout << c << " ";
 
-            cout << "\n";
-            cout << "Streak: " << streak << "\n";
+            cout << "\n\nCurrent Streak: " << streak << "\n";
 
             if(guess.showWord() == guess.getWord())
             {

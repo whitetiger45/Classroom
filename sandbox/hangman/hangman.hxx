@@ -1,9 +1,11 @@
 #ifndef HANGMAN_HXX
 #define HANGMAN_HXX
 
+#include <chrono>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <string>
@@ -42,13 +44,16 @@ func(UserWinsRoundRegularMode, "\n\t**********\n\t*You win!*\n\t**********\n\nTh
 #undef func
 
 #define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
-func(OutOfGuesses, "\nSorry, you are out of guesses...\nThe correct word was: ", totalGames)
+func(OutOfGuesses, "\nSorry, you are out of guesses...\n\nThe word was: ", totalGames)
 #undef func
 
 
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(d(d(a)/d(b)) * 100) << "\%      \n";}
-func(BoardSurvivorMode, userScoreSurvivorMode, totalGames)
 func(BoardRegularMode, userScoreRegularMode, totalGames)
+#undef func
+
+#define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived : " << a << " rounds\n";}
+func(BoardSurvivorMode, userScoreSurvivorMode)
 //------------------------------------------------------------------------------------------------------------------------
 
 auto lineWrapper = [](std::string lineToWrap, l c){for(si i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
@@ -309,7 +314,7 @@ class word
 				if(m_m_firstGuessLettersMapIT->second == m_m_firstGuessLettersMapCount)
 				{
 					std::cout << "\nMost frequent letter(s) to be guessed first: " << m_m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_m_firstGuessLettersMapIT->second<<"\n";
-					std::cout << "\nFirst guess accuracy: " <<(m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
+					std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
 				}
 			}
 		}
@@ -492,6 +497,11 @@ class word
             		recordBook << "\nRecord number of games won (Regular): " << userScoreRegularMode << "\n";
             	else recordBook << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
             }
+  			using std::chrono::system_clock;
+  			system_clock::time_point today = system_clock::now();
+			std::time_t tt;
+			tt = system_clock::to_time_t ( today );
+			recordBook << std::setw(100) << "Updated: " << ctime(&tt) << "\n";
 
             recordBook.close();
 
@@ -504,16 +514,18 @@ class word
 			updateRecordBook();
 			
 			std::cout << std::endl; 
-			if(survivorModeEnabled()) 
-				scoreBoardSurvivorMode();
-			else
+			if(!survivorModeEnabled())
+			{
 				scoreBoardRegularMode();
-
-			std::cout << std::endl;	
+				std::cout << std::endl;	
+			}
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 
 		    std::cout << "**Stats**\n";
+
+		    if(survivorModeEnabled())
+				scoreBoardSurvivorMode();
 
 		    std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
 		    std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
@@ -530,7 +542,7 @@ class word
 
 		    updateRecordBook();
 
-		    std::cout << "\nCurrent best streak: " << getMaxStreak();
+		    std::cout << "\nBest streak: " << getMaxStreak();
 		    std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
 		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
