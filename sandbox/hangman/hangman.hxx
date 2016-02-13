@@ -16,13 +16,14 @@ typedef bool tf;
 typedef char l;
 typedef double d;
 typedef signed int si;
+typedef struct tm * guessTime;
 typedef	std::map<l,si> LetterTrackingMap;
 typedef std::map<l,si>::iterator LetterTrackingMapIT;
 typedef std::vector<std::string> HangmanDictionary;
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t ______\n\t|     |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
-func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Quit\n")
+func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: High Scores\n     4: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
@@ -52,7 +53,7 @@ func(OutOfGuesses, "\nSorry, you are out of guesses...\n\nThe word was: ", total
 func(BoardRegularMode, userScoreRegularMode, totalGames)
 #undef func
 
-#define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived : " << a << " rounds\n";}
+#define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived: " << a << " rounds\n";}
 func(BoardSurvivorMode, userScoreSurvivorMode)
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -549,6 +550,18 @@ class word
 		}
 //-----------------------------------------------------------------------------------------------------------------------
 
+		void showRecords()
+		{
+			std::cout << "\n";
+		    lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("   \n")), '*');
+			std::cout << "\t   High Scores\n";
+		    std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
+		    std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+		    std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
+		    lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
+		}
+//-----------------------------------------------------------------------------------------------------------------------
+
 	private:
 
 		tf m_survivorModeEnabled = false;
@@ -576,7 +589,6 @@ class word
 	    d m_letterWasInWord = 0.00;
 	    d m_numberOfGames = 0.00;
 	    si m_firstGuessToWonRoundConversionTracker = 0;
-
 };
 
 #endif // HANGMAN_HXX

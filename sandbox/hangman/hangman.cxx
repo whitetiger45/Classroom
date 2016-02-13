@@ -74,7 +74,10 @@ si main()
                     guess.setSurvivorMode();
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
-        case 3: 
+        case 3:
+                guess.showRecords();
+                goto gameModeMenu;
+        case 4: 
                 goto quit;
         default:
                 cout << "\nInvalid entry!\n";
@@ -142,6 +145,7 @@ si main()
                     lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
 
                     cout << "U: "; cin >> userGuess_str;
+
                     if(isdigit(userGuess_str[0]))
                     {
                         userGuess_i = stoi(userGuess_str);
