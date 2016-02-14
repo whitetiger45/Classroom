@@ -135,6 +135,7 @@ si main()
                     string userGuess_str;
                     si userGuess_i = 1;
 
+                    guess.startTimer();//start
                     askForLetter();
                     cout << "\n";
                     guess.displayHangMan();
@@ -145,6 +146,9 @@ si main()
                     lineWrapper(string("\nGuessed letters: {" + guess.getGuessedLetters() +  "}"), '~');
 
                     cout << "U: "; cin >> userGuess_str;
+                    
+                    guess.stopTimer();//stop timer
+                    guess.setAverageTimeDifferenceToGuessTracker();
 
                     if(isdigit(userGuess_str[0]))
                     {

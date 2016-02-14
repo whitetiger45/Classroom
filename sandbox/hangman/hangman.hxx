@@ -541,6 +541,9 @@ class word
 		    std::cout << "# of times first guess was correct and user won the round: ";
 		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
+		    //testing timer
+            std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
+
 		    updateRecordBook();
 
 		    std::cout << "\nBest streak: " << getMaxStreak();
@@ -560,6 +563,77 @@ class word
 		    std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
 		    lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
 		}
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void startTimer()
+        {
+            time_t m_t = time(0);  
+            m_userGuessClock = localtime( & m_t );
+            m_clockMinuteBeforeGuess = m_userGuessClock->tm_min;
+            m_clockSecondsBeforeGuess = m_userGuessClock->tm_sec;// get time now
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getSecondsBeforeGuess() const
+        {
+            return m_clockSecondsBeforeGuess;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getMinuteBeforeGuess() const
+        {
+            return m_clockMinuteBeforeGuess;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void stopTimer()
+        {
+            time_t m_t = time(0);  
+            m_userGuessClock = localtime( & m_t );
+            m_clockMinuteAfterGuess = m_userGuessClock->tm_min;
+            m_clockSecondsAfterGuess = m_userGuessClock->tm_sec;// get time now
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getSecondsAfterGuess() const
+        {
+            return m_clockSecondsAfterGuess;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getMinuteAfterGuess() const
+        {
+            return m_clockMinuteAfterGuess;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getDifferenceBetweenGuessClocks() const
+        {
+            if(getMinuteBeforeGuess() == getMinuteAfterGuess())
+            {
+                return abs(getSecondsAfterGuess() - getSecondsBeforeGuess());
+            }
+            else
+                return abs((getSecondsAfterGuess() + 60) - getSecondsBeforeGuess());
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void setAverageTimeDifferenceToGuessTracker() 
+        {
+            m_averageTimeDifferenceBetweenGuesses += getDifferenceBetweenGuessClocks();
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getAverageTimeDifferenceToGuessTracker() const
+        {
+            return m_averageTimeDifferenceBetweenGuesses;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        si getAverageTimeToGuessTracker() const
+        {
+            return (getAverageTimeDifferenceToGuessTracker() / m_guessCount);
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
 	private:
@@ -589,6 +663,14 @@ class word
 	    d m_letterWasInWord = 0.00;
 	    d m_numberOfGames = 0.00;
 	    si m_firstGuessToWonRoundConversionTracker = 0;
+
+        //average time per guessed letter tracker stuff
+        guessTime m_userGuessClock;
+        si m_clockSecondsBeforeGuess = 0;
+        si m_clockSecondsAfterGuess = 0;
+        si m_clockMinuteBeforeGuess = 0;
+        si m_clockMinuteAfterGuess = 0;
+        si m_averageTimeDifferenceBetweenGuesses = 0;
 };
 
 #endif // HANGMAN_HXX
