@@ -62,6 +62,9 @@ si main()
                 guess.resetFirstGuessWasCorrectValue();
                 if(!guess.survivorModeEnabled())
                     guess.setSurvivorMode();
+                
+                if(guess.timedModeEnabled())
+                    guess.setTimedMode();
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 2:
@@ -72,12 +75,29 @@ si main()
                 guess.resetFirstGuessWasCorrectValue();
                 if(guess.survivorModeEnabled())
                     guess.setSurvivorMode();
+                else if(guess.timedModeEnabled())
+                    guess.setTimedMode();
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 3:
+                if(!guess.displayTimedModeRule())
+                    guess.displayTimedModeRule();
+                guess.resetTries();
+                correctOrSameGuessCounter = 0;
+                userWonRound = false;
+                guess.resetFirstGuessWasCorrectValue();
+                if(!guess.timedModeEnabled())
+                    guess.setTimedMode();
+                
+                if(guess.survivorModeEnabled())
+                    guess.setSurvivorMode();
+                // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
+                break;
+
+        case 4:
                 guess.showRecords();
                 goto gameModeMenu;
-        case 4: 
+        case 5: 
                 goto quit;
         default:
                 cout << "\nInvalid entry!\n";
@@ -95,8 +115,8 @@ si main()
         if(dictionaryFile.is_open())
         {
             while ( getline (dictionaryFile,line) && count != getWordAtLocation)
-            {	
-        	   count++;
+            {   
+               count++;
             }
             guess.setWord(line);
             dictionaryFile.close();
@@ -149,6 +169,11 @@ si main()
                     
                     guess.stopTimer();//stop timer
                     guess.setAverageTimeDifferenceToGuessTracker();
+
+                    //timed mode check
+                    if(guess.timedModeEnabled())
+                        if(!guess.userRespondedInTime())
+                            goto endOfRoundMenu;
 
                     if(isdigit(userGuess_str[0]))
                     {
@@ -331,6 +356,8 @@ si main()
 
                 if(guess.survivorModeEnabled())
                     endOfRoundMessage(declareUserWinsRoundSurvivorMode);
+                else if(guess.timedModeEnabled())
+                    endOfRoundMessage(declareUserWinsRoundTimedMode);
                 else 
                     endOfRoundMessage(declareUserWinsRoundRegularMode);
 
@@ -355,6 +382,14 @@ si main()
         endOfRoundMenu:
 
         if(guess.survivorModeEnabled())
+        {
+            if(userWonRound)
+                userResponse[0] = 'y';
+            else
+                userResponse[0] = 'n';
+        }
+        //timed mode continue play
+        else if(guess.timedModeEnabled())
         {
             if(userWonRound)
                 userResponse[0] = 'y';
@@ -413,6 +448,12 @@ si main()
     {
         guess.getStats();
         guess.resetSurvivorModeScore();
+        goto gameModeMenu;
+    }
+    else if(guess.timedModeEnabled())
+    {
+        guess.getStats();
+        guess.resetTimedModeScore();
         goto gameModeMenu;
     }
     else 

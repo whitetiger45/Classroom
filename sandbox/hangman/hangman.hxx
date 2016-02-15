@@ -17,13 +17,13 @@ typedef char l;
 typedef double d;
 typedef signed int si;
 typedef struct tm * guessTime;
-typedef	std::map<l,si> LetterTrackingMap;
+typedef std::map<l,si> LetterTrackingMap;
 typedef std::map<l,si>::iterator LetterTrackingMapIT;
 typedef std::vector<std::string> HangmanDictionary;
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t ______\n\t|     |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
-func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: High Scores\n     4: Quit\n")
+func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Timed Mode\n     4: High Scores\n     5: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
@@ -36,12 +36,14 @@ func(ForSuspectedWord, "What do you think the word is?")
 //------------------------------------------------------------------------------------------------------------------------
 //scoreboard stuff
 sig_atomic_t userScoreSurvivorMode = 0;
+sig_atomic_t userScoreTimedMode = 0;
 sig_atomic_t userScoreRegularMode = 0;
 sig_atomic_t totalGames = 0;
 
 #define func(n, a, b, c) void declare##n(int param){std::cout << a ; ++b; ++c;}
 func(UserWinsRoundSurvivorMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreSurvivorMode, totalGames)
 func(UserWinsRoundRegularMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreRegularMode, totalGames)
+func(UserWinsRoundTimedMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreTimedMode, totalGames)
 #undef func
 
 #define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
@@ -55,184 +57,185 @@ func(BoardRegularMode, userScoreRegularMode, totalGames)
 
 #define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived: " << a << " rounds\n";}
 func(BoardSurvivorMode, userScoreSurvivorMode)
+func(BoardTimedMode, userScoreTimedMode)
 //------------------------------------------------------------------------------------------------------------------------
 
 auto lineWrapper = [](std::string lineToWrap, l c){for(si i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
 
 class word
 {
-	public: 
+    public: 
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setWord(std::string value)
-		{
-			m_guessCount = 0;
-			m_guessedLetters[0] = '\0';
-	  		std::size_t length = value.copy(m_word, value.length(), 0);
-  			m_word[length]='\0';
-  			m_wordLength = value.length();
-			for(si i = 0; i < value.length(); i++)
-				m_incompleteWord[i] = '_' ;
+        void setWord(std::string value)
+        {
+            m_guessCount = 0;
+            m_guessedLetters[0] = '\0';
+            std::size_t length = value.copy(m_word, value.length(), 0);
+            m_word[length]='\0';
+            m_wordLength = value.length();
+            for(si i = 0; i < value.length(); i++)
+                m_incompleteWord[i] = '_' ;
 
-			m_incompleteWord[length] = '\0';
+            m_incompleteWord[length] = '\0';
 
-	        trackDictionaryLetters(value);
-	        m_numberOfGames++;
-		}
+            trackDictionaryLetters(value);
+            m_numberOfGames++;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		const l* showWord() const
-		{
-			return m_incompleteWord;
-		}
+        const l* showWord() const
+        {
+            return m_incompleteWord;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		std::string incompleteWord() const
-		{
-			std::string ret;
-			for(auto c : std::string(m_incompleteWord))
-			{
-				ret = ret + " " + c;
-			}
-			return ret;
-		}
+        std::string incompleteWord() const
+        {
+            std::string ret;
+            for(auto c : std::string(m_incompleteWord))
+            {
+                ret = ret + " " + c;
+            }
+            return ret;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		tf guessLetter(l value)
-		{
-			if(isupper(value))
-				value = tolower(value);
+        tf guessLetter(l value)
+        {
+            if(isupper(value))
+                value = tolower(value);
 
-			if( getGuessedLetters() == "" )
-			{
-				trackFirstGuessAccuracy(value);
-			}
+            if( getGuessedLetters() == "" )
+            {
+                trackFirstGuessAccuracy(value);
+            }
 
-			tf letterFound = false;
+            tf letterFound = false;
 
-			for(si i = 0; i < m_wordLength; i++)
-			{
-				if(m_word[i] == value)
-				{
-					m_incompleteWord[i] = value;
-					letterFound = true;
-				}
-			}
+            for(si i = 0; i < m_wordLength; i++)
+            {
+                if(m_word[i] == value)
+                {
+                    m_incompleteWord[i] = value;
+                    letterFound = true;
+                }
+            }
 
-			for(si i = 0; i < m_guessCount; i++)
-				if(m_guessedLetters[i] == value)
-				{
-					std::cout << "\nYou already guessed that letter!\n";
-					return true;
-				}
+            for(si i = 0; i < m_guessCount; i++)
+                if(m_guessedLetters[i] == value)
+                {
+                    std::cout << "\nYou already guessed that letter!\n";
+                    return true;
+                }
 
-			m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
-			addlToGuessedLetters(value);
+            m_triesLeft = (letterFound) ? m_triesLeft : m_triesLeft--;
+            addlToGuessedLetters(value);
 
-			return letterFound;
-		}
+            return letterFound;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		std::string getGuessedLetters() const
-		{
-			return m_guessedLetters;
-		}
+        std::string getGuessedLetters() const
+        {
+            return m_guessedLetters;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void addlToGuessedLetters(l value)
-		{
-			m_guessedLetters[m_guessCount++] = value;
-			m_guessedLetters[m_guessCount] = '\0'; 
-		}
+        void addlToGuessedLetters(l value)
+        {
+            m_guessedLetters[m_guessCount++] = value;
+            m_guessedLetters[m_guessCount] = '\0'; 
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		std::string getWord() const
-		{
-			return m_word;
-		}
+        std::string getWord() const
+        {
+            return m_word;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getTriesLeft() const
-		{
-			return m_triesLeft;
-		}
+        si getTriesLeft() const
+        {
+            return m_triesLeft;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void subtractTry()
-		{
-			m_triesLeft--;
-		}
+        void subtractTry()
+        {
+            m_triesLeft--;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void resetTries()
-		{
-			m_triesLeft = 6;
-			for(auto x : m_guessedLetters)
-				x = ' ';
-		}
+        void resetTries()
+        {
+            m_triesLeft = 6;
+            for(auto x : m_guessedLetters)
+                x = ' ';
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void displayHangMan()
-		{
-			    switch(m_triesLeft)
-			    {
-			    	case 6:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|    \n|     \n|           \n|______\n";
-							break;
-			    	case 5:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|     o\n|     \n|          \n|______\n";
-							break;
-			    	case 4:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|     o\n|     |\n|          \n|______\n";
-							break;
-			    	case 3:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|     o\n|    /|\n|          \n|______\n";
-							break;
-			    	case 2:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|     o\n|    /|\\ \n|        \n|______\n";
-							break;
-			    	case 1:
-    					    std::cout<< " ______\n";
-							std::cout<< "|     |\n|     o\n|    /|\\\n|    /     \n|______\n";
-							break;
-					case 0:
-						    std::cout<< " ______\n";
-    						std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
-    						break;
-					default:
-						    std::cout<< " ______\n";
-    						std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
-			    }
-		}
+        void displayHangMan()
+        {
+                switch(m_triesLeft)
+                {
+                    case 6:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|    \n|     \n|           \n|______\n";
+                            break;
+                    case 5:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|     \n|          \n|______\n";
+                            break;
+                    case 4:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|     |\n|          \n|______\n";
+                            break;
+                    case 3:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|    /|\n|          \n|______\n";
+                            break;
+                    case 2:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|    /|\\ \n|        \n|______\n";
+                            break;
+                    case 1:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|    /|\\\n|    /     \n|______\n";
+                            break;
+                    case 0:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
+                            break;
+                    default:
+                            std::cout<< " ______\n";
+                            std::cout<< "|     |\n|     o\n|    /|\\\n|    / \\  \n|______\n";
+                }
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void trackDictionaryLetters(std::string dictionaryWord)
-		{
-			    dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin();
-		        for(auto c: dictionaryWord)
-		        {
-		            dictionaryWordLettersMapIT = dictionaryWordLettersMap.find(c);
-		            if(dictionaryWordLettersMapIT != dictionaryWordLettersMap.end())
-		            {
-		                dictionaryWordLettersMapIT->second++;
-		            }
-		            else
-		                dictionaryWordLettersMap[c] = 1;
-		             
-		            if(dictionaryWordLettersMapIT->second > dictionaryLettersMapmostFrequentCount)
-		                dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
-		        }
-		}
+        void trackDictionaryLetters(std::string dictionaryWord)
+        {
+                dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin();
+                for(auto c: dictionaryWord)
+                {
+                    dictionaryWordLettersMapIT = dictionaryWordLettersMap.find(c);
+                    if(dictionaryWordLettersMapIT != dictionaryWordLettersMap.end())
+                    {
+                        dictionaryWordLettersMapIT->second++;
+                    }
+                    else
+                        dictionaryWordLettersMap[c] = 1;
+                     
+                    if(dictionaryWordLettersMapIT->second > dictionaryLettersMapmostFrequentCount)
+                        dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
+                }
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
         std::string getMostFrequentLetterFromDictionaryWord()
         {
-        	std::string ret;
+            std::string ret;
            for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
            {
                if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
@@ -246,323 +249,399 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void printMostFrequentLettersFromDictionaryWord()
-		{
-		    for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
-		    {
-		       if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
-		           std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
-		    }
-		}
+        void printMostFrequentLettersFromDictionaryWord()
+        {
+            for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
+            {
+               if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+                   std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
+            }
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si checkDictionaryMapLettersEqualToMaxCount()
-		{
-			si total = 0;
-			for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
-				if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
-					total++;
-			return total;
-		}
+        si checkDictionaryMapLettersEqualToMaxCount()
+        {
+            si total = 0;
+            for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
+                if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+                    total++;
+            return total;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setFirstGuessWasCorrectValue()
-		{
-			m_firstGuessWasCorrect = true;
-		}
+        void setFirstGuessWasCorrectValue()
+        {
+            m_firstGuessWasCorrect = true;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void trackFirstGuessAccuracy(l value)
-		{
-			std::map<si, std::string> firstGuessMessageMap;
+        void trackFirstGuessAccuracy(l value)
+        {
+            std::map<si, std::string> firstGuessMessageMap;
 
-			firstGuessMessageMap[0] = "\nExcellent start!\n";
-			firstGuessMessageMap[1] = "\nGood guess!\n";
-			firstGuessMessageMap[2] = "\nKeep it up!\n";
-			firstGuessMessageMap[3] = "\nWow...nice!\n";
-			m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin();
-			srand(time(NULL));
+            firstGuessMessageMap[0] = "\nExcellent start!\n";
+            firstGuessMessageMap[1] = "\nGood guess!\n";
+            firstGuessMessageMap[2] = "\nKeep it up!\n";
+            firstGuessMessageMap[3] = "\nWow...nice!\n";
+            m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin();
+            srand(time(NULL));
 
-			for(auto c: getWord())
-			{
-			   if(value == c)
-			   {			   
-					m_letterWasInWord++;
-					std::cout << firstGuessMessageMap[rand() % 4];
-					setFirstGuessWasCorrectValue();
-					break;
-			   }
-			}
+            for(auto c: getWord())
+            {
+               if(value == c)
+               {               
+                    m_letterWasInWord++;
+                    std::cout << firstGuessMessageMap[rand() % 4];
+                    setFirstGuessWasCorrectValue();
+                    break;
+               }
+            }
 
-		    m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.find(value);
+            m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.find(value);
 
-		    if(m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end())
-		    {
-		        m_m_firstGuessLettersMapIT->second++;
-		    }
-		    else
-		        m_firstGuessLettersMap[value] = 1;
-		     
-		    if(m_m_firstGuessLettersMapIT->second > m_m_firstGuessLettersMapCount)
-		        m_m_firstGuessLettersMapCount = m_m_firstGuessLettersMapIT->second;
-		}
+            if(m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end())
+            {
+                m_m_firstGuessLettersMapIT->second++;
+            }
+            else
+                m_firstGuessLettersMap[value] = 1;
+             
+            if(m_m_firstGuessLettersMapIT->second > m_m_firstGuessLettersMapCount)
+                m_m_firstGuessLettersMapCount = m_m_firstGuessLettersMapIT->second;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void getFirstGuessAccuracy()
-		{
-			for(m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin(); m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end(); m_m_firstGuessLettersMapIT++)
-			{
-				if(m_m_firstGuessLettersMapIT->second == m_m_firstGuessLettersMapCount)
-				{
-					std::cout << "\nMost frequent letter(s) to be guessed first: " << m_m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_m_firstGuessLettersMapIT->second<<"\n";
-					std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
-				}
-			}
-		}
+        void getFirstGuessAccuracy()
+        {
+            for(m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin(); m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end(); m_m_firstGuessLettersMapIT++)
+            {
+                if(m_m_firstGuessLettersMapIT->second == m_m_firstGuessLettersMapCount)
+                {
+                    std::cout << "\nMost frequent letter(s) to be guessed first: " << m_m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_m_firstGuessLettersMapIT->second<<"\n";
+                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
+                }
+            }
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setMaxStreak(si currentStreak)
-		{
-			m_streak = currentStreak;
-		}
+        void setMaxStreak(si currentStreak)
+        {
+            m_streak = currentStreak;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getMaxStreak()
-		{
-			return m_streak;
-		}
+        si getMaxStreak()
+        {
+            return m_streak;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		tf checkIfFirstGuessWasCorrect() const
-		{
-			return m_firstGuessWasCorrect;
-		}
+        tf checkIfFirstGuessWasCorrect() const
+        {
+            return m_firstGuessWasCorrect;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void resetFirstGuessWasCorrectValue()
-		{
-			m_firstGuessWasCorrect = false;
-		}
+        void resetFirstGuessWasCorrectValue()
+        {
+            m_firstGuessWasCorrect = false;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void incrementFirstGuessToWonRoundConversionTracker()
-		{
-			m_firstGuessToWonRoundConversionTracker++;
-		}
+        void incrementFirstGuessToWonRoundConversionTracker()
+        {
+            m_firstGuessToWonRoundConversionTracker++;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setRecordNumberOfGamesSurvivorMode(si newHighScore)
-		{
-			m_recordNumberOfGamesWonSurvivorMode = newHighScore;
-		}
+        void setRecordNumberOfGamesSurvivorMode(si newHighScore)
+        {
+            m_recordNumberOfGamesWonSurvivorMode = newHighScore;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setRecordNumberOfGamesRegularMode(si newHighScore)
-		{
-			m_recordNumberOfGamesWonRegularMode = newHighScore;
-		}
+        void setRecordNumberOfGamesRegularMode(si newHighScore)
+        {
+            m_recordNumberOfGamesWonRegularMode = newHighScore;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getRecordNumberOfGamesWonSurvivorMode() const
-		{
-			return m_recordNumberOfGamesWonSurvivorMode;
-		}
+        void setRecordNumberOfGamesTimedMode(si newHighScore)
+        {
+            m_recordNumberOfGamesWonTimedMode = newHighScore;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getRecordNumberOfGamesWonRegularMode() const
-		{
-			return m_recordNumberOfGamesWonRegularMode;
-		}
+        si getRecordNumberOfGamesWonSurvivorMode() const
+        {
+            return m_recordNumberOfGamesWonSurvivorMode;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void resetSurvivorModeScore()
-		{
-			userScoreSurvivorMode = 0;
-		}
+        si getRecordNumberOfGamesWonRegularMode() const
+        {
+            return m_recordNumberOfGamesWonRegularMode;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setSurvivorMode()
-		{
-			m_survivorModeEnabled = (m_survivorModeEnabled) ? false : true;
-		}
+        si getRecordNumberOfGamesWonTimedMode() const
+        {
+            return m_recordNumberOfGamesWonTimedMode;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		tf survivorModeEnabled()
-		{
-			return m_survivorModeEnabled;
-		}
+        void resetSurvivorModeScore()
+        {
+            userScoreSurvivorMode = 0;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void resetTimedModeScore()
+        {
+            userScoreTimedMode = 0;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void setSurvivorMode()
+        {   
+            m_survivorModeEnabled = (m_survivorModeEnabled) ? false : true;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        bool displayTimedModeRule()
+        {   
+            std::cout << std::endl;
+            lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
+            std::cout << "\nAttention:\n\nIn this mode, you must make your guess within 5 seconds or you will lose the round.";
+            std::cout << "\nThe timer will start once you see 'U: ', and it will stop once you have entered a letter.\n\n";
+            lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
+
+            if(!m_displayedRulesOnce)
+                m_displayedRulesOnce = true;
+
+            return m_displayedRulesOnce;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        tf survivorModeEnabled()
+        {
+            return m_survivorModeEnabled;
+        }
 
 //-----------------------------------------------------------------------------------------------------------------------
 
-		si getUsersBestStreakOfAllTime() const
-		{
-			return m_maxStreakOfAllTime;
-		}
+        si getUsersBestStreakOfAllTime() const
+        {
+            return m_maxStreakOfAllTime;
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void setUserRecords()
-		{
-			std::ifstream recordBook("hangManRecordBook.txt");
-			std::string line;
+        void setUserRecords()
+        {
+            std::ifstream recordBook("hangManRecordBook.txt");
+            std::string line;
             std::regex bestStreak("Best streak of all time: ([0-9])");
             std::regex mostGamesWonSurvivorMode("Record number of games won \\(Survivor\\): ([0-9])");
             std::regex mostGamesWonRegularMode("Record number of games won \\(Regular\\): ([0-9])");
             std::regex mostGamesWonRegularModeOld("Record number of games won: ([0-9])");
+            std::regex mostGamesWonTimedMode("Record number of games won \\(Timed\\): ([0-9])");    
             std::cmatch cm;
             std::string::size_type maxStreak_str, recordNumberOfGamesSurvivorMode_str, recordNumberOfGamesRegular_str;
-			if(recordBook.is_open())
-			{
+            std::string::size_type recordNumberOfGamesTimedMode_str;
+
+            if(recordBook.is_open())
+            {
                 try 
                 {
-	            	while(getline(recordBook,line))
-	            	{
-	            		if(line == "")
-	            			continue;
+                    while(getline(recordBook,line))
+                    {
+                        if(line == "")
+                            continue;
 
-		        	 	if(std::regex_match ( line.c_str(), cm, bestStreak ))
-		        	 	{
-			        	 	std::string recordStreak_str = cm.str(1);
-							m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
-							continue;
-						}
-						// std::cout << "Line: " << line << "\n";
-						//get record number of games won survivor mode
-		        	 	if(std::regex_match ( line.c_str(), cm, mostGamesWonSurvivorMode ))
-		        	 	{
-		        	 		// std::cout << "** Games Debug Survivor: " << cm.str(1) << "\n";
-		        	 		std::string recordWinsSurvivorMode_str = cm.str(1);
-		        	 		setRecordNumberOfGamesSurvivorMode(std::stoi (recordWinsSurvivorMode_str , &recordNumberOfGamesSurvivorMode_str));
-		        	 		continue;
-		        	 	}
+                        if(std::regex_match ( line.c_str(), cm, bestStreak ))
+                        {
+                            std::string recordStreak_str = cm.str(1);
+                            m_maxStreakOfAllTime = std::stoi (recordStreak_str, &maxStreak_str);
+                            continue;
+                        }
+                        // std::cout << "Line: " << line << "\n";
+                        //get record number of games won survivor mode
+                        if(std::regex_match ( line.c_str(), cm, mostGamesWonSurvivorMode ))
+                        {
+                            // std::cout << "** Games Debug Survivor: " << cm.str(1) << "\n";
+                            std::string recordWinsSurvivorMode_str = cm.str(1);
+                            setRecordNumberOfGamesSurvivorMode(std::stoi (recordWinsSurvivorMode_str , &recordNumberOfGamesSurvivorMode_str));
+                            continue;
+                        }
 
-		        	 	//get record number of regular games won
-		        	 	if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularMode ))
-		        	 	{
-		        	 		// std::cout << "** Games Debug Regular: " << cm.str(0) << " **\n";
-		        	 		std::string recordWinsRegularMode_str = cm.str(1);
-		        	 		setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
-		        	 	}
-		        	 	else if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularModeOld ))
-		        	 	{
-		        	 		std::string recordWinsRegularMode_str = cm.str(1);
-		        	 		setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
-		        	 	}
-	        	 	}
-	        	 }catch(const std::invalid_argument& ia){}
-        	}
+                        //get record number of regular games won
+                        if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularMode ))
+                        {
+                            // std::cout << "** Games Debug Regular: " << cm.str(0) << " **\n";
+                            std::string recordWinsRegularMode_str = cm.str(1);
+                            setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
+                        }
+                        else if(std::regex_match ( line.c_str(), cm, mostGamesWonRegularModeOld ))
+                        {
+                            std::string recordWinsRegularMode_str = cm.str(1);
+                            setRecordNumberOfGamesRegularMode(std::stoi (recordWinsRegularMode_str , &recordNumberOfGamesRegular_str));
+                        }
+
+                        //get record number of timed games won
+                        if(std::regex_match ( line.c_str(), cm, mostGamesWonTimedMode ))
+                        {
+                            // std::cout << "** Games Debug Survivor: " << cm.str(1) << "\n";
+                            std::string recordWinsTimedMode_str = cm.str(1);
+                            setRecordNumberOfGamesTimedMode(std::stoi (recordWinsTimedMode_str , &recordNumberOfGamesTimedMode_str));
+                            continue;
+                        }
+                    }
+                 }catch(const std::invalid_argument& ia){}
+            }
             recordBook.close();
-		}
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void updateRecordBook()
-		{
-			std::string fileName("hangManRecordBook.txt");
+        void updateRecordBook()
+        {
+            std::string fileName("hangManRecordBook.txt");
             setUserRecords();
 
-			if(getMaxStreak() > getUsersBestStreakOfAllTime())
-			{
-				if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
-				{
-					setRecordNumberOfGamesSurvivorMode(userScoreSurvivorMode);
-					resetSurvivorModeScore();
-				}
-				
-				if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
-					setRecordNumberOfGamesRegularMode(userScoreRegularMode);
+            if(getMaxStreak() > getUsersBestStreakOfAllTime())
+            {
+                if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
+                {
+                    setRecordNumberOfGamesSurvivorMode(userScoreSurvivorMode);
+                    resetSurvivorModeScore();
+                }
+                
+                if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+                    setRecordNumberOfGamesRegularMode(userScoreRegularMode);
+
+                if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
+                {
+                    setRecordNumberOfGamesTimedMode(userScoreTimedMode);
+                    resetTimedModeScore();
+                }
 
                 remove(fileName.c_str());
-			}
+            }
             else if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
             {
-				if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
-					setRecordNumberOfGamesRegularMode(userScoreRegularMode);
+                if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+                    setRecordNumberOfGamesRegularMode(userScoreRegularMode);
 
-            	remove(fileName.c_str());
+                if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
+                {
+                    setRecordNumberOfGamesTimedMode(userScoreTimedMode);
+                    resetTimedModeScore();
+                }
+
+                remove(fileName.c_str());
             }
-        	else if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
-            	remove(fileName.c_str());
-    		else return;
+            else if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+            {
+                if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
+                {
+                    setRecordNumberOfGamesTimedMode(userScoreTimedMode);
+                    resetTimedModeScore();
+                }
+                remove(fileName.c_str());
+            }
+            else if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
+            {
+                remove(fileName.c_str());
+            }
+            else return;
 
             std::ofstream recordBook(fileName);
             if(recordBook.is_open())
             {
-            	if( getMaxStreak() > getUsersBestStreakOfAllTime() )
-            		recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
-            	else recordBook << "Best streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
+                if( getMaxStreak() > getUsersBestStreakOfAllTime() )
+                    recordBook << "Best streak of all time: " << getMaxStreak() << "\n";
+                else recordBook << "Best streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
-            	if( userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
-            		recordBook << "\nRecord number of games won (Survivor): " << userScoreSurvivorMode << "\n";
-            	else recordBook << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode() << "\n";
+                if( userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
+                    recordBook << "\nRecord number of games won (Survivor): " << userScoreSurvivorMode << "\n";
+                else recordBook << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode() << "\n";
 
-            	if( userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
-            		recordBook << "\nRecord number of games won (Regular): " << userScoreRegularMode << "\n";
-            	else recordBook << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+                if( userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
+                    recordBook << "\nRecord number of games won (Regular): " << userScoreRegularMode << "\n";
+                else recordBook << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+
+                if( userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
+                    recordBook << "\nRecord number of games won (Timed): " << userScoreTimedMode << "\n";
+                else recordBook << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
             }
-  			using std::chrono::system_clock;
-  			system_clock::time_point today = system_clock::now();
-			std::time_t tt;
-			tt = system_clock::to_time_t ( today );
-			recordBook << std::setw(100) << "Updated: " << ctime(&tt) << "\n";
+            using std::chrono::system_clock;
+            system_clock::time_point today = system_clock::now();
+            std::time_t tt;
+            tt = system_clock::to_time_t ( today );
+            recordBook << std::setw(90) << "Updated: " << ctime(&tt) << "\n";
 
             recordBook.close();
 
             setUserRecords();
-		}
+        }
 //-----------------------------------------------------------------------------------------------------------------------
-		
-		void getStats()
-		{	
-			updateRecordBook();
-			
-			std::cout << std::endl; 
-			if(!survivorModeEnabled())
-			{
-				scoreBoardRegularMode();
-				std::cout << std::endl;	
-			}
+        
+        void getStats()
+        {   
+            updateRecordBook();
+            
+            std::cout << std::endl; 
+            if(!survivorModeEnabled() && !timedModeEnabled())
+            {
+                scoreBoardRegularMode();
+                std::cout << std::endl; 
+            }
 
-		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 
-		    std::cout << "**Stats**\n";
+            std::cout << "**Stats**\n";
 
-		    if(survivorModeEnabled())
-				scoreBoardSurvivorMode();
+            if(survivorModeEnabled())
+                scoreBoardSurvivorMode();
+            else if(timedModeEnabled())
+                scoreBoardTimedMode();
 
-		    std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-		    std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
+            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode();
+            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
 
-		    if(checkDictionaryMapLettersEqualToMaxCount() == 1)
-		        std::cout << getMostFrequentLetterFromDictionaryWord();
-		    else
-		        printMostFrequentLettersFromDictionaryWord();
+            if(checkDictionaryMapLettersEqualToMaxCount() == 1)
+                std::cout << getMostFrequentLetterFromDictionaryWord();
+            else
+                printMostFrequentLettersFromDictionaryWord();
 
-		    getFirstGuessAccuracy();
+            getFirstGuessAccuracy();
 
-		    std::cout << "# of times first guess was correct and user won the round: ";
-		    std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
+            std::cout << "# of times first guess was correct and user won the round: ";
+            std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
-		    //testing timer
+            //testing 
             std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
 
-		    updateRecordBook();
+            updateRecordBook();
 
-		    std::cout << "\nBest streak: " << getMaxStreak();
-		    std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
+            std::cout << "\nBest streak: " << getMaxStreak();
+            std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
 
-		    lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
-		}
+            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
-		void showRecords()
-		{
-			std::cout << "\n";
-		    lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("   \n")), '*');
-			std::cout << "\t   High Scores\n";
-		    std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-		    std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
-		    std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
-		    lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
-		}
+        void showRecords()
+        {
+            std::cout << "\n";
+            lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("   \n")), '*');
+            std::cout << "\t   High Scores\n";
+            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
+            std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode();
+            std::cout << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
+            std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
+            lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
+        }
 //-----------------------------------------------------------------------------------------------------------------------
 
         void startTimer()
@@ -636,33 +715,59 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-	private:
+        tf userRespondedInTime() const
+        {
+            if(getDifferenceBetweenGuessClocks() > 5)
+            {
+                std::cout << "\nYou took too long to answer...Game Over\n";
+                std::cout << "Your answer time: " << getDifferenceBetweenGuessClocks() << " seconds.\n";
+                return false;
+            }
+            else
+                return true;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
 
-		tf m_survivorModeEnabled = false;
-		l m_word[256];
-		l m_incompleteWord[256];
-		l m_guessedLetters[26];
-		si m_guessCount;
-		si m_wordLength = 0;
-		si m_roundsWon = 0;
-		si m_streak = 0;
-		si m_maxStreakOfAllTime = 0;
-		si m_recordNumberOfGamesWonSurvivorMode = 0;
-		si m_recordNumberOfGamesWonRegularMode = 0;
-		si m_triesLeft = 6;
-		HangmanDictionary m_dictionary;
+        void setTimedMode()
+        {
+            m_timedModeEnabled = (m_timedModeEnabled) ? false : true;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
 
-	    LetterTrackingMap dictionaryWordLettersMap;
-	    LetterTrackingMapIT dictionaryWordLettersMapIT;
-	    si dictionaryLettersMapmostFrequentCount = 1;
+        tf timedModeEnabled()
+        {
+            return m_timedModeEnabled;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
 
-	    LetterTrackingMap m_firstGuessLettersMap;
-	    LetterTrackingMapIT m_m_firstGuessLettersMapIT;
-	    tf m_firstGuessWasCorrect = false;
-	    si m_m_firstGuessLettersMapCount = 1;
-	    d m_letterWasInWord = 0.00;
-	    d m_numberOfGames = 0.00;
-	    si m_firstGuessToWonRoundConversionTracker = 0;
+    private:
+
+        tf m_survivorModeEnabled = false;
+        l m_word[256];
+        l m_incompleteWord[256];
+        l m_guessedLetters[26];
+        si m_guessCount;
+        si m_wordLength = 0;
+        si m_roundsWon = 0;
+        si m_streak = 0;
+        si m_maxStreakOfAllTime = 0;
+        si m_recordNumberOfGamesWonSurvivorMode = 0;
+        si m_recordNumberOfGamesWonRegularMode = 0;
+        si m_recordNumberOfGamesWonTimedMode = 0;
+        si m_triesLeft = 6;
+        HangmanDictionary m_dictionary;
+
+        LetterTrackingMap dictionaryWordLettersMap;
+        LetterTrackingMapIT dictionaryWordLettersMapIT;
+        si dictionaryLettersMapmostFrequentCount = 1;
+
+        LetterTrackingMap m_firstGuessLettersMap;
+        LetterTrackingMapIT m_m_firstGuessLettersMapIT;
+        tf m_firstGuessWasCorrect = false;
+        si m_m_firstGuessLettersMapCount = 1;
+        d m_letterWasInWord = 0.00;
+        d m_numberOfGames = 0.00;
+        si m_firstGuessToWonRoundConversionTracker = 0;
 
         //average time per guessed letter tracker stuff
         guessTime m_userGuessClock;
@@ -671,6 +776,10 @@ class word
         si m_clockMinuteBeforeGuess = 0;
         si m_clockMinuteAfterGuess = 0;
         si m_averageTimeDifferenceBetweenGuesses = 0;
+
+        //timed play stuff
+        tf m_timedModeEnabled = false;
+        tf m_displayedRulesOnce = false;
 };
 
 #endif // HANGMAN_HXX
