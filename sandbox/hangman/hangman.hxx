@@ -23,7 +23,7 @@ typedef std::vector<std::string> HangmanDictionary;
 
 #define func(n, a) void show##n(){std::cout << a << "\n";}
 func(Title, "\n\t   ***********\n\t   * Hangman *\n\t   ***********\n\t ______\n\t|     |\n\t|    \n\t|           o\n\t|          /|\\ \n\t|______    / \\\n\t*****************\n")
-func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Regular Mode\n     3: Timed Mode\n     4: High Scores\n     5: Quit\n")
+func(Menu, "\n\t Main Menu\n\t =========    \n     1: Survival Mode\n     2: Timed Mode\n     3: Regular Mode\n     4: High Scores\n     5: Quit\n")
 func(SubMenu, "\nWhat would you like to do?\n_______________________________\n\n1) Guess Letter\n2) Guess Word\n3) See what letters you've guessed\n4) Show Unfinished Word\n5) How Many Incorrect Guesses Left?\n6) Display HangMan Board\n7) Exit App\n_______________________________\n")
 #undef func
 
@@ -408,7 +408,27 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-        bool displayTimedModeRule()
+        tf survivorModeEnabled()
+        {
+            return m_survivorModeEnabled;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void setTimedMode()
+        {
+            m_timedModeEnabled = (m_timedModeEnabled) ? false : true;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        tf timedModeEnabled()
+        {
+            return m_timedModeEnabled;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+        tf displayTimedModeRule()
         {   
             std::cout << std::endl;
             lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
@@ -421,13 +441,6 @@ class word
 
             return m_displayedRulesOnce;
         }
-//-----------------------------------------------------------------------------------------------------------------------
-
-        tf survivorModeEnabled()
-        {
-            return m_survivorModeEnabled;
-        }
-
 //-----------------------------------------------------------------------------------------------------------------------
 
         si getUsersBestStreakOfAllTime() const
@@ -571,13 +584,13 @@ class word
 
                 if( userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
                     recordBook << "\nRecord number of games won (Timed): " << userScoreTimedMode << "\n";
-                else recordBook << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
+                else recordBook << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n\n\n";
             }
             using std::chrono::system_clock;
             system_clock::time_point today = system_clock::now();
             std::time_t tt;
             tt = system_clock::to_time_t ( today );
-            recordBook << std::setw(90) << "Updated: " << ctime(&tt) << "\n";
+            recordBook << std::setw(80) << "Updated: " << ctime(&tt) << "\n";
 
             recordBook.close();
 
@@ -606,8 +619,8 @@ class word
                 scoreBoardTimedMode();
 
             std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode();
-            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
+            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
+            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
 
             if(checkDictionaryMapLettersEqualToMaxCount() == 1)
                 std::cout << getMostFrequentLetterFromDictionaryWord();
@@ -637,8 +650,8 @@ class word
             lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("   \n")), '*');
             std::cout << "\t   High Scores\n";
             std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-            std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode();
-            std::cout << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode() << "\n";
+            std::cout << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
+            std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
             std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
             lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
         }
@@ -727,22 +740,10 @@ class word
                 return true;
         }
 //-----------------------------------------------------------------------------------------------------------------------
-
-        void setTimedMode()
-        {
-            m_timedModeEnabled = (m_timedModeEnabled) ? false : true;
-        }
-//-----------------------------------------------------------------------------------------------------------------------
-
-        tf timedModeEnabled()
-        {
-            return m_timedModeEnabled;
-        }
-//-----------------------------------------------------------------------------------------------------------------------
-
     private:
 
         tf m_survivorModeEnabled = false;
+        tf m_timedModeEnabled = false;
         l m_word[256];
         l m_incompleteWord[256];
         l m_guessedLetters[26];
@@ -778,7 +779,6 @@ class word
         si m_averageTimeDifferenceBetweenGuesses = 0;
 
         //timed play stuff
-        tf m_timedModeEnabled = false;
         tf m_displayedRulesOnce = false;
 };
 

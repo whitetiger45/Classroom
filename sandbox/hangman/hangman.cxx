@@ -68,18 +68,6 @@ si main()
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 2:
-                // survivorModeEnabled = false;
-                guess.resetTries();
-                correctOrSameGuessCounter = 0;
-                userWonRound = false;
-                guess.resetFirstGuessWasCorrectValue();
-                if(guess.survivorModeEnabled())
-                    guess.setSurvivorMode();
-                else if(guess.timedModeEnabled())
-                    guess.setTimedMode();
-                // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
-                break;
-        case 3:
                 if(!guess.displayTimedModeRule())
                     guess.displayTimedModeRule();
                 guess.resetTries();
@@ -93,7 +81,18 @@ si main()
                     guess.setSurvivorMode();
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
-
+        case 3:
+                // survivorModeEnabled = false;
+                guess.resetTries();
+                correctOrSameGuessCounter = 0;
+                userWonRound = false;
+                guess.resetFirstGuessWasCorrectValue();
+                if(guess.survivorModeEnabled())
+                    guess.setSurvivorMode();
+                else if(guess.timedModeEnabled())
+                    guess.setTimedMode();
+                // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
+                break;
         case 4:
                 guess.showRecords();
                 goto gameModeMenu;
