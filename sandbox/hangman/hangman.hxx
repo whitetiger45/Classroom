@@ -674,9 +674,12 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-        si getAverageTimeToGuessTracker() const
+       	si getAverageTimeToGuessTracker() const
         {
-            return (getAverageTimeDifferenceToGuessTracker() / m_guessCount);
+        	if(m_guessCount == 0)
+        		return getAverageTimeDifferenceToGuessTracker();
+        	else
+            	return (getAverageTimeDifferenceToGuessTracker() / m_guessCount);
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -728,7 +731,7 @@ class word
             std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
             //testing 
-            // std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
+            std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
 
             updateRecordBook();
 
