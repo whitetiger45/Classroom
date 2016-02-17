@@ -426,8 +426,6 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------------------------------------------------
-
         tf displayTimedModeRule()
         {   
             std::cout << std::endl;
@@ -597,52 +595,6 @@ class word
             setUserRecords();
         }
 //-----------------------------------------------------------------------------------------------------------------------
-        
-        void getStats()
-        {   
-            updateRecordBook();
-            
-            std::cout << std::endl; 
-            if(!survivorModeEnabled() && !timedModeEnabled())
-            {
-                scoreBoardRegularMode();
-                std::cout << std::endl; 
-            }
-
-            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
-
-            std::cout << "**Stats**\n";
-
-            if(survivorModeEnabled())
-                scoreBoardSurvivorMode();
-            else if(timedModeEnabled())
-                scoreBoardTimedMode();
-
-            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
-            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
-
-            if(checkDictionaryMapLettersEqualToMaxCount() == 1)
-                std::cout << getMostFrequentLetterFromDictionaryWord();
-            else
-                printMostFrequentLettersFromDictionaryWord();
-
-            getFirstGuessAccuracy();
-
-            std::cout << "# of times first guess was correct and user won the round: ";
-            std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
-
-            //testing 
-            std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
-
-            updateRecordBook();
-
-            std::cout << "\nBest streak: " << getMaxStreak();
-            std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
-
-            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
-        }
-//-----------------------------------------------------------------------------------------------------------------------
 
         void showRecords()
         {
@@ -740,7 +692,55 @@ class word
                 return true;
         }
 //-----------------------------------------------------------------------------------------------------------------------
-    private:
+      
+        void getStats()
+        {   
+            updateRecordBook();
+            
+            std::cout << std::endl; 
+            if(!survivorModeEnabled() && !timedModeEnabled())
+            {
+                scoreBoardRegularMode();
+                std::cout << std::endl; 
+            }
+
+            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+
+            std::cout << "**Stats**\n";
+
+            if(survivorModeEnabled())
+                scoreBoardSurvivorMode();
+            else if(timedModeEnabled())
+                scoreBoardTimedMode();
+
+            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
+            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
+            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+
+            if(checkDictionaryMapLettersEqualToMaxCount() == 1)
+                std::cout << getMostFrequentLetterFromDictionaryWord();
+            else
+                printMostFrequentLettersFromDictionaryWord();
+
+            getFirstGuessAccuracy();
+
+            std::cout << "# of times first guess was correct and user won the round: ";
+            std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
+
+            //testing 
+            // std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
+
+            updateRecordBook();
+
+            std::cout << "\nBest streak: " << getMaxStreak();
+            std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
+
+            lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
+        }
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+  private:
 
         tf m_survivorModeEnabled = false;
         tf m_timedModeEnabled = false;
