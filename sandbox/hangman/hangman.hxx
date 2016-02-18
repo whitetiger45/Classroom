@@ -697,14 +697,14 @@ class word
 
         si getDifferenceBetweenGuessClocks() const
         {
-            if( getMinuteAfterGuess()== getMinuteBeforeGuess()) 
+            if((getMinuteAfterGuess() - getMinuteBeforeGuess()) == 0) 
             {
-                return (getSecondsAfterGuess() - getSecondsBeforeGuess());
+                return abs(getSecondsAfterGuess() - getSecondsBeforeGuess());
             }
             else
             {
             	si numberOfSecondsToMultiplySixtyBy = ( getMinuteAfterGuess() - getMinuteBeforeGuess() );
-            	return (getSecondsAfterGuess() + ( numberOfSecondsToMultiplySixtyBy * 60 ) - getSecondsBeforeGuess());
+            	return abs( (( getSecondsAfterGuess() + ( numberOfSecondsToMultiplySixtyBy * 60 )) - getSecondsBeforeGuess() ) );
             }
         }
 //-----------------------------------------------------------------------------------------------------------------------
