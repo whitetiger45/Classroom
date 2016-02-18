@@ -403,14 +403,14 @@ class word
         void resetSurvivorModeScore()
         {
             userScoreSurvivorMode = 0;
-            m_numberOfGames = 1.00;
+            m_numberOfGames = 0.00;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
         void resetTimedModeScore()
         {
             userScoreTimedMode = 0;
-            m_numberOfGames = 1.00;
+            m_numberOfGames = 0.00;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -803,7 +803,7 @@ class word
         tf m_firstGuessWasCorrect = false;
         si m_firstGuessLettersMapCount = 1;
         d m_letterWasInWord = 0.00;
-        d m_numberOfGames = 1.00;
+        d m_numberOfGames = 0.00;
         si m_firstGuessToWonRoundConversionTracker = 0;
 
         //average time per guessed letter tracker stuff
