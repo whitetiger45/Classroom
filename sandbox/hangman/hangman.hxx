@@ -493,6 +493,12 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
+        si setUsersBestStreakOfAllTime(si allTimeHighScore)
+        {
+            m_maxStreakOfAllTime = allTimeHighScore;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
         si getUsersBestStreakOfAllTime() const
         {
             return m_maxStreakOfAllTime;
@@ -503,11 +509,11 @@ class word
         {
             std::ifstream recordBook("hangManRecordBook.txt");
             std::string line;
-            std::regex bestStreak("Best streak of all time: ([0-9])");
-            std::regex mostGamesWonSurvivorMode("Record number of games won \\(Survivor\\): ([0-9])");
-            std::regex mostGamesWonRegularMode("Record number of games won \\(Regular\\): ([0-9])");
-            std::regex mostGamesWonRegularModeOld("Record number of games won: ([0-9])");
-            std::regex mostGamesWonTimedMode("Record number of games won \\(Timed\\): ([0-9])");    
+            std::regex bestStreak("Best streak of all time: ([0-9]+)");
+            std::regex mostGamesWonSurvivorMode("Record number of games won \\(Survivor\\): ([0-9]+)");
+            std::regex mostGamesWonRegularMode("Record number of games won \\(Regular\\): ([0-9]+)");
+            std::regex mostGamesWonRegularModeOld("Record number of games won: ([0-9]+)");
+            std::regex mostGamesWonTimedMode("Record number of games won \\(Timed\\): ([0-9]+)");    
             std::cmatch cm;
             std::string::size_type maxStreak_str, recordNumberOfGamesSurvivorMode_str, recordNumberOfGamesRegular_str;
             std::string::size_type recordNumberOfGamesTimedMode_str;
