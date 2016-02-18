@@ -61,6 +61,10 @@ func(OutOfTime, "\nYou took too long to answer...Game Over.\nTime to make last g
 func(BoardRegularMode, userScoreRegularMode, totalGames)
 #undef func
 
+#define func(n) void score##n(si modeScore, d gamesPlayed){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << modeScore << "  |            " << std::setprecision(0) << gamesPlayed << "                   |           " << std::setprecision(2) <<(d(d(modeScore)/d(gamesPlayed)) * 100) << "\%      \n";}
+func(Board)
+#undef func
+
 #define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived: " << a << " rounds\n";}
 func(BoardSurvivorMode, userScoreSurvivorMode)
 func(BoardTimedMode, userScoreTimedMode)
@@ -324,7 +328,7 @@ class word
                 if(m_firstGuessLettersMapIT->second == m_firstGuessLettersMapCount)
                 {
                     std::cout << "\nMost frequent letter(s) to be guessed first: " << m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_firstGuessLettersMapIT->second<<"\n";
-                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "\% in " << std::setprecision(0) << m_numberOfGames << " game(s).\n";
+                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (float)(m_letterWasInWord/m_numberOfGames) * 100 << "\% in " << std::setprecision(0) << m_numberOfGames << " game(s).\n";
                 }
             }
         }
@@ -421,6 +425,7 @@ class word
         void resetRegularModeGames()
         {
             totalGames = 0;
+            m_numberOfGames = 0.00;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -570,7 +575,7 @@ class word
                 if(userScoreSurvivorMode > getRecordNumberOfGamesWonSurvivorMode())
                 {
                     setRecordNumberOfGamesSurvivorMode(userScoreSurvivorMode);
-                    resetSurvivorModeScore();
+                    // resetSurvivorModeScore();
                 }
                 
                 if(userScoreRegularMode > getRecordNumberOfGamesWonRegularMode())
@@ -579,7 +584,7 @@ class word
                 if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
                 {
                     setRecordNumberOfGamesTimedMode(userScoreTimedMode);
-                    resetTimedModeScore();
+                    // resetTimedModeScore();
                 }
 
                 remove(fileName.c_str());
@@ -592,7 +597,7 @@ class word
                 if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
                 {
                     setRecordNumberOfGamesTimedMode(userScoreTimedMode);
-                    resetTimedModeScore();
+                    // resetTimedModeScore();
                 }
 
                 remove(fileName.c_str());
@@ -602,7 +607,7 @@ class word
                 if(userScoreTimedMode > getRecordNumberOfGamesWonTimedMode())
                 {
                     setRecordNumberOfGamesTimedMode(userScoreTimedMode);
-                    resetTimedModeScore();
+                    // resetTimedModeScore();
                 }
                 remove(fileName.c_str());
             }
@@ -730,13 +735,13 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-       	float getAverageTimeToGuessTracker() const
+       	d getAverageTimeToGuessTracker() const
         {
         	// std::cout << "\nMguess count: " << m_guessCount << "\n";
         	if(m_guessCount == 0 || getAverageTimeDifferenceToGuessTracker() == 0)
         		return getAverageTimeDifferenceToGuessTracker();
         	else
-            	return ((float) getAverageTimeDifferenceToGuessTracker() / (float) (m_guessCount));
+            	return ((d) getAverageTimeDifferenceToGuessTracker() / (d) (m_guessCount));
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -756,11 +761,12 @@ class word
             updateRecordBook();
             
             std::cout << std::endl; 
-            if(!survivorModeEnabled() && !timedModeEnabled())
-            {
+            if(regularModeEnabled())
                 scoreBoardRegularMode();
-                std::cout << std::endl; 
-            }
+            else if(survivorModeEnabled())
+            	scoreBoard(userScoreSurvivorMode, m_numberOfGames);
+            else
+            	scoreBoard(userScoreTimedMode, m_numberOfGames);
 
             lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
 
