@@ -41,9 +41,12 @@ sig_atomic_t userScoreRegularMode = 0;
 sig_atomic_t totalGames = 0;
 
 #define func(n, a, b, c) void declare##n(int param){std::cout << a ; ++b; ++c;}
-func(UserWinsRoundSurvivorMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreSurvivorMode, totalGames)
 func(UserWinsRoundRegularMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreRegularMode, totalGames)
-func(UserWinsRoundTimedMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreTimedMode, totalGames)
+#undef func
+
+#define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}
+func(UserWinsRoundSurvivorMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreSurvivorMode)
+func(UserWinsRoundTimedMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe correct word was: ", userScoreTimedMode)
 #undef func
 
 #define func(n, a, b) void declare##n(int param){std::cout << a ; ++b;}

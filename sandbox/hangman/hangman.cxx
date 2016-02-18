@@ -70,7 +70,7 @@ si main()
                 if(!guess.survivorModeEnabled())
                 {
                     guess.setSurvivorMode();
-                    guess.resetSurvivorModeScore();
+                    // guess.resetSurvivorModeScore();
                     guess.resetFirstGuessLettersMap();
                     guess.resetAverageTimeDifferenceToGuessTracker();
                 }
@@ -94,7 +94,7 @@ si main()
                 if(!guess.timedModeEnabled())
                 {
                     guess.setTimedMode();
-                    guess.resetTimedModeScore();
+                    //guess.resetTimedModeScore();
                     guess.resetFirstGuessLettersMap();
                     guess.resetAverageTimeDifferenceToGuessTracker();
                 }
