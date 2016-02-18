@@ -66,6 +66,7 @@ si main()
                 if(guess.timedModeEnabled())
                     guess.setTimedMode();
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should be): " << guess.survivorModeEnabled() << "\n***\n";
+                
                 break;
         case 2:
                 if(!guess.displayTimedModeRule())
@@ -390,6 +391,10 @@ si main()
         //timed mode continue play
         else if(guess.timedModeEnabled())
         {
+            if(!guess.userRespondedInTime())
+            {
+                declareOutOfTime(guess.getAverageTimeToGuessTracker(), guess.getWord());
+            }
             if(userWonRound)
                 userResponse[0] = 'y';
             else
@@ -447,12 +452,18 @@ si main()
     {
         guess.getStats();
         guess.resetSurvivorModeScore();
+        guess.resetTries();
+        guess.resetFirstGuessLettersMap();
+        guess.resetAverageTimeDifferenceToGuessTracker();
         goto gameModeMenu;
     }
     else if(guess.timedModeEnabled())
     {
         guess.getStats();
         guess.resetTimedModeScore();
+        guess.resetTries();
+        guess.resetFirstGuessLettersMap();
+        guess.resetAverageTimeDifferenceToGuessTracker();
         goto gameModeMenu;
     }
     else 

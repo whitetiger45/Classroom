@@ -50,6 +50,9 @@ func(UserWinsRoundTimedMode, "\n\t**********\n\t*You win!*\n\t**********\n\nThe 
 func(OutOfGuesses, "\nSorry, you are out of guesses...\n\nThe word was: ", totalGames)
 #undef func
 
+#define func(n, a, b, c) void declare##n(si param1, std::string param2){std::cout << a  << param1 << " seconds." << b <<  param2 << std::endl; ++c;}
+func(OutOfTime, "\nYou took too long to answer...Game Over.\nTime to make last guess: ", "\n\nThe word was: ", totalGames)
+#undef func
 
 #define func(n, a, b) void score##n(){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << a << "  |            " << b << "                   |           " << std::setprecision(2) <<(d(d(a)/d(b)) * 100) << "\%      \n";}
 func(BoardRegularMode, userScoreRegularMode, totalGames)
@@ -216,19 +219,19 @@ class word
 
         void trackDictionaryLetters(std::string dictionaryWord)
         {
-                dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin();
+                m_dictionaryWordLettersMapIT = m_dictionaryWordLettersMap.begin();
                 for(auto c: dictionaryWord)
                 {
-                    dictionaryWordLettersMapIT = dictionaryWordLettersMap.find(c);
-                    if(dictionaryWordLettersMapIT != dictionaryWordLettersMap.end())
+                    m_dictionaryWordLettersMapIT = m_dictionaryWordLettersMap.find(c);
+                    if(m_dictionaryWordLettersMapIT != m_dictionaryWordLettersMap.end())
                     {
-                        dictionaryWordLettersMapIT->second++;
+                        m_dictionaryWordLettersMapIT->second++;
                     }
                     else
-                        dictionaryWordLettersMap[c] = 1;
+                        m_dictionaryWordLettersMap[c] = 1;
                      
-                    if(dictionaryWordLettersMapIT->second > dictionaryLettersMapmostFrequentCount)
-                        dictionaryLettersMapmostFrequentCount = dictionaryWordLettersMapIT->second;
+                    if(m_dictionaryWordLettersMapIT->second > dictionaryLettersMapmostFrequentCount)
+                        dictionaryLettersMapmostFrequentCount = m_dictionaryWordLettersMapIT->second;
                 }
         }
 //-----------------------------------------------------------------------------------------------------------------------
@@ -236,13 +239,13 @@ class word
         std::string getMostFrequentLetterFromDictionaryWord()
         {
             std::string ret;
-           for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
+           for(m_dictionaryWordLettersMapIT = m_dictionaryWordLettersMap.begin(); m_dictionaryWordLettersMapIT != m_dictionaryWordLettersMap.end(); m_dictionaryWordLettersMapIT++)
            {
-               if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+               if(m_dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
                {
                    ret = "\nMost frequent letter(s) to appear in the dictionary words this session: ";
-                   ret+= dictionaryWordLettersMapIT->first;
-                   ret+= "\n# of times it appeard: " + std::to_string(dictionaryWordLettersMapIT->second) + "\n";
+                   ret+= m_dictionaryWordLettersMapIT->first;
+                   ret+= "\n# of times it appeard: " + std::to_string(m_dictionaryWordLettersMapIT->second) + "\n";
                }
            }
            return ret;
@@ -251,10 +254,10 @@ class word
 
         void printMostFrequentLettersFromDictionaryWord()
         {
-            for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
+            for(m_dictionaryWordLettersMapIT = m_dictionaryWordLettersMap.begin(); m_dictionaryWordLettersMapIT != m_dictionaryWordLettersMap.end(); m_dictionaryWordLettersMapIT++)
             {
-               if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
-                   std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << dictionaryWordLettersMapIT->second << "\n";
+               if(m_dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+                   std::cout << "\nMost frequent letter(s) to appear in the dictionary words this session: " << m_dictionaryWordLettersMapIT->first << "\n# of times it appeard: " << m_dictionaryWordLettersMapIT->second << "\n";
             }
         }
 //-----------------------------------------------------------------------------------------------------------------------
@@ -262,8 +265,8 @@ class word
         si checkDictionaryMapLettersEqualToMaxCount()
         {
             si total = 0;
-            for(dictionaryWordLettersMapIT = dictionaryWordLettersMap.begin(); dictionaryWordLettersMapIT != dictionaryWordLettersMap.end(); dictionaryWordLettersMapIT++)
-                if(dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
+            for(m_dictionaryWordLettersMapIT = m_dictionaryWordLettersMap.begin(); m_dictionaryWordLettersMapIT != m_dictionaryWordLettersMap.end(); m_dictionaryWordLettersMapIT++)
+                if(m_dictionaryWordLettersMapIT->second == dictionaryLettersMapmostFrequentCount)
                     total++;
             return total;
         }
@@ -283,7 +286,7 @@ class word
             firstGuessMessageMap[1] = "\nGood guess!\n";
             firstGuessMessageMap[2] = "\nKeep it up!\n";
             firstGuessMessageMap[3] = "\nWow...nice!\n";
-            m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin();
+            m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin();
             srand(time(NULL));
 
             for(auto c: getWord())
@@ -297,30 +300,37 @@ class word
                }
             }
 
-            m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.find(value);
+            m_firstGuessLettersMapIT = m_firstGuessLettersMap.find(value);
 
-            if(m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end())
+            if(m_firstGuessLettersMapIT != m_firstGuessLettersMap.end())
             {
-                m_m_firstGuessLettersMapIT->second++;
+                m_firstGuessLettersMapIT->second++;
             }
             else
                 m_firstGuessLettersMap[value] = 1;
              
-            if(m_m_firstGuessLettersMapIT->second > m_m_firstGuessLettersMapCount)
-                m_m_firstGuessLettersMapCount = m_m_firstGuessLettersMapIT->second;
+            if(m_firstGuessLettersMapIT->second > m_firstGuessLettersMapCount)
+                m_firstGuessLettersMapCount = m_firstGuessLettersMapIT->second;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
         void getFirstGuessAccuracy()
         {
-            for(m_m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin(); m_m_firstGuessLettersMapIT != m_firstGuessLettersMap.end(); m_m_firstGuessLettersMapIT++)
+            for(m_firstGuessLettersMapIT = m_firstGuessLettersMap.begin(); m_firstGuessLettersMapIT != m_firstGuessLettersMap.end(); m_firstGuessLettersMapIT++)
             {
-                if(m_m_firstGuessLettersMapIT->second == m_m_firstGuessLettersMapCount)
+                if(m_firstGuessLettersMapIT->second == m_firstGuessLettersMapCount)
                 {
-                    std::cout << "\nMost frequent letter(s) to be guessed first: " << m_m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_m_firstGuessLettersMapIT->second<<"\n";
-                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n\n";
+                    std::cout << "\nMost frequent letter(s) to be guessed first: " << m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_firstGuessLettersMapIT->second<<"\n";
+                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n";
                 }
             }
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void resetFirstGuessLettersMap()
+        {
+  			m_firstGuessLettersMap.clear();
+  			m_firstGuessLettersMapCount = 0;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -426,18 +436,31 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-        tf displayTimedModeRule()
-        {   
-            std::cout << std::endl;
-            lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
-            std::cout << "\nAttention:\n\nIn this mode, you must make your guess within 5 seconds or you will lose the round.";
-            std::cout << "\nThe timer will start once you see 'U: ', and it will stop once you have entered a letter.\n\n";
-            lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
+        void setDisplayedRulesOnce()
+        {
+            m_displayedRulesOnce = (m_displayedRulesOnce) ? false : true;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
 
-            if(!m_displayedRulesOnce)
-                m_displayedRulesOnce = true;
-
+        tf alreadyDisplayedRulesOnce()
+        {
             return m_displayedRulesOnce;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        tf displayTimedModeRule()
+        { 
+            if(alreadyDisplayedRulesOnce())
+            	return alreadyDisplayedRulesOnce();
+
+	        std::cout << std::endl;
+	        lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
+	        std::cout << "\nAttention:\n\nIn this mode, you must make your guess within 5 seconds or you will lose the round.";
+	        std::cout << "\nThe timer will start once you see 'U: ', and it will stop once you have entered a letter.\n\n";
+	        lineWrapper(std::string("\nAttention: In this mode, you must make your guess within 5 seconds or you will lose the round\n"), '*');
+	        setDisplayedRulesOnce();
+
+            return alreadyDisplayedRulesOnce();
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -624,7 +647,7 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-        si getMinuteBeforeGuess() const
+       	si getMinuteBeforeGuess() const
         {
             return m_clockMinuteBeforeGuess;
         }
@@ -653,12 +676,15 @@ class word
 
         si getDifferenceBetweenGuessClocks() const
         {
-            if(getMinuteBeforeGuess() == getMinuteAfterGuess())
+            if((getMinuteAfterGuess() - getMinuteBeforeGuess()) == 0) 
             {
                 return abs(getSecondsAfterGuess() - getSecondsBeforeGuess());
             }
             else
-                return abs((getSecondsAfterGuess() + 60) - getSecondsBeforeGuess());
+            {
+            	si numberOfSecondsToMultiplySixtyBy = ( getMinuteAfterGuess() - getMinuteBeforeGuess() );
+            	return abs( ( getSecondsAfterGuess() + ( numberOfSecondsToMultiplySixtyBy * 60 ) - getSecondsBeforeGuess() ) );
+            }
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -668,18 +694,25 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
+        void resetAverageTimeDifferenceToGuessTracker() 
+        {
+            m_averageTimeDifferenceBetweenGuesses = 0;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
         si getAverageTimeDifferenceToGuessTracker() const
         {
             return m_averageTimeDifferenceBetweenGuesses;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
-       	si getAverageTimeToGuessTracker() const
+       	float getAverageTimeToGuessTracker() const
         {
-        	if(m_guessCount == 0)
+        	// std::cout << "\nMguess count: " << m_guessCount << "\n";
+        	if(m_guessCount == 0 || getAverageTimeDifferenceToGuessTracker() == 0)
         		return getAverageTimeDifferenceToGuessTracker();
         	else
-            	return (getAverageTimeDifferenceToGuessTracker() / m_guessCount);
+            	return ((float) getAverageTimeDifferenceToGuessTracker() / (float) (m_guessCount));
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -687,8 +720,6 @@ class word
         {
             if(getDifferenceBetweenGuessClocks() > 5)
             {
-                std::cout << "\nYou took too long to answer...Game Over\n";
-                std::cout << "Your answer time: " << getDifferenceBetweenGuessClocks() << " seconds.\n";
                 return false;
             }
             else
@@ -727,11 +758,11 @@ class word
 
             getFirstGuessAccuracy();
 
-            std::cout << "# of times first guess was correct and user won the round: ";
+            std::cout << "\n# of times first guess was correct and user won the round: ";
             std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
             //testing 
-            std::cout << "\nAverage time to make a guess: " << getAverageTimeToGuessTracker() << " seconds\n";
+            std::cout << "\nAverage time to make a guess this round: " << std::setprecision(1) << getAverageTimeToGuessTracker() << " seconds\n";
 
             updateRecordBook();
 
@@ -761,14 +792,14 @@ class word
         si m_triesLeft = 6;
         HangmanDictionary m_dictionary;
 
-        LetterTrackingMap dictionaryWordLettersMap;
-        LetterTrackingMapIT dictionaryWordLettersMapIT;
+        LetterTrackingMap m_dictionaryWordLettersMap;
+        LetterTrackingMapIT m_dictionaryWordLettersMapIT;
         si dictionaryLettersMapmostFrequentCount = 1;
 
         LetterTrackingMap m_firstGuessLettersMap;
-        LetterTrackingMapIT m_m_firstGuessLettersMapIT;
+        LetterTrackingMapIT m_firstGuessLettersMapIT;
         tf m_firstGuessWasCorrect = false;
-        si m_m_firstGuessLettersMapCount = 1;
+        si m_firstGuessLettersMapCount = 1;
         d m_letterWasInWord = 0.00;
         d m_numberOfGames = 0.00;
         si m_firstGuessToWonRoundConversionTracker = 0;
@@ -782,7 +813,7 @@ class word
         si m_averageTimeDifferenceBetweenGuesses = 0;
 
         //timed play stuff
-        tf m_displayedRulesOnce = false;
+        tf m_displayedRulesOnce;
 };
 
 #endif // HANGMAN_HXX
