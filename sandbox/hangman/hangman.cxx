@@ -61,12 +61,19 @@ si main()
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
-                
-                if(!guess.survivorModeEnabled())
-                    guess.setSurvivorMode();
-                
+                                
                 if(guess.timedModeEnabled())
                     guess.setTimedMode();
+                else if(guess.regularModeEnabled())
+                    guess.setRegularMode();
+
+                if(!guess.survivorModeEnabled())
+                {
+                    guess.setSurvivorMode();
+                    guess.resetSurvivorModeScore();
+                    guess.resetFirstGuessLettersMap();
+                    guess.resetAverageTimeDifferenceToGuessTracker();
+                }
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should be): " << guess.survivorModeEnabled() << "\n***\n";
                 
                 break;
@@ -78,12 +85,19 @@ si main()
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
-
-                if(!guess.timedModeEnabled())
-                    guess.setTimedMode();
                 
                 if(guess.survivorModeEnabled())
                     guess.setSurvivorMode();
+                else if(guess.regularModeEnabled())
+                    guess.setRegularMode();                
+
+                if(!guess.timedModeEnabled())
+                {
+                    guess.setTimedMode();
+                    guess.resetTimedModeScore();
+                    guess.resetFirstGuessLettersMap();
+                    guess.resetAverageTimeDifferenceToGuessTracker();
+                }
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 3:
@@ -92,10 +106,21 @@ si main()
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
+
                 if(guess.survivorModeEnabled())
                     guess.setSurvivorMode();
                 else if(guess.timedModeEnabled())
                     guess.setTimedMode();
+
+                if(!guess.regularModeEnabled())
+                {
+                    guess.setRegularMode();
+                    guess.resetRegularModeGames();
+                    guess.resetFirstGuessLettersMap();
+                    guess.resetAverageTimeDifferenceToGuessTracker();
+                }
+
+
                 // cout << "\n***DEBUG\nSurvivor Mode Enabled (Should not be): " << guess.survivorModeEnabled() << "\n***\n";
                 break;
         case 4:

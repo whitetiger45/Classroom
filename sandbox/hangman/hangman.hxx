@@ -321,7 +321,7 @@ class word
                 if(m_firstGuessLettersMapIT->second == m_firstGuessLettersMapCount)
                 {
                     std::cout << "\nMost frequent letter(s) to be guessed first: " << m_firstGuessLettersMapIT->first << "\nNumber of times guessed first: "<< m_firstGuessLettersMapIT->second<<"\n";
-                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "%\n";
+                    std::cout << "\nFirst guess accuracy: " << std::setprecision(2) << (m_letterWasInWord/m_numberOfGames) * 100 << "\% in " << std::setprecision(0) << m_numberOfGames << " game(s).\n";
                 }
             }
         }
@@ -330,7 +330,8 @@ class word
         void resetFirstGuessLettersMap()
         {
   			m_firstGuessLettersMap.clear();
-  			m_firstGuessLettersMapCount = 0;
+  			m_firstGuessLettersMapCount = 1;
+            m_letterWasInWord = 0.00;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -414,6 +415,12 @@ class word
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
+        void resetRegularModeGames()
+        {
+            totalGames = 0;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
         void setSurvivorMode()
         {   
             m_survivorModeEnabled = (m_survivorModeEnabled) ? false : true;
@@ -463,6 +470,18 @@ class word
 	        setDisplayedRulesOnce();
 
             return alreadyDisplayedRulesOnce();
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        tf regularModeEnabled() const
+        {
+            return m_regularModeEnabled;
+        }
+//-----------------------------------------------------------------------------------------------------------------------
+
+        void setRegularMode()
+        {
+            m_regularModeEnabled = (m_regularModeEnabled) ? false : true;
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -780,6 +799,7 @@ class word
 
         tf m_survivorModeEnabled = false;
         tf m_timedModeEnabled = false;
+        tf m_regularModeEnabled = false;
         l m_word[256];
         l m_incompleteWord[256];
         l m_guessedLetters[26];
