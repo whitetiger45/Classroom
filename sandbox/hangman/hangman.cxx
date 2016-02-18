@@ -57,9 +57,11 @@ si main()
         case 1:
                 // survivorModeEnabled = true;
                 guess.resetTries();
+                
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
+                
                 if(!guess.survivorModeEnabled())
                     guess.setSurvivorMode();
                 
@@ -71,10 +73,12 @@ si main()
         case 2:
                 if(!guess.displayTimedModeRule())
                     guess.displayTimedModeRule();
+                
                 guess.resetTries();
                 correctOrSameGuessCounter = 0;
                 userWonRound = false;
                 guess.resetFirstGuessWasCorrectValue();
+
                 if(!guess.timedModeEnabled())
                     guess.setTimedMode();
                 
@@ -455,6 +459,7 @@ si main()
         guess.resetTries();
         guess.resetFirstGuessLettersMap();
         guess.resetAverageTimeDifferenceToGuessTracker();
+        streak = 0;
         goto gameModeMenu;
     }
     else if(guess.timedModeEnabled())
@@ -464,6 +469,7 @@ si main()
         guess.resetTries();
         guess.resetFirstGuessLettersMap();
         guess.resetAverageTimeDifferenceToGuessTracker();
+        streak = 0;
         goto gameModeMenu;
     }
     else 
