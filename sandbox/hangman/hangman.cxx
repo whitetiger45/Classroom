@@ -30,6 +30,7 @@ si main()
     string line;
     tf playAgain = false;
     tf userWonRound = false, survivorModeEnabled = false;
+    tf inGame = false;
     l userResponse[1];
     l userGuess[1];
     si getWordAtLocation = 0, correctOrSameGuessCounter = 0, userSubMenuResponseI = 0, streak = 0;
@@ -40,6 +41,7 @@ si main()
     showTitle();
 
     gameModeMenu:
+
     showMenu();
     string userGameModeMenuResponse_str;
     cout << "User: "; cin >> userGameModeMenuResponse_str;
@@ -155,6 +157,36 @@ si main()
 
 
             main_menu:
+            if(guess.survivorModeEnabled())
+            {
+                cout << endl;
+                string sectionWrapper = "* Survivor Mode *";
+                lineWrapper(sectionWrapper, '*');
+                // cout << "Survivor Mode*\n";
+                string sMode = "* Survivor Mode ";
+                addWhiteSpaceAndEndlChar(sMode,sectionWrapper, sectionWrapper.length());
+                lineWrapper(sectionWrapper, '*');
+            }
+            else if(guess.timedModeEnabled())
+            {
+                string sectionWrapper = "* Timed Mode *";
+                string tMode = "* Timed Mode ";
+                cout << endl;
+                lineWrapper(sectionWrapper, '*');
+                // cout << "Timed Mode*\n";
+                addWhiteSpaceAndEndlChar(tMode, sectionWrapper, sectionWrapper.length());
+                lineWrapper(sectionWrapper, '*');
+            }
+            else if(guess.regularModeEnabled())
+            {
+                string sectionWrapper = "* Regular Mode *";
+                string rMode = "* Regular Mode ";
+                cout << endl;
+                lineWrapper(sectionWrapper, '*');
+                // cout << "Regular Mode*\n";
+                addWhiteSpaceAndEndlChar(rMode, sectionWrapper, sectionWrapper.length());
+                lineWrapper(sectionWrapper, '*');
+            }
 
             if(guess.getTriesLeft() == 0)
             {

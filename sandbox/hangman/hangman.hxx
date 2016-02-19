@@ -61,16 +61,26 @@ func(OutOfTime, "\nYou took too long to answer...Game Over.\nTime to make last g
 func(BoardRegularMode, userScoreRegularMode, totalGames)
 #undef func
 
-#define func(n) void score##n(si modeScore, d gamesPlayed){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << modeScore << "  |            " << std::setprecision(0) << gamesPlayed << "                   |           " << std::setprecision(2) <<(d(d(modeScore)/d(gamesPlayed)) * 100) << "\%      \n";}
+#define func(n) void score##n(si modeScore, d gamesPlayed){ std::cout << std::fixed << "\nWins | Total Games Played This Round  |     Win Percentage    \n  " << modeScore << "  |            " << std::setprecision(0) << gamesPlayed << "                   |          " << std::setprecision(2) <<(d(d(modeScore)/d(gamesPlayed)) * 100) << "\%      \n";}
 func(Board)
 #undef func
 
 #define func(n, a) void score##n(){ std::cout << std::fixed << "\nYou survived: " << a << " rounds\n";}
 func(BoardSurvivorMode, userScoreSurvivorMode)
 func(BoardTimedMode, userScoreTimedMode)
+#undef func
 //------------------------------------------------------------------------------------------------------------------------
 
 auto lineWrapper = [](std::string lineToWrap, l c){for(si i = 0; i < lineToWrap.size(); i++)std::cout << c; std::cout << "\n";};
+
+auto addWhiteSpaceAndEndlChar = 
+[](std::string &appendStr, std::string wrapperString, si i)
+	{
+		while(appendStr.length() < wrapperString.length()-1)
+		appendStr += " ";
+		appendStr += "*";
+		std::cout << appendStr << "\n";
+	};
 
 class word
 {
@@ -656,14 +666,30 @@ class word
 
         void showRecords()
         {
-            std::cout << "\n";
-            lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("   \n")), '*');
-            std::cout << "\t   High Scores\n";
-            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-            std::cout << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
-            std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
-            std::cout << "Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n\n";
-            lineWrapper(std::string("\nRecord number of games won (Survivor): " + getRecordNumberOfGamesWonSurvivorMode() + std::string("    \n")), '*');
+        	si i = getRecordNumberOfGamesWonSurvivorMode();
+        	std::string sectionWrapper = "\nRecord number of games won: " + std::to_string(i) + "\n";
+            std::cout << std::endl;
+            lineWrapper(sectionWrapper, '*');
+            // std::cout << "*\t High Scores\t     *\n";
+            std::string title = "*        High Scores";
+            addWhiteSpaceAndEndlChar(title, sectionWrapper, i);
+            lineWrapper(sectionWrapper, '*');            // std::cout << "* Record number of games won *\n";
+            std::string header1 = "* Record number of games won ";
+            addWhiteSpaceAndEndlChar(header1, sectionWrapper, i);
+            lineWrapper(sectionWrapper, '*');
+            //std::cout << "Timed: " << getRecordNumberOfGamesWonTimedMode();
+            // std::cout << "\nRegular: " << getRecordNumberOfGamesWonRegularMode();
+            // std::cout << "\nSurvivor: " << getRecordNumberOfGamesWonSurvivorMode() << "\n";
+            std::string tStr = "*        Timed: " + std::to_string(getRecordNumberOfGamesWonTimedMode());
+            std::string rStr = "*        Regular: " + std::to_string(getRecordNumberOfGamesWonRegularMode());
+            std::string sStr = "*        Survivor: " + std::to_string(getRecordNumberOfGamesWonSurvivorMode());
+            std::string recordStreak = "*      Record streak: " + std::to_string(getUsersBestStreakOfAllTime());
+	 		addWhiteSpaceAndEndlChar(tStr, sectionWrapper, i);
+	 		addWhiteSpaceAndEndlChar(rStr, sectionWrapper, i);
+	 		addWhiteSpaceAndEndlChar(sStr, sectionWrapper, i);
+            lineWrapper(sectionWrapper, '*');            // std::cout << "* Record streak: " << getUsersBestStreakOfAllTime() << "*\n";
+            addWhiteSpaceAndEndlChar(recordStreak, sectionWrapper, i);
+            lineWrapper(sectionWrapper, '*');
         }
 //-----------------------------------------------------------------------------------------------------------------------
 
@@ -783,9 +809,9 @@ class word
             else if(timedModeEnabled())
                 scoreBoardTimedMode();
 
-            std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode();
-            std::cout << " | Record number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
-            std::cout << " | Record number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode() << "\n";
+            // std::cout << "\nRecord number of games won (Timed): " << getRecordNumberOfGamesWonTimedMode();
+            // std::cout << "\nRecord number of games won (Regular): " << getRecordNumberOfGamesWonRegularMode();
+            // std::cout << "\nRecord number of games won (Survivor): " << getRecordNumberOfGamesWonSurvivorMode() << "\n";
 
             if(checkDictionaryMapLettersEqualToMaxCount() == 1)
                 std::cout << getMostFrequentLetterFromDictionaryWord();
@@ -794,17 +820,15 @@ class word
 
             getFirstGuessAccuracy();
 
-            std::cout << "\n# of times first guess was correct and user won the round: ";
+            std::cout << "\n# of times first guess was correct and you won the round: ";
             std::cout << m_firstGuessToWonRoundConversionTracker << "\n";
 
             //testing 
-            std::cout << "\nAverage time to make a guess this round: " << std::setprecision(1) << getAverageTimeToGuessTracker() << " seconds\n";
+            std::cout << "\nAverage time to make a guess: " << std::setprecision(1) << getAverageTimeToGuessTracker() << " seconds\n";
 
             updateRecordBook();
 
-            std::cout << "\nBest streak: " << getMaxStreak();
-            std::cout << " | Record streak of all time: " << getUsersBestStreakOfAllTime() << "\n";
-
+            std::cout << "\nBest streak: " << getMaxStreak() << "\n";
             lineWrapper(getMostFrequentLetterFromDictionaryWord(), '=');
         }
 
