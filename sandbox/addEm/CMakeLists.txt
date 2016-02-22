@@ -25,3 +25,5 @@ endif()
 SET ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 
 add_executable( ${PROJECT_NAME} ${addEm_SOURCES} ${addEm_HEADERS} )
+
+file( COPY presidents.txt DESTINATION presidentFile )
