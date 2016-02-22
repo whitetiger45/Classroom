@@ -315,7 +315,7 @@ int main()
             case 9:
             {
                 string line;
-                ifstream inputFile ("presidents.txt");
+                ifstream inputFile ("presidentFile/presidents.txt");
                 ofstream outputFile("results.txt");
                 std::smatch sm;
                 std::cmatch cm;
