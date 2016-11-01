@@ -21,8 +21,10 @@ public:
     typedef typename list<T>::iterator LibraryNode;//library node iterator
     typedef list< list<T> > myCompleteList;//this is the library node (doubly linked list)
     typedef typename list< list<T> >::iterator myCompleteListIter;//library node iterator
+    typedef typename list< list<T> >::reverse_iterator myCompleteListReverseIter;//library node iterator
     typedef list<T> Item;//item node
     typedef typename list<T>::iterator ItemNode;//item node iterator
+    typedef typename list<T>::reverse_iterator ItemNodeReversed;//reverse item node iterator
     typedef list< list<T> > Category;//this is the node that will store the library nodes that contain the item nodes
     typedef typename list< list<T> >::iterator CategoryNode;//this will iterate through the correspondance list
 
@@ -64,9 +66,12 @@ public:
             string cat = *m_libIter;
             unsigned int count = librarySize(cat);
             cout<<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
-            for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            // for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            //want to reverse the printing of the list items
+            for(m_myCompleteListIterToItemReverseIterator = (*m_myCompleteListIterator).rbegin(); m_myCompleteListIterToItemReverseIterator != (*m_myCompleteListIterator).rend(); m_myCompleteListIterToItemReverseIterator++)
             {
-                string catCheck = *m_myCompleteListIterToItemIterator;
+                // string catCheck = *m_myCompleteListIterToItemIterator;
+                string catCheck = *m_myCompleteListIterToItemReverseIterator;
                 string subjectAsString("Subject: ");
                 string categoryAsString("Category: \n");
                 if(catCheck.find(cat) != string::npos)
@@ -109,9 +114,14 @@ public:
                 string cat = *m_libIter;
                 unsigned int count = librarySize(cat);
                 outputFile <<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
-                for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+                // for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+                // {
+                //     string catCheck = *m_myCompleteListIterToItemIterator;
+                //want to reverse the printing of the list items
+                for(m_myCompleteListIterToItemReverseIterator = (*m_myCompleteListIterator).rbegin(); m_myCompleteListIterToItemReverseIterator != (*m_myCompleteListIterator).rend(); m_myCompleteListIterToItemReverseIterator++)
                 {
-                    string catCheck = *m_myCompleteListIterToItemIterator;
+                    // string catCheck = *m_myCompleteListIterToItemIterator;
+                    string catCheck = *m_myCompleteListIterToItemReverseIterator;
                     string subjectAsString("Subject: ");
                     string categoryAsString("Category: \n");
                     if(catCheck.find(cat) != string::npos)
@@ -220,9 +230,14 @@ public:
         unsigned int count = librarySize(category);
         cout << "\nYour Lists:\n==========================\n" ;
         cout<<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
-        for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+        // for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+        // {
+        //     string catCheck = *m_myCompleteListIterToItemIterator;
+        //want to reverse the printing of the list items
+        for(m_myCompleteListIterToItemReverseIterator = (*m_myCompleteListIterator).rbegin(); m_myCompleteListIterToItemReverseIterator != (*m_myCompleteListIterator).rend(); m_myCompleteListIterToItemReverseIterator++)
         {
-            string catCheck = *m_myCompleteListIterToItemIterator;
+            // string catCheck = *m_myCompleteListIterToItemIterator;
+            string catCheck = *m_myCompleteListIterToItemReverseIterator;
             string subjectAsString("Subject: ");
             string categoryAsString("Category: \n");
             if(catCheck.find(category) != string::npos)
@@ -401,9 +416,14 @@ public:
         {
             outputFile << "\nYour Lists:\n==========================\n" ;
             outputFile <<"Category: " << *m_libIter << "\n# of items (" << count << ")\n________________________\n";
-            for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            // for(m_myCompleteListIterToItemIterator = (*m_myCompleteListIterator).begin(); m_myCompleteListIterToItemIterator != (*m_myCompleteListIterator).end(); m_myCompleteListIterToItemIterator++)
+            // {
+            //     string catCheck = *m_myCompleteListIterToItemIterator;
+            //want to reverse the printing of the list items
+            for(m_myCompleteListIterToItemReverseIterator = (*m_myCompleteListIterator).rbegin(); m_myCompleteListIterToItemReverseIterator != (*m_myCompleteListIterator).rend(); m_myCompleteListIterToItemReverseIterator++)
             {
-                string catCheck = *m_myCompleteListIterToItemIterator;
+                // string catCheck = *m_myCompleteListIterToItemIterator;
+                string catCheck = *m_myCompleteListIterToItemReverseIterator;
                 string subjectAsString("Subject: ");
                 string categoryAsString("Category: \n");
                 if(catCheck.find(category) != string::npos)
@@ -613,6 +633,7 @@ public:
     myCompleteList m_myCompleteList;
     myCompleteListIter m_myCompleteListIterator;
     ItemNode m_myCompleteListIterToItemIterator;
+    ItemNodeReversed m_myCompleteListIterToItemReverseIterator;
     Item m_item;//this is the item node for the complete list
     ItemNode m_itemIter;//this is the item node iterator
     Category m_categoryNode;//this contains the library nodes that contain the items
