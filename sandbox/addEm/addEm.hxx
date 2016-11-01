@@ -21,7 +21,6 @@ public:
     typedef typename list<T>::iterator LibraryNode;//library node iterator
     typedef list< list<T> > myCompleteList;//this is the library node (doubly linked list)
     typedef typename list< list<T> >::iterator myCompleteListIter;//library node iterator
-    typedef typename list< list<T> >::reverse_iterator myCompleteListReverseIter;//library node iterator
     typedef list<T> Item;//item node
     typedef typename list<T>::iterator ItemNode;//item node iterator
     typedef typename list<T>::reverse_iterator ItemNodeReversed;//reverse item node iterator
