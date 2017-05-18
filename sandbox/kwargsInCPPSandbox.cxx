@@ -87,7 +87,7 @@ int main()
     x[1] = 4.5;
     map <int,double>::iterator xi = x.begin();
 
-    // f(2, 1.1,"hello",xi); // OK: args contains two arguments: int and double
+    f(2, 1.1,"hello",xi,'h','i'); // OK: args contains two arguments: int and double
     // f(2, 1.1,"hello"); // OK: args contains two arguments: int and double
     f("hello", "world", 9,18, "goodbye");
     return 0;
