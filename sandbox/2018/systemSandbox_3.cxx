@@ -10,14 +10,14 @@ int main()
     "&& ( python tmp.py ) ) || ( python tmp.py ) ";
  
     string _shell1 = "( ! ( test -e tmp.sh ) ) && ( ( echo \"!#/bin/bash\\n\\n"
-    "a=\\\"hello world from bash\\\"\\n\\necho \\\"$a\\\"\\n\\n\" > tmp.sh ) "
+    "a=\\\"hello world from bash\\\"\\n\\necho \\\"\\\$a\\\"\\n\\n\" > tmp.sh ) "
     "&& ( ( chmod u+x tmp.sh ) && ( ./tmp.sh) ) ) || ( ./tmp.sh ) ";
  
-    string _shell2 = "( ! ( test -e tmp.sh ) ) && ( ( echo \"!#/bin/bash\\n\\n"
-    "a=\\\"hello world from bash\\\"\\n\\necho \\\"$a\\\"\\n\\n\" > tmp.sh ) "
-    "&& ( bash tmp.sh ) ) || ( bash tmp.sh ) ";
+    string _shell2 = "( ! ( test -e tmp.sh ) ) && ( ( echo \"# Some stuff could go here, in this comment.\\n\\n" 
+    "a=\\\"hello world from bash\\\"\\n\\necho \\\"\\\$a\\\"\\n\\n\" > tmp.sh ) "
+    "&& ( sh tmp.sh ) ) || ( sh tmp.sh ) ";
  
-    const char * command = _python.c_str();
+    const char * command = _shell2.c_str();
     cout << "1) " << _python << "\n\n2) " << _shell1 << "\n\n3) " << _shell2 << "\n";
  
     system(command);
