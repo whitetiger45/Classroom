@@ -1,0 +1,71 @@
+			8d 85 1c          // LEA        EAX,[EBP + 0xfffecb1c]
+			cb fe ff
+
+			89 44 24 04       // MOV        dword ptr [ESP + 0x4],EAX
+
+			c7 04 24          // MOV        dword ptr [ESP],0x0
+			00 00 00 00
+
+			a1 0c d1          // MOV        EAX,[->KERNEL32.DLL::CreateProcessA]             = 0001d1a6
+			41 00
+
+			ff d0             // CALL       EAX=>KERNEL32.DLL::CreateProcessA
+
+			83 ec 28          // SUB        ESP,0x28
+
+			8b 85 fc          // MOV        EAX,dword ptr [EBP + local_3408]
+			cb ff ff
+
+			c7 44 24          // MOV        dword ptr [ESP + 0x4],0xffffffff
+			04 ff ff 
+			ff ff
+
+			89 04 24          // MOV        dword ptr [ESP],EAX
+
+			a1 1c d1          // MOV        EAX,[->KERNEL32.DLL::WaitForSingleObject]        = 0001d1f0
+			41 00
+
+			ff d0             // CALL       EAX=>KERNEL32.DLL::WaitForSingleObject
+
+			83 ec 08          // SUB        ESP,0x8
+
+			8b 85 fc          // MOV        EAX,dword ptr [EBP + local_3408]
+			cb ff ff
+
+			89 04 24          // MOV        dword ptr [ESP],EAX
+
+			a1 08 d1          // MOV        EAX,[->KERNEL32.DLL::CloseHandle]                = 0001d198
+			41 00
+
+			ff d0             // CALL       EAX=>KERNEL32.DLL::CloseHandle
+
+			83 ec 04          // SUB        ESP,0x4
+
+			8b 85 00          // MOV        EAX,dword ptr [EBP + local_3404]
+			cc ff ff
+
+			89 04 24          // MOV        dword ptr [ESP],EAX
+
+			a1 08 d1          // MOV        EAX,[->KERNEL32.DLL::CloseHandle]                = 0001d198
+			41 00
+
+			ff d0             // CALL       EAX=>KERNEL32.DLL::CloseHandle
+
+			83 ec 04          // SUB        ESP,0x4
+
+			e9 c3 cc          // JMP        LAB_004012ec
+			ff ff
+
+			              // LAB_00404629                                    XREF[1]:     00404452(j)  
+
+			c7 44 24          // MOV        dword ptr [ESP + 0x4],DAT_00406121               = 72h    r
+			04 21 61 
+			40 00
+
+			8d 85 1c          // LEA        EAX,[EBP + 0xfffe6b1c]
+			6b fe ff
+
+			89 04 24          // MOV        dword ptr [ESP],EAX
+
+			e8 c1 c9          // CALL       FUN_00401000                                     uint FUN_00401000(char * param_1
+			ff ff
