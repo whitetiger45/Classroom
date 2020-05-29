@@ -1,0 +1,17 @@
+Bad key generated: e80:6#>$i5
+Invalid sum: 608
+Regenerating...
+---------------------------
+Bad key generated: 5q'@0xqj8}<
+Invalid sum: 890
+Regenerating...
+---------------------------
+Bad key generated: }@tSW^!MaZG
+Invalid sum: 991
+Regenerating...
+---------------------------
+Valid key: Z\?^lXqlttU
+length: 11
+Valid sum: 1078
+points remaining (target-sum): -78
+Number of invalid keys generated before valid key found: 3
