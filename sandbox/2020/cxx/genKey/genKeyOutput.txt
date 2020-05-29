@@ -1,17 +1,409 @@
-Bad key generated: e80:6#>$i5
-Invalid sum: 608
+Bad key generated: KAKBWLGRo1
+Invalid sum: 757
 Regenerating...
 ---------------------------
-Bad key generated: 5q'@0xqj8}<
-Invalid sum: 890
+Bad key generated: 1gg<qroaAX
+Invalid sum: 903
 Regenerating...
 ---------------------------
-Bad key generated: }@tSW^!MaZG
-Invalid sum: 991
+Bad key generated: X9_8k$dSnn
+Invalid sum: 842
 Regenerating...
 ---------------------------
-Valid key: Z\?^lXqlttU
-length: 11
-Valid sum: 1078
-points remaining (target-sum): -78
-Number of invalid keys generated before valid key found: 3
+Bad key generated: nvnMGd#vjD
+Invalid sum: 913
+Regenerating...
+---------------------------
+Bad key generated: DZU?J[nKTI
+Invalid sum: 813
+Regenerating...
+---------------------------
+Bad key generated: Ih.W2yMh&o
+Invalid sum: 811
+Regenerating...
+---------------------------
+Bad key generated: o:^IZv)soj
+Invalid sum: 917
+Regenerating...
+---------------------------
+Bad key generated: jX:M=_w+}p
+Invalid sum: 884
+Regenerating...
+---------------------------
+Bad key generated: p"z<JHc5l1
+Invalid sum: 783
+Regenerating...
+---------------------------
+Bad key generated: 1Wf5k:drCY
+Invalid sum: 826
+Regenerating...
+---------------------------
+Bad key generated: YFIUTk)|OO
+Invalid sum: 831
+Regenerating...
+---------------------------
+Bad key generated: OMFiiXv&a]
+Invalid sum: 870
+Regenerating...
+---------------------------
+Bad key generated: ]m"t[3vogs
+Invalid sum: 941
+Regenerating...
+---------------------------
+Bad key generated: s[FY`}3w>s
+Invalid sum: 933
+Regenerating...
+---------------------------
+Bad key generated: s)o3sRWK_&
+Invalid sum: 810
+Regenerating...
+---------------------------
+Bad key generated: &o@GIUCDU|
+Invalid sum: 786
+Regenerating...
+---------------------------
+Bad key generated: |'gW/q3XAP
+Invalid sum: 797
+Regenerating...
+---------------------------
+Bad key generated: Pqh&fq^1[J
+Invalid sum: 858
+Regenerating...
+---------------------------
+Bad key generated: JmC[nTWV9V
+Invalid sum: 851
+Regenerating...
+---------------------------
+Bad key generated: VTR^Z>Mzo(
+Invalid sum: 848
+Regenerating...
+---------------------------
+Bad key generated: (`En3UFKJ`
+Invalid sum: 766
+Regenerating...
+---------------------------
+Bad key generated: `zfHwgkQZJ
+Invalid sum: 966
+Regenerating...
+---------------------------
+Bad key generated: Jb@Ep(pneH
+Invalid sum: 852
+Regenerating...
+---------------------------
+Bad key generated: HaR7fI]ZCt
+Invalid sum: 847
+Regenerating...
+---------------------------
+Bad key generated: tOR@oftB`B
+Invalid sum: 898
+Regenerating...
+---------------------------
+Bad key generated: Bm@|Kx#oM|
+Invalid sum: 905
+Regenerating...
+---------------------------
+Bad key generated: |^]Dx=bJK]
+Invalid sum: 900
+Regenerating...
+---------------------------
+Bad key generated: ]f=LWu]kdE
+Invalid sum: 905
+Regenerating...
+---------------------------
+Bad key generated: EbYJf3zi[H
+Invalid sum: 873
+Regenerating...
+---------------------------
+Bad key generated: HriYhGobr4
+Invalid sum: 930
+Regenerating...
+---------------------------
+Bad key generated: 4qmWOzrNV7
+Invalid sum: 895
+Regenerating...
+---------------------------
+Bad key generated: 7`CDjXJpZM
+Invalid sum: 833
+Regenerating...
+---------------------------
+Bad key generated: MuCY]Pwv&c
+Invalid sum: 897
+Regenerating...
+---------------------------
+Bad key generated: c[,z{4aP7v
+Invalid sum: 881
+Regenerating...
+---------------------------
+Bad key generated: vGcg'f&g{]
+Invalid sum: 889
+Regenerating...
+---------------------------
+Bad key generated: ][VKymZY1j
+Invalid sum: 909
+Regenerating...
+---------------------------
+Bad key generated: jUsmvjTVIh
+Invalid sum: 986
+Regenerating...
+---------------------------
+Bad key generated: hF]iM[AEfE
+Invalid sum: 845
+Regenerating...
+---------------------------
+Bad key generated: EBl@Lpy8_&
+Invalid sum: 805
+Regenerating...
+---------------------------
+Bad key generated: &o}r[XO9_8
+Invalid sum: 854
+Regenerating...
+---------------------------
+Bad key generated: 8ZYO]\z9Oi
+Invalid sum: 862
+Regenerating...
+---------------------------
+Bad key generated: i2{-a7YGu9
+Invalid sum: 809
+Regenerating...
+---------------------------
+Bad key generated: 9sx\+jYpG|
+Invalid sum: 929
+Regenerating...
+---------------------------
+Bad key generated: |:aiyhd@f=
+Invalid sum: 936
+Regenerating...
+---------------------------
+Bad key generated: =^oBqraU^Z
+Invalid sum: 925
+Regenerating...
+---------------------------
+Bad key generated: ZHd*^@^9bG
+Invalid sum: 782
+Regenerating...
+---------------------------
+Bad key generated: GTMgBZVFpl
+Invalid sum: 867
+Regenerating...
+---------------------------
+Bad key generated: lY/aZry7sk
+Invalid sum: 943
+Regenerating...
+---------------------------
+Bad key generated: kvDy=VlGNl
+Invalid sum: 926
+Regenerating...
+---------------------------
+Bad key generated: lIr#{$hKNX
+Invalid sum: 834
+Regenerating...
+---------------------------
+Bad key generated: Xm:_&ptQ8c
+Invalid sum: 852
+Regenerating...
+---------------------------
+Bad key generated: c5e;bQYy2U
+Invalid sum: 836
+Regenerating...
+---------------------------
+Bad key generated: UgVg8V6bth
+Invalid sum: 891
+Regenerating...
+---------------------------
+Bad key generated: h8X]u0mqHX
+Invalid sum: 888
+Regenerating...
+---------------------------
+Bad key generated: X1m{/Xb(kn
+Invalid sum: 859
+Regenerating...
+---------------------------
+Bad key generated: n'u}pgUe"z
+Invalid sum: 948
+Regenerating...
+---------------------------
+Bad key generated: zPOKyNVqzZ
+Invalid sum: 966
+Regenerating...
+---------------------------
+Bad key generated: ZYEB[bVhc&
+Invalid sum: 830
+Regenerating...
+---------------------------
+Bad key generated: &t.hcpkb1^
+Invalid sum: 863
+Regenerating...
+---------------------------
+Bad key generated: ^8aPSnjVe:
+Invalid sum: 871
+Regenerating...
+---------------------------
+Bad key generated: :}}4]IbO7{
+Invalid sum: 881
+Regenerating...
+---------------------------
+Bad key generated: {Uj<vSE@Nv
+Invalid sum: 904
+Regenerating...
+---------------------------
+Bad key generated: vJi`_LSUmo
+Invalid sum: 952
+Regenerating...
+---------------------------
+Bad key generated: o9mI>HV5r.
+Invalid sum: 783
+Regenerating...
+---------------------------
+Bad key generated: .jcO=}ORh"
+Invalid sum: 815
+Regenerating...
+---------------------------
+Bad key generated: "le7cbK=q=
+Invalid sum: 805
+Regenerating...
+---------------------------
+Bad key generated: =mX;qqd%k5
+Invalid sum: 840
+Regenerating...
+---------------------------
+Bad key generated: 5s*sVi!l0q
+Invalid sum: 818
+Regenerating...
+---------------------------
+Bad key generated: qsj@il%sKy
+Invalid sum: 959
+Regenerating...
+---------------------------
+Bad key generated: y<PjYlun,c
+Invalid sum: 934
+Regenerating...
+---------------------------
+Bad key generated: cVj,pX{%y&
+Invalid sum: 854
+Regenerating...
+---------------------------
+Bad key generated: &cQ{<UiY[l
+Invalid sum: 879
+Regenerating...
+---------------------------
+Bad key generated: l\Wjmfx-`q
+Invalid sum: 978
+Regenerating...
+---------------------------
+Bad key generated: q"fV`cvpGV
+Invalid sum: 917
+Regenerating...
+---------------------------
+Bad key generated: VuKLUM;Q?d
+Invalid sum: 819
+Regenerating...
+---------------------------
+Bad key generated: d8gcT6d4XW
+Invalid sum: 823
+Regenerating...
+---------------------------
+Bad key generated: Wyy6^0VVbY
+Invalid sum: 884
+Regenerating...
+---------------------------
+Bad key generated: Y,uHrVCe[9
+Invalid sum: 838
+Regenerating...
+---------------------------
+Bad key generated: 9^Hks-sXxP
+Invalid sum: 893
+Regenerating...
+---------------------------
+Bad key generated: Pq@i\arq#z
+Invalid sum: 935
+Regenerating...
+---------------------------
+Bad key generated: z4R^\-e\5h
+Invalid sum: 837
+Regenerating...
+---------------------------
+Bad key generated: hNKa|0p{%`
+Invalid sum: 894
+Regenerating...
+---------------------------
+Bad key generated: `F{`pBi7b#
+Invalid sum: 856
+Regenerating...
+---------------------------
+Bad key generated: #uoP9o^_r]
+Invalid sum: 907
+Regenerating...
+---------------------------
+Bad key generated: ]/thg>^*iT
+Invalid sum: 850
+Regenerating...
+---------------------------
+Bad key generated: T|+w5W;c,|
+Invalid sum: 836
+Regenerating...
+---------------------------
+Bad key generated: |udO9UV:j@
+Invalid sum: 876
+Regenerating...
+---------------------------
+Bad key generated: @y@g-Yuru`
+Invalid sum: 930
+Regenerating...
+---------------------------
+Bad key generated: `?lmklxAmM
+Invalid sum: 962
+Regenerating...
+---------------------------
+Bad key generated: Mivz#r`}/W
+Invalid sum: 926
+Regenerating...
+---------------------------
+Bad key generated: W:KYvMJbHt
+Invalid sum: 864
+Regenerating...
+---------------------------
+Bad key generated: t"o(pbtP`h
+Invalid sum: 907
+Regenerating...
+---------------------------
+Bad key generated: hJXH=Z1k?W
+Invalid sum: 795
+Regenerating...
+---------------------------
+Bad key generated: WqnwCGa%eC
+Invalid sum: 869
+Regenerating...
+---------------------------
+Bad key generated: Cbny9[fAHi
+Invalid sum: 888
+Regenerating...
+---------------------------
+Bad key generated: iStUz"qZGI
+Invalid sum: 892
+Regenerating...
+---------------------------
+Bad key generated: IJn$}:{7mK
+Invalid sum: 838
+Regenerating...
+---------------------------
+Bad key generated: K=n2phVt$f
+Invalid sum: 852
+Regenerating...
+---------------------------
+Bad key generated: fnByvtX?wW
+Invalid sum: 990
+Regenerating...
+---------------------------
+Bad key generated: W5|NCSb_rM
+Invalid sum: 876
+Regenerating...
+---------------------------
+Bad key generated: My.on:]?tT
+Invalid sum: 879
+Regenerating...
+---------------------------
+Valid key: TCpW}|vPnl
+length: 10
+Valid sum: 1015
+points remaining (target-sum): -15
+Number of invalid keys generated before valid key found: 101
