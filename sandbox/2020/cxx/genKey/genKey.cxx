@@ -3,6 +3,7 @@
 		- Generate a valid key of size 7 < k < 11
 		- Sum of individual ordinal values used in proposed key must be > 1000
 */
+#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -27,13 +28,13 @@ int main() {
     int sum = 0, i = 0, t = TARGET, r = 0, badKeys = 0, off = 0;
     srand(time(NULL));
     do{
-    	r = (100 - r < 0) ? rand() % (93) + (33) : rand() % (93-off) + (33 + off);
+    	r = (100 - r < 0) ? rand() % (93) + (33) : rand() % (abs(93 - off)) + (33 + off);
     	key += (char)(r);
         sum += key[i++];
         t -= key[i-1];
         off = 100 - r;
         // cout << "\n** Debug ** [vals: {r: " << r << ", off: "<< (100 - r) << ", t: "<< t <<"}]\n";
-		
+
 		if(i == MAX_SIZE && sum < TARGET)
 		{
 			cout << "Bad key generated: "<< key << "\nInvalid sum: " << sum << "\nRegenerating...";
