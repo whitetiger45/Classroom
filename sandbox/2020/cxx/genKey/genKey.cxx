@@ -3,7 +3,6 @@
 		- Generate a valid key of size 7 < k < 11
 		- Sum of individual ordinal values used in proposed key must be > 1000
 */
-#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
