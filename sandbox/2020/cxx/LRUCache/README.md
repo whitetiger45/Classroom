@@ -1,6 +1,6 @@
-##LRUCache Challenge
+## LRUCache Challenge
 
-##To Build
+### To Build
 ```
 1. mkdir build
 2. cd build
