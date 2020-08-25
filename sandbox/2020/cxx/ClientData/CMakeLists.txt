@@ -27,4 +27,4 @@ SET ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 
 add_executable( ${PROJECT_NAME} ${clientData_SOURCES} ${clientData_HEADERS} )
 
-file( COPY credit.dat DESTINATION credit.dat )
+file( COPY credit.dat DESTINATION records )
