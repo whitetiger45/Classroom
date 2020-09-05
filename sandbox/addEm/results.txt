@@ -1,0 +1,225 @@
+#1
+Name: George Washington
+Years: 1789-1797 (8 years in office)
+Party: None, Federalist
+Total years with a None, Federalist in office: 8
+#2
+Name: John Adams
+Years: 1797-1801 (4 years in office)
+Party: Federalist
+Total years with a Federalist in office: 12
+#3
+Name: Thomas Jefferson
+Years: 1801-1809 (8 years in office)
+Party: Democratic-Republican
+Total years with a Democratic-Republican in office: 20
+#4
+Name: James Madison
+Years: 1809-1817 (8 years in office)
+Party: Democratic-Republican
+Total years with a Democratic-Republican in office: 28
+#5
+Name: James Monroe 
+Years: 1817-1825 (8 years in office)
+Party: Democratic-Republican
+Total years with a Democratic-Republican in office: 36
+#6
+Name: John Quincy Adams
+Years: 1825-1829 (4 years in office)
+Party: Democratic-Republican
+Total years with a Democratic-Republican in office: 40
+#7
+Name: Andrew Jackson 
+Years: 1829-1837 (8 years in office)
+Party: Democrat
+Total years with a Democrat in office: 8
+#8
+Name: Martin van Buren 
+Years: 1837-1841 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 12
+#9
+Name: William H. Harrison 
+Years: 1841-1841 (1 years in office)
+Party: Whig
+Total years with a Whig in office: 41
+#10
+Name: John Tyler 
+Years: 1841-1845 (4 years in office)
+Party: Whig
+Total years with a Whig in office: 45
+#11
+Name: James K. Polk 
+Years: 1845-1849 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 16
+#12
+Name: Zachary Taylor 
+Years: 1849-1850 (1 years in office)
+Party: Whig
+Total years with a Whig in office: 46
+#13
+Name: Millard Fillmore 
+Years: 1850-1853 (3 years in office)
+Party: Whig
+Total years with a Whig in office: 49
+#14
+Name: Franklin Pierce 
+Years: 1853-1857 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 20
+#15
+Name: James Buchanan 
+Years: 1857-1861 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 24
+#16
+Name: Abraham Lincoln
+Years: 1861-1865 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 53
+#17
+Name: Andrew Johnson 
+Years: 1865-1869 (4 years in office)
+Party: National Union
+Total years with a National Union in office: 28
+#18
+Name: Ulysses S. Grant 
+Years: 1869-1877 (8 years in office)
+Party: Republican
+Total years with a Republican in office: 61
+#19
+Name: Rutherford Hayes 
+Years: 1877-1881 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 65
+#20
+Name: James Garfield 
+Years: 1881-1881 (1 years in office)
+Party: Republican
+Total years with a Republican in office: 66
+#21
+Name: Chester Arthur 
+Years: 1881-1885 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 70
+#22
+Name: Grover Cleveland 
+Years: 1885-1889 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 32
+#23
+Name: Benjamin Harrison 
+Years: 1889-1893 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 74
+#24
+Name: Grover Cleveland 
+Years: 1893-1897 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 36
+#25
+Name: William McKinley 
+Years: 1897-1901 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 78
+#26
+Name: Theodore Roosevelt 
+Years: 1901-1909 (8 years in office)
+Party: Republican
+Total years with a Republican in office: 86
+#27
+Name: William Taft 
+Years: 1909-1913 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 90
+#28
+Name: Woodrow Wilson 
+Years: 1913-1921 (8 years in office)
+Party: Democrat
+Total years with a Democrat in office: 44
+#29
+Name: Warren Harding 
+Years: 1921-1923 (2 years in office)
+Party: Republican
+Total years with a Republican in office: 92
+#30
+Name: Calvin Coolidge 
+Years: 1923-1929 (6 years in office)
+Party: Republican
+Total years with a Republican in office: 98
+#31
+Name: Herbert C. Hoover 
+Years: 1929-1933 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 102
+#32
+Name: Franklin Delano Roosevelt
+Years: 1933-1945 (12 years in office)
+Party: Democrat
+Total years with a Democrat in office: 56
+#33
+Name: Harry S Truman 
+Years: 1945-1953 (8 years in office)
+Party: Democrat
+Total years with a Democrat in office: 64
+#34
+Name: Dwight David Eisenhower
+Years: 1953-1961 (8 years in office)
+Party: Republican
+Total years with a Republican in office: 110
+#35
+Name: John Fitzgerald Kennedy
+Years: 1961-1963 (2 years in office)
+Party: Democrat
+Total years with a Democrat in office: 66
+#36
+Name: Lyndon Baines Johnson 
+Years: 1963-1969 (6 years in office)
+Party: Democrat
+Total years with a Democrat in office: 72
+#37
+Name: Richard Milhous Nixon 
+Years: 1969-1974 (5 years in office)
+Party: Republican
+Total years with a Republican in office: 115
+#38
+Name: Gerald R. Ford
+Years: 1974-1977 (3 years in office)
+Party: Republican
+Total years with a Republican in office: 118
+#39
+Name: James (Jimmy) Earl Carter, Jr. 
+Years: 1977-1981 (4 years in office)
+Party: Democrat
+Total years with a Democrat in office: 76
+#40
+Name: Ronald Wilson Reagan
+Years: 1981-1989 (8 years in office)
+Party: Republican
+Total years with a Republican in office: 126
+#41
+Name: George H. W. Bush 
+Years: 1989-1993 (4 years in office)
+Party: Republican
+Total years with a Republican in office: 130
+#42
+Name: William (Bill) Jefferson Clinton 
+Years: 1993-2001 (8 years in office)
+Party: Democrat
+Total years with a Democrat in office: 84
+#43
+Name: George W. Bush
+Years: 2001-2009 (8 years in office)
+Party: Republican
+Total years with a Republican in office: 138
+#44
+Name: Barack Obama
+Years: 2009-2017 (8 years in office)
+Party: Democrat
+Total years with a Democrat in office: 92
+#45
+Name: Donald Trump
+Years: 2017-Present (3 years in office)
+Party: Republican
+Total years with a Republican in office: 141
