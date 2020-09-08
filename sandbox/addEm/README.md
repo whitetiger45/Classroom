@@ -24,8 +24,6 @@ presidents.txt file generated using this java program: [presidential parser - ro
 
 ```
 todo:
-    - strip 'None, ' from George Washington's party
-    - add years to democrats when party is democratic-republican
     - generalize parties to show what party succeeded them (whigs --> republicans; union --> democrats, etc.)
     - add more comments to code
     - refactor

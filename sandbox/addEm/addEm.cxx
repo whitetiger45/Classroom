@@ -336,8 +336,8 @@ int main()
                                     note += sm.str(i) + "\n";
                                     break;
                                 case 2:
-                                    note += "Name: " + sm.str(i) + "\n";
                                     presidentsName = sm.str(i);
+                                    note += "Name: " + presidentsName + "\n";
                                     break;
                                 case 3:
                                     note += "Years: ";
@@ -367,19 +367,26 @@ int main()
                                     break;
                                 case 6:
                                     presidentsParty = sm.str(i);
+                                    size_t pos = presidentsParty.find(", ");
+                                    if(pos != string::npos){
+                                        presidentsParty = presidentsParty.substr(pos+2);//chop off match_pos+match_length
+                                    }
                                     note += "Party: " + presidentsParty +"\n";
                                     /* calculate number of years based on party */
-                                    ( presidentsParty.find("Federalist") != string::npos || 
-                                      presidentsParty.find("Republican") != string::npos || 
-                                      presidentsParty.find("Whig") != string::npos 
+                                    ( presidentsParty.find("F") != string::npos || // Federalist
+                                      presidentsParty.find("R") != string::npos || // Republican
+                                      presidentsParty.find("W") != string::npos // Whig
                                     ) ? republicans += yearsInOffice : democrats += yearsInOffice;
-                                    note += "Total years with a " + sm.str(i) + " in office: ";
-                                    note += ( presidentsParty.find("Federalist") != string::npos || 
-                                              presidentsParty.find("Republican") != string::npos || 
-                                              presidentsParty.find("Whig") != string::npos 
+
+                                    if(presidentsParty.find("Democratic-R") != string::npos)
+                                        democrats += yearsInOffice;
+
+                                    note += "Total years with a " + presidentsParty + " in office: ";
+                                    note += ( presidentsParty.find("F") != string::npos || // Federalist
+                                              presidentsParty.find("R") != string::npos || // Republican
+                                              presidentsParty.find("W") != string::npos // Whig
                                             ) ? to_string(republicans) : to_string(democrats);
-                                // default:
-                                //  note += sm.str(i) + " ";
+
                                     outputFile << note << "\n";
                                     app.insertItem(presidentsName, presidentsParty, note);
                             }

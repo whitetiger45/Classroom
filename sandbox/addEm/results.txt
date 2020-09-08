@@ -1,8 +1,8 @@
 #1
 Name: George Washington
 Years: 1789-1797 (8 years in office)
-Party: None, Federalist
-Total years with a None, Federalist in office: 8
+Party: Federalist
+Total years with a Federalist in office: 8
 #2
 Name: John Adams
 Years: 1797-1801 (4 years in office)
@@ -32,12 +32,12 @@ Total years with a Democratic-Republican in office: 40
 Name: Andrew Jackson 
 Years: 1829-1837 (8 years in office)
 Party: Democrat
-Total years with a Democrat in office: 8
+Total years with a Democrat in office: 36
 #8
 Name: Martin van Buren 
 Years: 1837-1841 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 12
+Total years with a Democrat in office: 40
 #9
 Name: William H. Harrison 
 Years: 1841-1841 (1 years in office)
@@ -52,7 +52,7 @@ Total years with a Whig in office: 45
 Name: James K. Polk 
 Years: 1845-1849 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 16
+Total years with a Democrat in office: 44
 #12
 Name: Zachary Taylor 
 Years: 1849-1850 (1 years in office)
@@ -67,12 +67,12 @@ Total years with a Whig in office: 49
 Name: Franklin Pierce 
 Years: 1853-1857 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 20
+Total years with a Democrat in office: 48
 #15
 Name: James Buchanan 
 Years: 1857-1861 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 24
+Total years with a Democrat in office: 52
 #16
 Name: Abraham Lincoln
 Years: 1861-1865 (4 years in office)
@@ -82,7 +82,7 @@ Total years with a Republican in office: 53
 Name: Andrew Johnson 
 Years: 1865-1869 (4 years in office)
 Party: National Union
-Total years with a National Union in office: 28
+Total years with a National Union in office: 56
 #18
 Name: Ulysses S. Grant 
 Years: 1869-1877 (8 years in office)
@@ -107,7 +107,7 @@ Total years with a Republican in office: 70
 Name: Grover Cleveland 
 Years: 1885-1889 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 32
+Total years with a Democrat in office: 60
 #23
 Name: Benjamin Harrison 
 Years: 1889-1893 (4 years in office)
@@ -117,7 +117,7 @@ Total years with a Republican in office: 74
 Name: Grover Cleveland 
 Years: 1893-1897 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 36
+Total years with a Democrat in office: 64
 #25
 Name: William McKinley 
 Years: 1897-1901 (4 years in office)
@@ -137,7 +137,7 @@ Total years with a Republican in office: 90
 Name: Woodrow Wilson 
 Years: 1913-1921 (8 years in office)
 Party: Democrat
-Total years with a Democrat in office: 44
+Total years with a Democrat in office: 72
 #29
 Name: Warren Harding 
 Years: 1921-1923 (2 years in office)
@@ -157,12 +157,12 @@ Total years with a Republican in office: 102
 Name: Franklin Delano Roosevelt
 Years: 1933-1945 (12 years in office)
 Party: Democrat
-Total years with a Democrat in office: 56
+Total years with a Democrat in office: 84
 #33
 Name: Harry S Truman 
 Years: 1945-1953 (8 years in office)
 Party: Democrat
-Total years with a Democrat in office: 64
+Total years with a Democrat in office: 92
 #34
 Name: Dwight David Eisenhower
 Years: 1953-1961 (8 years in office)
@@ -172,12 +172,12 @@ Total years with a Republican in office: 110
 Name: John Fitzgerald Kennedy
 Years: 1961-1963 (2 years in office)
 Party: Democrat
-Total years with a Democrat in office: 66
+Total years with a Democrat in office: 94
 #36
 Name: Lyndon Baines Johnson 
 Years: 1963-1969 (6 years in office)
 Party: Democrat
-Total years with a Democrat in office: 72
+Total years with a Democrat in office: 100
 #37
 Name: Richard Milhous Nixon 
 Years: 1969-1974 (5 years in office)
@@ -192,7 +192,7 @@ Total years with a Republican in office: 118
 Name: James (Jimmy) Earl Carter, Jr. 
 Years: 1977-1981 (4 years in office)
 Party: Democrat
-Total years with a Democrat in office: 76
+Total years with a Democrat in office: 104
 #40
 Name: Ronald Wilson Reagan
 Years: 1981-1989 (8 years in office)
@@ -207,7 +207,7 @@ Total years with a Republican in office: 130
 Name: William (Bill) Jefferson Clinton 
 Years: 1993-2001 (8 years in office)
 Party: Democrat
-Total years with a Democrat in office: 84
+Total years with a Democrat in office: 112
 #43
 Name: George W. Bush
 Years: 2001-2009 (8 years in office)
@@ -217,7 +217,7 @@ Total years with a Republican in office: 138
 Name: Barack Obama
 Years: 2009-2017 (8 years in office)
 Party: Democrat
-Total years with a Democrat in office: 92
+Total years with a Democrat in office: 120
 #45
 Name: Donald Trump
 Years: 2017-Present (3 years in office)
