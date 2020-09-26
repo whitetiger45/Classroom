@@ -9,21 +9,24 @@ using pr = pair<int, T>;
 
 LRUCache::LRUCache( int capacity ) : m_capacity{ capacity }{}
 /* ----------------------------------------------- */
-int LRUCache::size() const{
+int LRUCache::capacity() const{
     return m_capacity;
 }
 /* ----------------------------------------------- */
 /* 
 - inside the list store the key 
 - store address (iterator) of key, & value in map
-- must be O(1)
+- try to do this in constant time, O(1)
 */
-int LRUCache::get(int key) const {
+int LRUCache::get(int key) {
     int ret{0};
     try{
-       ret = m_cacheMap.at( key ).value;
+        ret = m_cacheMap.at( key ).value;
+        m_queue.erase( m_cacheMap[key].it );
+        m_queue.push_front( key );   
+        m_cacheMap[key].it = m_queue.begin();
     }
-    catch( const out_of_range& oor ){
+    catch( const exception& e ){
         ret =  -1;
     }
     return ret;
@@ -31,28 +34,28 @@ int LRUCache::get(int key) const {
 /* ----------------------------------------------- */
 void LRUCache::put(int key, int value) {
     /* 
-    must be O(1)
-    branch 1 - if key exists, update value 
-    branch 2 - 
-        a. - if key does not exist & less than the capacity 
-        b. - if key does not exist & key == capacity, remove oldest key 
-            and push new key-value
+        can you get this to be O(1)?
     */
     int tmp = get( key );
     if( tmp == -1 ){
-        if( m_queue.size() == m_capacity ){
+        if( m_queue.size() == capacity() ){
             int last = m_queue.back();
             m_queue.pop_back();
             m_cacheMap.erase( last );
         }
+        m_queue.push_front(key);
+        Node newNode{m_queue.begin(), value};
+        m_cacheMap.insert(pr<Node>(key,newNode));
     }
     else if ( tmp != -1 ){
         m_queue.erase( m_cacheMap[key].it );
+        m_queue.push_front(key);
+        m_cacheMap[key] = Node{m_queue.begin(),value};
     }
 
-    m_queue.push_front( key );
-    LRUCache::Node x{ m_queue.begin(), value };
-    m_cacheMap.insert( pr<Node>( key, x ) );
+    // m_queue.push_front( key );
+    // LRUCache::Node x{ m_queue.begin(), value };
+    // m_cacheMap.insert( pr<Node>( key, x ) );
 }
 /* ----------------------------------------------- */
 void LRUCache::display() const {
@@ -62,4 +65,13 @@ void LRUCache::display() const {
         ( ++it != m_cacheMap.end() ) ? cout << ", " : cout << endl;
     }
 }
- 
+/* -----------------------------------------------
+    This is used to show that most recently used key is at the 
+    front of the key, which includes using a 'get'
+ */
+void LRUCache::printQueue() const {
+    for( auto it = m_queue.begin(); it != m_queue.end(); ){
+        cout << *it;
+        ( ++it != m_queue.end() ) ? cout << ", " : cout << endl;
+    }
+}

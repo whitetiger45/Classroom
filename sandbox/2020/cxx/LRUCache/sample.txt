@@ -1,0 +1,7 @@
+cache holds:
+99, 90, 81, 72, 63, 54, 27, 36, 45
+what's the queue look like before using our random key (6):
+11, 10, 9, 8, 7, 6, 5, 4, 3
+our random key (6) in the cache is: 54
+what's the queue look like after using our random key (6):
+6, 11, 10, 9, 8, 7, 5, 4, 3

@@ -5,10 +5,11 @@
 
 struct LRUCache {
     LRUCache( int );
-    int size() const;
-    int get(int) const;
+    int capacity() const;
+    int get(int);
     void put(int, int);
     void display() const;
+    void printQueue() const;
     
 private:
     struct Node {
