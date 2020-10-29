@@ -8,4 +8,5 @@ Cyber Operations: Building, Defending, and Attacking Modern Computer Networks by
 3. ps ax --forest - determine processes running on a system, and which process spawned another
 4. netstat -nlpv --inet - find out what ports are open on a linux system, and what ports are listening on a system
 5. lsof -i4 - determine what resources are being used and by which process
-6. 
+6. cd /proc/<pid> - get information about the running process
+6.a. cat -v cmdline - after cd'ing into the directory of the PID, this will show the command used to launch the process
