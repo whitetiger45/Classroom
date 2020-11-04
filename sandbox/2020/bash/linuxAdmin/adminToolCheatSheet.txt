@@ -12,4 +12,12 @@ Cyber Operations: Building, Defending, and Attacking Modern Computer Networks by
 6.a. cat -v cmdline - after cd'ing into the directory of the PID, this will show the command used to launch the process
 7. tcpdump -C <file size> -W <number of files to rotate through> -w <filename> - collect network traffic and store the 
    results in the specified <filename><#>. When the max file no. is reached, the first file is then overwritten with new data.
- 
+
+[NMAP]
+1. nmap -sU -reason <host> - scan UDP ports
+2. nmap -sS -reason <host> - scan TCP ports
+3. nmap -O -reason <host> - ask NMAP to guess the operating system version
+4. nmap -sV -reason <host> - guess the version of services runnin on the target 
+5. nmap -reason --script "default and safe" <host> - run NMAP with default scripts that are considered
+   safe.
+6. nmap --script-help <script> - additional information about any script found in /usr/share/nmap/scripts
