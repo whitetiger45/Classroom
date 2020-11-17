@@ -61,3 +61,4 @@ solution: (using burp suite intruder) (note: I had to look at the solution help 
 
   (note: password will change after session expires, and will be unique for each lab-access. It is therefore necessary to use burp intruder to find the password before the session expires)
   password: 1mqhpjsgaib9671ahy4z
+
