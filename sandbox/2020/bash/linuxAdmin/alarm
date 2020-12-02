@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# A quick a dirty bash alarm clock/timer
+# This script is to be used to quickly set a local alarm/timer on your laptop
+
+# Initialize the stop timer variable.
+# If no time value is passed, timer defaults to 1 minute
+stop="$(date --date="$1 minutes")"
+
+# Start the clock...
+while ( test "$stop" != "$(date)" ) do sleep 1; done && echo -e "times up" | wall &
+
+# If you'd like to kill the alarm prematurely, run the following:
+# kill -9 $(ps -ax --forest | grep alarm | awk '{print $1}' | tr '\n' ' ')
+
+exit
+
