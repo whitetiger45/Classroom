@@ -30,12 +30,12 @@ int main(int argc, char** argv){
     }
     
     string userInputStr{argv[1]};
-    regex userInputRegExp("^(\\d+)$");
+    regex userInputRegExp("^([\\d-.]+)$");
     smatch m;
     regex_match(userInputStr,m,userInputRegExp);
 
     if(!m.empty()){
-        string cmd = "python3 -c 'print(\"{0:b}\".format("+m.str(1)+"))'";
+        string cmd = "echo 'scale=32; obase=2; " + m.str(1) + "' | bc";
         cout << exec(const_cast<char*>(cmd.c_str()));
     }else cout << "Could not find an integer in input.\n";
 
