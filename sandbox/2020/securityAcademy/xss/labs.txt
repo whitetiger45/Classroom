@@ -43,7 +43,7 @@ solution:
    step-1: make a comment with a similar html tag as <script>alert(18);</script>
 
 [lab: DOM XSS in jQuery anchor href attribute sink using location.search source]
-url: 
+url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-jquery-href-attribute-sink 
 solution: 
    step-1: navigate to submit feedback
    step-2: change url get param 'returnPath' from '/' to 'javascript:alert(document.cookies)'
