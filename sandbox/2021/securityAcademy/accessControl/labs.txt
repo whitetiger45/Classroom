@@ -1,0 +1,7 @@
+[lab: Unprotected admin functionality]
+url: https://portswigger.net/web-security/access-control/lab-unprotected-admin-functionality
+solution:
+    step-1: using burpsuite, send a request to /robots.txt
+    step-2: copy endpoint '/administrator-panel' to repeater and make a second request
+    step-3: copy endpoint '/administrator-panel/delete?username=carlos' and delete user carlos
+
