@@ -1,0 +1,10 @@
+Archive:  task1.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   107342  2021-09-06 12:39   capture.pcap
+      460  2021-09-06 12:39   ip_ranges.txt
+      819  2021-09-06 14:00   solution_task1.txt
+    18458  2021-09-06 13:13   task1_output.txt
+      654  2021-09-06 14:03   task1.txt
+---------                     -------
+   127733                     5 files

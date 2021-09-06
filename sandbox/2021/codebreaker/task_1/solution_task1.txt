@@ -1,0 +1,7 @@
+helpful: https://danielmiessler.com/study/tcpdump/#host-ip
+
+[step 1]
+tcpdump net "$(python3 -c 'fd = open("ip_ranges.txt","r"); x = fd.readlines(); fd.close(); y = " or ".join(l.strip("\n") for l in x); print(y)')" -r capture.pcap > task1_output.txt
+
+[step 2]
+python3 -c 'fd = open("task1_output.txt","r"); x = fd.readlines(); fd.close(); import re; p = """.*\sIP\s([0-9\.]+)\.[0-9]+\s>\s([0-9\.]+)\.[0-9]+:.*"""; y = []; [y.append(re.search(p,line).group(1)) for line in x if re.search(p, line)]; [y.append(re.search(p,line).group(2)) for line in x if re.search(p, line)]; y = list(set(y)); fd = open("ip_ranges.txt","r"); x = [z.strip() for z in fd.readlines()]; fd.close(); x = [z.split(".")[0] + "."+z.split(".")[1] for z in x]; z = [e for e in y if e.split(".")[0]+"."+e.split(".")[1] in x ]; print("\n".join(z))'
