@@ -1,5 +1,5 @@
-#! /usr/bin/python3
 # -*- coding: utf-8 -*-
+#! /usr/bin/python3
 #
 # last modified: 1/8/2022
 #
