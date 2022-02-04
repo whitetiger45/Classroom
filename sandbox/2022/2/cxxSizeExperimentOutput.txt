@@ -1,0 +1,57 @@
+Sizeof CHARBIT: 8
+1: 99
+type: signed int | size (# of bits):32
+bits: 00000000000000000000000001100011
+2: 0x56043158a010
+type: signed int * | size (# of bits):64
+# of bits: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+3: 1
+type: bool | size (# of bits):8
+bits: bbbbbbbb
+type: uintptr_t | size (# of bytes): 8 | size (# of bits): 64
+type: uint_fast64_t | size (# of bytes): 8 | size (# of bits): 64
+type: uint_fast32_t | size (# of bytes): 8 | size (# of bits): 64
+type: uint_least8_t | size (# of bytes): 1 | size (# of bits): 8
+type: uint64_t | size (# of bytes): 8 | size (# of bits): 64
+type: uint16_t | size (# of bytes): 2 | size (# of bits): 16
+type: uint8_t | size (# of bytes): 1 | size (# of bits): 8
+type: uint_least64_t | size (# of bytes): 8 | size (# of bits): 64
+type: uintmax_t | size (# of bytes): 8 | size (# of bits): 64
+type: intptr_t | size (# of bytes): 8 | size (# of bits): 64
+type: int_fast64_t | size (# of bytes): 8 | size (# of bits): 64
+type: int_fast32_t | size (# of bytes): 8 | size (# of bits): 64
+type: int_fast8_t | size (# of bytes): 1 | size (# of bits): 8
+type: int_least32_t | size (# of bytes): 4 | size (# of bits): 32
+type: int_least16_t | size (# of bytes): 2 | size (# of bits): 16
+type: uint32_t | size (# of bytes): 4 | size (# of bits): 32
+type: int_least8_t | size (# of bytes): 1 | size (# of bits): 8
+type: int32_t | size (# of bytes): 4 | size (# of bits): 32
+type: int_fast16_t | size (# of bytes): 8 | size (# of bits): 64
+type: intmax_t | size (# of bytes): 8 | size (# of bits): 64
+type: wchar_t | size (# of bytes): 4 | size (# of bits): 32
+type: uint_fast16_t | size (# of bytes): 8 | size (# of bits): 64
+type: int_least64_t | size (# of bytes): 8 | size (# of bits): 64
+type: char32_t | size (# of bytes): 4 | size (# of bits): 32
+type: nullptr | size (# of bytes): 8 | size (# of bits): 64
+type: unsigned int * | size (# of bytes): 8 | size (# of bits): 64
+type: signed int * | size (# of bytes): 8 | size (# of bits): 64
+type: int64_t | size (# of bytes): 8 | size (# of bits): 64
+type: string | size (# of bytes): 32 | size (# of bits): 256
+type: unsigned long long | size (# of bytes): 8 | size (# of bits): 64
+type: unsigned long | size (# of bytes): 8 | size (# of bits): 64
+type: int16_t | size (# of bytes): 2 | size (# of bits): 16
+type: unsigned int | size (# of bytes): 4 | size (# of bits): 32
+type: char16_t | size (# of bytes): 2 | size (# of bits): 16
+type: float | size (# of bytes): 4 | size (# of bits): 32
+type: long double | size (# of bytes): 16 | size (# of bits): 128
+type: double | size (# of bytes): 8 | size (# of bits): 64
+type: uint_least16_t | size (# of bytes): 2 | size (# of bits): 16
+type: int8_t | size (# of bytes): 1 | size (# of bits): 8
+type: unsigned short | size (# of bytes): 2 | size (# of bits): 16
+type: uint_least32_t | size (# of bytes): 4 | size (# of bits): 32
+type: char * | size (# of bytes): 8 | size (# of bits): 64
+type: short | size (# of bytes): 2 | size (# of bits): 16
+type: uint_fast8_t | size (# of bytes): 1 | size (# of bits): 8
+type: long long | size (# of bytes): 8 | size (# of bits): 64
+type: bool | size (# of bytes): 1 | size (# of bits): 8
+type: signed int | size (# of bytes): 4 | size (# of bits): 32
