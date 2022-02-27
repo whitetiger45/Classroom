@@ -1,0 +1,165 @@
+# objdump -M intel --section .plt -d sizes
+sizes:     file format elf64-x86-64
+
+
+Disassembly of section .plt:
+
+0000000000001430 <.plt>:
+    1430:	ff 35 72 ea 20 00    	push   QWORD PTR [rip+0x20ea72]        # 20fea8 <_GLOBAL_OFFSET_TABLE_+0x8>
+    1436:	ff 25 74 ea 20 00    	jmp    QWORD PTR [rip+0x20ea74]        # 20feb0 <_GLOBAL_OFFSET_TABLE_+0x10>
+    143c:	0f 1f 40 00          	nop    DWORD PTR [rax+0x0]
+
+0000000000001440 <_ZSt11_Hash_bytesPKvmm@plt>:
+    1440:	ff 25 72 ea 20 00    	jmp    QWORD PTR [rip+0x20ea72]        # 20feb8 <_ZSt11_Hash_bytesPKvmm@CXXABI_1.3.5>
+    1446:	68 00 00 00 00       	push   0x0
+    144b:	e9 e0 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001450 <_ZNSolsEm@plt>:
+    1450:	ff 25 6a ea 20 00    	jmp    QWORD PTR [rip+0x20ea6a]        # 20fec0 <_ZNSolsEm@GLIBCXX_3.4>
+    1456:	68 01 00 00 00       	push   0x1
+    145b:	e9 d0 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001460 <_ZSt17__throw_bad_allocv@plt>:
+    1460:	ff 25 62 ea 20 00    	jmp    QWORD PTR [rip+0x20ea62]        # 20fec8 <_ZSt17__throw_bad_allocv@GLIBCXX_3.4>
+    1466:	68 02 00 00 00       	push   0x2
+    146b:	e9 c0 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001470 <__cxa_begin_catch@plt>:
+    1470:	ff 25 5a ea 20 00    	jmp    QWORD PTR [rip+0x20ea5a]        # 20fed0 <__cxa_begin_catch@CXXABI_1.3>
+    1476:	68 03 00 00 00       	push   0x3
+    147b:	e9 b0 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001480 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_@plt>:
+    1480:	ff 25 52 ea 20 00    	jmp    QWORD PTR [rip+0x20ea52]        # 20fed8 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_@GLIBCXX_3.4.21>
+    1486:	68 04 00 00 00       	push   0x4
+    148b:	e9 a0 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001490 <memcmp@plt>:
+    1490:	ff 25 4a ea 20 00    	jmp    QWORD PTR [rip+0x20ea4a]        # 20fee0 <memcmp@GLIBC_2.2.5>
+    1496:	68 05 00 00 00       	push   0x5
+    149b:	e9 90 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014a0 <memset@plt>:
+    14a0:	ff 25 42 ea 20 00    	jmp    QWORD PTR [rip+0x20ea42]        # 20fee8 <memset@GLIBC_2.2.5>
+    14a6:	68 06 00 00 00       	push   0x6
+    14ab:	e9 80 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014b0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev@plt>:
+    14b0:	ff 25 3a ea 20 00    	jmp    QWORD PTR [rip+0x20ea3a]        # 20fef0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev@GLIBCXX_3.4.21>
+    14b6:	68 07 00 00 00       	push   0x7
+    14bb:	e9 70 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014c0 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4sizeEv@plt>:
+    14c0:	ff 25 32 ea 20 00    	jmp    QWORD PTR [rip+0x20ea32]        # 20fef8 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4sizeEv@GLIBCXX_3.4.21>
+    14c6:	68 08 00 00 00       	push   0x8
+    14cb:	e9 60 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014d0 <_ZNKSt8__detail20_Prime_rehash_policy11_M_next_bktEm@plt>:
+    14d0:	ff 25 2a ea 20 00    	jmp    QWORD PTR [rip+0x20ea2a]        # 20ff00 <_ZNKSt8__detail20_Prime_rehash_policy11_M_next_bktEm@GLIBCXX_3.4.18>
+    14d6:	68 09 00 00 00       	push   0x9
+    14db:	e9 50 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014e0 <_ZNSolsEPKv@plt>:
+    14e0:	ff 25 22 ea 20 00    	jmp    QWORD PTR [rip+0x20ea22]        # 20ff08 <_ZNSolsEPKv@GLIBCXX_3.4>
+    14e6:	68 0a 00 00 00       	push   0xa
+    14eb:	e9 40 ff ff ff       	jmp    1430 <.plt>
+
+00000000000014f0 <__cxa_atexit@plt>:
+    14f0:	ff 25 1a ea 20 00    	jmp    QWORD PTR [rip+0x20ea1a]        # 20ff10 <__cxa_atexit@GLIBC_2.2.5>
+    14f6:	68 0b 00 00 00       	push   0xb
+    14fb:	e9 30 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001500 <_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE@plt>:
+    1500:	ff 25 12 ea 20 00    	jmp    QWORD PTR [rip+0x20ea12]        # 20ff18 <_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE@GLIBCXX_3.4.21>
+    1506:	68 0c 00 00 00       	push   0xc
+    150b:	e9 20 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001510 <_ZdlPv@plt>:
+    1510:	ff 25 0a ea 20 00    	jmp    QWORD PTR [rip+0x20ea0a]        # 20ff20 <_ZdlPv@GLIBCXX_3.4>
+    1516:	68 0d 00 00 00       	push   0xd
+    151b:	e9 10 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001520 <_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@plt>:
+    1520:	ff 25 02 ea 20 00    	jmp    QWORD PTR [rip+0x20ea02]        # 20ff28 <_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@GLIBCXX_3.4>
+    1526:	68 0e 00 00 00       	push   0xe
+    152b:	e9 00 ff ff ff       	jmp    1430 <.plt>
+
+0000000000001530 <_Znwm@plt>:
+    1530:	ff 25 fa e9 20 00    	jmp    QWORD PTR [rip+0x20e9fa]        # 20ff30 <_Znwm@GLIBCXX_3.4>
+    1536:	68 0f 00 00 00       	push   0xf
+    153b:	e9 f0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001540 <_ZNSolsEPFRSoS_E@plt>:
+    1540:	ff 25 f2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9f2]        # 20ff38 <_ZNSolsEPFRSoS_E@GLIBCXX_3.4>
+    1546:	68 10 00 00 00       	push   0x10
+    154b:	e9 e0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001550 <_ZNSaIcED1Ev@plt>:
+    1550:	ff 25 ea e9 20 00    	jmp    QWORD PTR [rip+0x20e9ea]        # 20ff40 <_ZNSaIcED1Ev@GLIBCXX_3.4>
+    1556:	68 11 00 00 00       	push   0x11
+    155b:	e9 d0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001560 <__stack_chk_fail@plt>:
+    1560:	ff 25 e2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9e2]        # 20ff48 <__stack_chk_fail@GLIBC_2.4>
+    1566:	68 12 00 00 00       	push   0x12
+    156b:	e9 c0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001570 <_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_c@plt>:
+    1570:	ff 25 da e9 20 00    	jmp    QWORD PTR [rip+0x20e9da]        # 20ff50 <_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_c@GLIBCXX_3.4>
+    1576:	68 13 00 00 00       	push   0x13
+    157b:	e9 b0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001580 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv@plt>:
+    1580:	ff 25 d2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9d2]        # 20ff58 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE4dataEv@GLIBCXX_3.4.21>
+    1586:	68 14 00 00 00       	push   0x14
+    158b:	e9 a0 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001590 <_ZNKSt8__detail20_Prime_rehash_policy14_M_need_rehashEmmm@plt>:
+    1590:	ff 25 ca e9 20 00    	jmp    QWORD PTR [rip+0x20e9ca]        # 20ff60 <_ZNKSt8__detail20_Prime_rehash_policy14_M_need_rehashEmmm@GLIBCXX_3.4.18>
+    1596:	68 15 00 00 00       	push   0x15
+    159b:	e9 90 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015a0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1EPKcRKS3_@plt>:
+    15a0:	ff 25 c2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9c2]        # 20ff68 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1EPKcRKS3_@GLIBCXX_3.4.21>
+    15a6:	68 16 00 00 00       	push   0x16
+    15ab:	e9 80 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015b0 <__cxa_rethrow@plt>:
+    15b0:	ff 25 ba e9 20 00    	jmp    QWORD PTR [rip+0x20e9ba]        # 20ff70 <__cxa_rethrow@CXXABI_1.3>
+    15b6:	68 17 00 00 00       	push   0x17
+    15bb:	e9 70 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015c0 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6lengthEv@plt>:
+    15c0:	ff 25 b2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9b2]        # 20ff78 <_ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6lengthEv@GLIBCXX_3.4.21>
+    15c6:	68 18 00 00 00       	push   0x18
+    15cb:	e9 60 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015d0 <_ZNSt8ios_base4InitC1Ev@plt>:
+    15d0:	ff 25 aa e9 20 00    	jmp    QWORD PTR [rip+0x20e9aa]        # 20ff80 <_ZNSt8ios_base4InitC1Ev@GLIBCXX_3.4>
+    15d6:	68 19 00 00 00       	push   0x19
+    15db:	e9 50 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015e0 <__cxa_end_catch@plt>:
+    15e0:	ff 25 a2 e9 20 00    	jmp    QWORD PTR [rip+0x20e9a2]        # 20ff88 <__cxa_end_catch@CXXABI_1.3>
+    15e6:	68 1a 00 00 00       	push   0x1a
+    15eb:	e9 40 fe ff ff       	jmp    1430 <.plt>
+
+00000000000015f0 <_ZNSolsEi@plt>:
+    15f0:	ff 25 9a e9 20 00    	jmp    QWORD PTR [rip+0x20e99a]        # 20ff90 <_ZNSolsEi@GLIBCXX_3.4>
+    15f6:	68 1b 00 00 00       	push   0x1b
+    15fb:	e9 30 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001600 <_Unwind_Resume@plt>:
+    1600:	ff 25 92 e9 20 00    	jmp    QWORD PTR [rip+0x20e992]        # 20ff98 <_Unwind_Resume@GCC_3.0>
+    1606:	68 1c 00 00 00       	push   0x1c
+    160b:	e9 20 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001610 <_ZNSaIcEC1Ev@plt>:
+    1610:	ff 25 8a e9 20 00    	jmp    QWORD PTR [rip+0x20e98a]        # 20ffa0 <_ZNSaIcEC1Ev@GLIBCXX_3.4>
+    1616:	68 1d 00 00 00       	push   0x1d
+    161b:	e9 10 fe ff ff       	jmp    1430 <.plt>
+
+0000000000001620 <_ZNSolsEb@plt>:
+    1620:	ff 25 82 e9 20 00    	jmp    QWORD PTR [rip+0x20e982]        # 20ffa8 <_ZNSolsEb@GLIBCXX_3.4>
+    1626:	68 1e 00 00 00       	push   0x1e
+    162b:	e9 00 fe ff ff       	jmp    1430 <.plt>
