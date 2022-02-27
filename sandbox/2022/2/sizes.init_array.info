@@ -1,0 +1,8 @@
+# objdump -d --section .init_array sizes
+sizes:     file format elf64-x86-64
+
+
+Disassembly of section .init_array:
+
+000000000020fb68 <__frame_dummy_init_array_entry>:
+  20fb68:	40 17 00 00 00 00 00 00 69 2d 00 00 00 00 00 00     @.......i-......
