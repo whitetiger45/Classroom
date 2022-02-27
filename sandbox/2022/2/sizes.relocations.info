@@ -1,4 +1,4 @@
-
+# readelf --relocs sizes
 Relocation section '.rela.dyn' at offset 0xea0 contains 27 entries:
   Offset          Info           Type           Sym. Value    Sym. Name + Addend
 00000020fb68  000000000008 R_X86_64_RELATIVE                    1740
