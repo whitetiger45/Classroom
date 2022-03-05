@@ -61,14 +61,14 @@ class Binary{
             ARCH_X86 = 1
         };
 
-        Binrary() : type(BIN_TYPE_AUTO), arch(ARCH_NONE),
+        Binary() : type(BIN_TYPE_AUTO), arch(ARCH_NONE),
                 bits(0), entry(0) {}
 
         Section *get_text_section()
         { for(auto &s : sections) if(s.name == ".text") return &s; return NULL; }
 
         std::string filename;
-        BinaryType *binary;
+        BinaryType type;
         std::string type_str;
         BinaryArch arch;
         std::string arch_str;
