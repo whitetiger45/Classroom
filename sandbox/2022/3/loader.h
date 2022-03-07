@@ -1,6 +1,8 @@
-// Practical Binary Analysis
-// Chapter 4
-// Basic Binary Loader API
+/*
+    Practical Binary Analysis
+    Chapter 4
+    Basic Binary Loader API
+*/
 #ifndef LOADER_H
 #define LOADER_h
 
@@ -39,6 +41,13 @@ class Section{
                 vma(0), size(0), bytes(NULL) {}
 
         bool contains(uint64_t addr) { return (addr >= vma) && (addr-vma < size); }
+        void getSectionBytes() {
+            for(uint64_t i{0}; i < size; i++){
+                if(i%8 == 0 && i != 0) printf(" ");
+                printf("%x", bytes[i]);
+            }
+            printf("\n");
+        }
 
         Binary *binary;
         std::string name;
@@ -67,6 +76,9 @@ class Binary{
         Section *get_text_section()
         { for(auto &s : sections) if(s.name == ".text") return &s; return NULL; }
 
+        Section *get_section(std::string secName)
+        { for(auto &s : sections) if(s.name == secName) return &s; return NULL; }
+
         std::string filename;
         BinaryType type;
         std::string type_str;
@@ -80,5 +92,6 @@ class Binary{
 
 int load_binary(std::string &fname, Binary *bin, Binary::BinaryType type);
 void unload_binary(Binary *bin);
+void dump_section(Section *section);
 
 #endif /* LOADER_h */

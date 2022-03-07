@@ -1,8 +1,24 @@
-// Practical Binary Analysis
-// Chapter 4
-// Basic Binary Loader API
-// Note: Link against libbfd by specifying the linker flag -lbfd
-// g++ -std=c++17 -c loader.cc
+/*
+    Practical Binary Analysis
+    Chapter 4
+    Basic Binary Loader API
+    compile: g++ -std=c++17 -c loader.cc
+    ---------------------------------------------------
+    Chapter 4 Exercises:
+
+    1. Dumping Section Contents
+
+    For brevity, the current version of the loader_demo program doesn’t display section contents. Expand it with the ability to take a binary and the name of a section as input. Then dump the contents of that section to the screen in hexadecimal format.
+
+    2. Overriding Weak Symbols
+
+    Some symbols are weak, which means that their value may be overridden by another symbol that isn’t weak. Currently, the binary loader doesn’t take this into account and simply stores all symbols. Expand the binary loader so that if a weak symbol is later overridden by another symbol, only the latest version is kept. Take a look at /usr/include/bfd.h to figure out the flags to check for.
+
+    3. Printing Data Symbols
+
+    Expand the binary loader and the loader_demo program so that they can handle local and global data symbols as well as function symbols. You’ll need to add handling for data symbols in the loader, add a new SymbolType in the Symbol class, and add code to the loader_demo program to print the data symbols to screen. Be sure to test your modifications on a nonstripped binary to ensure the presence of some data symbols. Note that data items are called objects in symbol terminology. If you’re unsure about the correctness of your output, use readelf to verify it. 
+*/
+
 #include <bfd.h>
 #include "loader.h"
 
@@ -269,5 +285,17 @@ void unload_binary(Binary *bin){
         if(sec->bytes){
             free(sec->bytes);
         }
+    }
+}
+
+void dump_section(Section *section){
+    
+    if(section){
+        printf("[*] section name: %s\n",
+            section->name.c_str());
+
+        section->getSectionBytes();
+    }else{
+        printf("[x] invalid section.\n");
     }
 }
