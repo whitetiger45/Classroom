@@ -333,7 +333,7 @@ Symbol* get_symbol(Binary *bin, std::string sym_key){
         return &bin->symbols[bin->syms_ref_dict_it->second];
     }
 
-    printf("[!] did not find symbol %s in syms_ref_dict.\n",
+    printf("[!] did not find symbol %.32s in syms_ref_dict.\n",
         sym_key.c_str());
 
     try{
