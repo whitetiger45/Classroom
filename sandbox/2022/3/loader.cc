@@ -6,17 +6,9 @@
     ---------------------------------------------------
     Chapter 4 Exercises:
 
-    1. Dumping Section Contents
+    2. added Overriding Weak Symbols
 
-    For brevity, the current version of the loader_demo program doesn’t display section contents. Expand it with the ability to take a binary and the name of a section as input. Then dump the contents of that section to the screen in hexadecimal format.
-
-    2. Overriding Weak Symbols
-
-    Some symbols are weak, which means that their value may be overridden by another symbol that isn’t weak. Currently, the binary loader doesn’t take this into account and simply stores all symbols. Expand the binary loader so that if a weak symbol is later overridden by another symbol, only the latest version is kept. Take a look at /usr/include/bfd.h to figure out the flags to check for.
-
-    3. Printing Data Symbols
-
-    Expand the binary loader and the loader_demo program so that they can handle local and global data symbols as well as function symbols. You’ll need to add handling for data symbols in the loader, add a new SymbolType in the Symbol class, and add code to the loader_demo program to print the data symbols to screen. Be sure to test your modifications on a nonstripped binary to ensure the presence of some data symbols. Note that data items are called objects in symbol terminology. If you’re unsure about the correctness of your output, use readelf to verify it. 
+    3. added Printing Data Symbols
 */
 
 #include <bfd.h>
@@ -85,9 +77,23 @@ static int load_symbols_bfd(bfd *bfd_h, Binary *bin){
         }
         for(i = 0; i < nsyms; i++){
             if(bfd_symtab[i]->flags & BSF_FUNCTION){
-                bin->symbols.push_back(Symbol());
-                sym = &bin->symbols.back();
+                sym = get_symbol(bin, std::string(bfd_symtab[i]->name)); /* ch. 4, Ex 2-3 */
                 sym->type = Symbol::SYM_TYPE_FUNC;
+                sym->name = std::string(bfd_symtab[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_symtab[i]);
+            }else if(bfd_symtab[i]->flags & BSF_LOCAL){
+                sym = get_symbol(bin, std::string(bfd_symtab[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_LOCAL;
+                sym->name = std::string(bfd_symtab[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_symtab[i]);
+            }else if(bfd_symtab[i]->flags & BSF_GLOBAL){
+                sym = get_symbol(bin, std::string(bfd_symtab[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_GLOBAL;
+                sym->name = std::string(bfd_symtab[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_symtab[i]);
+            }else if(bfd_symtab[i]->flags & BSF_WEAK){
+                sym = get_symbol(bin, std::string(bfd_symtab[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_WEAK;
                 sym->name = std::string(bfd_symtab[i]->name);
                 sym->addr = bfd_asymbol_value(bfd_symtab[i]);
             }
@@ -131,9 +137,23 @@ static int load_dynsym_bfd(bfd *bfd_h, Binary *bin){
         }
         for(i = 0; i < nsyms; i++){
             if(bfd_dynsym[i]->flags &BSF_FUNCTION){
-                bin->symbols.push_back(Symbol());
-                sym = &bin->symbols.back();
+                sym = get_symbol(bin, std::string(bfd_dynsym[i]->name)); /* ch. 4, Ex 2-3 */
                 sym->type = Symbol::SYM_TYPE_FUNC;
+                sym->name = std::string(bfd_dynsym[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_dynsym[i]);
+            }else if(bfd_dynsym[i]->flags & BSF_LOCAL){
+                sym = get_symbol(bin, std::string(bfd_dynsym[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_LOCAL;
+                sym->name = std::string(bfd_dynsym[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_dynsym[i]);
+            }else if(bfd_dynsym[i]->flags & BSF_GLOBAL){
+                sym = get_symbol(bin, std::string(bfd_dynsym[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_GLOBAL;
+                sym->name = std::string(bfd_dynsym[i]->name);
+                sym->addr = bfd_asymbol_value(bfd_dynsym[i]);
+            }else if(bfd_dynsym[i]->flags & BSF_WEAK){
+                sym = get_symbol(bin, std::string(bfd_dynsym[i]->name)); /* ch. 4, Ex 2-3 */
+                sym->type = Symbol::SYM_TYPE_WEAK;
                 sym->name = std::string(bfd_dynsym[i]->name);
                 sym->addr = bfd_asymbol_value(bfd_dynsym[i]);
             }
@@ -298,4 +318,30 @@ void dump_section(Section *section){
     }else{
         printf("[x] invalid section.\n");
     }
+}
+
+/* ch. 4, Ex 2 */
+Symbol* get_symbol(Binary *bin, std::string sym_key){
+    Symbol *sym = NULL;
+    bin->syms_ref_dict_it = bin->syms_ref_dict.find( sym_key );
+
+    if ( bin->syms_ref_dict_it != bin->syms_ref_dict.end() ){
+        printf("[*] found symbol: %s at index: %d\n",
+            bin->syms_ref_dict_it->first.c_str(),
+            bin->syms_ref_dict_it->second);
+
+        return &bin->symbols[bin->syms_ref_dict_it->second];
+    }
+
+    printf("[!] did not find symbol %s in syms_ref_dict.\n",
+        sym_key.c_str());
+
+    try{
+        bin->syms_ref_dict[sym_key] = bin->syms_ref_dict_idx++;
+    }catch(std::exception& e){
+        printf("[!] Exception thrown in get_symbol.\n");
+    }
+
+    bin->symbols.push_back(Symbol());
+    return &bin->symbols.back();
 }

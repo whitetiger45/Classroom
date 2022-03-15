@@ -71,7 +71,7 @@ int main(int argc, char** argv){
     std::string sectionName = "";
     std::cout << "\nuser> ";
     try{
-        std::cin >> userInput_str;
+        std::cin >> userInput_str; // getline (std::cin,input);
         userInput_int = atoi(userInput_str.c_str());
         sectionName = (std::string)sections[userInput_int];
         section = bin.get_section(sectionName);

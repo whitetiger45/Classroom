@@ -9,16 +9,22 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <unordered_map> /* ch. 4, Ex 2-3 */
 
 class Binary;
 class Section;
 class Symbol;
+using SymbolsRefDict = std::unordered_map<std::string,uint32_t>; /* ch. 4, Ex 2-3 */
+using SymbolRefDictIterator = SymbolsRefDict::iterator; /* ch. 4, Ex 2-3 */
 
 class Symbol{
     public:
         enum SymbolType{
             SYM_TYPE_UKN = 0,
-            SYM_TYPE_FUNC = 1
+            SYM_TYPE_FUNC = 1,
+            SYM_TYPE_LOCAL = 2, /* ch. 4, Ex 3 */
+            SYM_TYPE_GLOBAL = 3, /* ch. 4, Ex 2 */
+            SYM_TYPE_WEAK = 4 /* ch. 4, Ex 3 */
         };
         
         Symbol() : type(SYM_TYPE_UKN), name(), addr(0) {}
@@ -26,7 +32,6 @@ class Symbol{
         SymbolType type;
         std::string name;
         uint64_t addr;
-
 };
 
 class Section{
@@ -88,10 +93,14 @@ class Binary{
         uint64_t entry;
         std::vector<Section> sections;
         std::vector<Symbol> symbols;
+        SymbolsRefDict syms_ref_dict; /* ch. 4, Ex 2 */
+        SymbolRefDictIterator syms_ref_dict_it; /* ch. 4, Ex 2 */
+        uint32_t syms_ref_dict_idx = 0; /* ch. 4, Ex 2 */
 };
 
 int load_binary(std::string &fname, Binary *bin, Binary::BinaryType type);
 void unload_binary(Binary *bin);
 void dump_section(Section *section);
+Symbol* get_symbol(Binary *bin, std::string sym_key);
 
 #endif /* LOADER_h */
