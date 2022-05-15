@@ -1,0 +1,59 @@
+#decompiled/disassembled print_file (*print_file,*print_file+38)
+
+void print_file(char *param_1)   # 0xf7fc974f: push   ebp
+                                 # 0xf7fc9750: mov    ebp,esp
+                                 # 0xf7fc9752: push   ebx
+
+{
+  char local_31 [33];            # 0xf7fc9753: sub    esp,0x34
+
+                                 # 0xf7fc9756: call   0xf7fc95a0 <__x86.get_pc_thunk.bx>
+  FILE *local_10;                # 0xf7fc975b: add    ebx,0x18a5
+  local_10 = (FILE *)0x0;        # 0xf7fc9761: mov    DWORD PTR [ebp-0xc],0x0
+
+                                 # 0xf7fc9768: sub    esp,0x8
+                                 # 0xf7fc976b: lea    eax,[ebx-0x1796]
+                                 # 0xf7fc9771: push   eax --> 0xf7fc986a --> 0x61460072 ('r')
+                                 # 0xf7fc9772: push   DWORD PTR [ebp+0x8]
+  local_10 = fopen(param_1,"r"); # 0xf7fc9775: call   0xf7fc9570 <fopen@plt>
+
+                                 # 0xf7fc977d: mov    DWORD PTR [ebp-0xc],eax                                
+  if (local_10 == (FILE *)0x0) { # 0xf7fc9780: cmp    DWORD PTR [ebp-0xc],0x0
+
+                                 # 0xf7fc9786: sub    esp,0x8
+                                 # 0xf7fc9789: push   DWORD PTR [ebp+0x8]
+                                 # 0xf7fc978c: lea    eax,[ebx-0x1794]
+                                 # 0xf7fc9792: push   eax
+    printf("Failed to open file: %s\n",param_1); # 0xf7fc9793: call   0xf7fc9510 <printf@plt>
+
+                                 # 0xf7fc9798: add    esp,0x10
+                                 # 0xf7fc979b: sub    esp,0xc
+                                 # 0xf7fc979e: push   0x1
+    exit(1);                     # 0xf7fc97a0: call   0xf7fc9550 <exit@plt>
+  }
+
+                                 # 0xf7fc97a5: sub    esp,0x4
+                                 # 0xf7fc97a8: push   DWORD PTR [ebp-0xc]
+                                 # 0xf7fc97ab: push   0x21
+                                 # 0xf7fc97ad: lea    eax,[ebp-0x2d]
+                                 # 0xf7fc97b0: push   eax                
+  fgets(local_31,0x21,local_10); # 0xf7fc97b1: call   0xf7fc9520 <fgets@plt>
+                    
+                                 # 0xf7fc97b6: add    esp,0x10
+                                 # 0xf7fc97b9: sub    esp,0xc
+                                 # 0xf7fc97bc: lea    eax,[ebp-0x2d]
+                                 # 0xf7fc97bf: push   eax
+  puts(local_31);                # 0xf7fc97c0: call   0xf7fc9540 <puts@plt>
+
+                                 # 0xf7fc97c5: add    esp,0x10
+                                 # 0xf7fc97c8: sub    esp,0xc
+                                 # 0xf7fc97cb: push   DWORD PTR [ebp-0xc]
+  fclose(local_10);              # 0xf7fc97ce: call   0xf7fc9530 <fclose@plt>
+
+                                 # 0xf7fc97d3: add    esp,0x10
+                                 # 0xf7fc97d6: mov    DWORD PTR [ebp-0xc],0x0
+                                 # 0xf7fc97dd: nop
+                                 # 0xf7fc97de: mov    ebx,DWORD PTR [ebp-0x4]
+                                 # 0xf7fc97e1: leave 
+  return;                        # 0xf7fc97e2: ret    
+}
