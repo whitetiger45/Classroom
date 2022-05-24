@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" country="us">
+<head>
+
+<style>.async-hide {
+            opacity: 0 !important
+        } </style>
+<script data-cfasync="false">if (!window.location.hostname.match(/marketodesigner/i)) {
+            (function (a, s, y, n, c, h, i, d, e) {
+                s.className += ' ' + y;
+                h.start = 1 * new Date;
+                h.end = i = function () {
+                    s.className = s.className.replace(RegExp(' ?' + y), '')
+                };
+                (a[n] = a[n] || []).hide = h;
+                setTimeout(function () {
+                    i();
+                    h.end = null
+                }, c);
+                h.timeout = c;
+            })(window, document.documentElement, 'async-hide', 'dataLayer', 1900,
+                {'GTM-N8HXDD2': true})
+        }</script>
+<script data-cfasync="false" async src="https://www.googleoptimize.com/optimize.js?id=GTM-N8HXDD2" onerror="dataLayer.hide.end && dataLayer.hide.end()"></script>
+
+<script data-cfasync="false">(function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5V5LPNC');</script>
+
+<script type="76d23604497372fd57abbdbb-text/javascript" src="https://cdn.cookielaw.org/consent/bee15b7c-b632-450e-9003-9c8b60b3b978/OtAutoBlock.js"></script>
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="76d23604497372fd57abbdbb-text/javascript" charset="UTF-8" data-domain-script=bee15b7c-b632-450e-9003-9c8b60b3b978></script>
+<script type="76d23604497372fd57abbdbb-text/javascript">
+    function OptanonWrapper() { }
+</script>
+<meta charset="UTF-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="cleartype" content="on">
+<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+<title>Event Stream Processing &amp; Indicators of Attack - CrowdStrike</title>
+<meta name="description" content="Event Stream Processing (ESP) has been a central component of CrowdStrike Falcon’s IOA approach since CrowdStrike’s inception. In this post we’ll take a closer look at ESP — along with its utility and challenges — in an endpoint protection platform like CrowdStrike Falcon." />
+<link rel="canonical" href="https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Event Stream Processing &amp; Indicators of Attack - CrowdStrike" />
+<meta property="og:description" content="Event Stream Processing (ESP) has been a central component of CrowdStrike Falcon’s IOA approach since CrowdStrike’s inception. In this post we’ll take a closer look at ESP — along with its utility and challenges — in an endpoint protection platform like CrowdStrike Falcon." />
+<meta property="og:url" content="https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/" />
+<meta property="og:site_name" content="crowdstrike.com" />
+<meta property="article:publisher" content="https://www.facebook.com/CrowdStrike/" />
+<meta property="article:published_time" content="2017-03-14T15:19:00+00:00" />
+<meta property="og:image" content="https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs.jpg" />
+<meta property="og:image:width" content="530" />
+<meta property="og:image:height" content="349" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@CrowdStrike" />
+<meta name="twitter:site" content="@CrowdStrike" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Dan Brown" />
+<meta name="twitter:label2" content="Est. reading time" />
+<meta name="twitter:data2" content="6 minutes" />
+<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.crowdstrike.com/#website","url":"https://www.crowdstrike.com/","name":"crowdstrike.com","description":"Next-Generation Endpoint Protection","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.crowdstrike.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/#primaryimage","inLanguage":"en-US","url":"https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs.jpg","contentUrl":"https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs.jpg","width":530,"height":349,"caption":"IOAs"},{"@type":"WebPage","@id":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/#webpage","url":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/","name":"Event Stream Processing & Indicators of Attack - CrowdStrike","isPartOf":{"@id":"https://www.crowdstrike.com/#website"},"primaryImageOfPage":{"@id":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/#primaryimage"},"datePublished":"2017-03-14T15:19:00+00:00","dateModified":"2017-03-14T15:19:00+00:00","author":{"@id":"https://www.crowdstrike.com/#/schema/person/56728a23ab0a6ff50aeb38d3f85cdd26"},"description":"Event Stream Processing (ESP) has been a central component of CrowdStrike Falcon’s IOA approach since CrowdStrike’s inception. In this post we’ll take a closer look at ESP — along with its utility and challenges — in an endpoint protection platform like CrowdStrike Falcon.","breadcrumb":{"@id":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/"]}]},{"@type":"BreadcrumbList","@id":"https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Understanding Indicators of Attack (IOAs): The Power of Event Stream Processing in CrowdStrike Falcon"}]},{"@type":"Person","@id":"https://www.crowdstrike.com/#/schema/person/56728a23ab0a6ff50aeb38d3f85cdd26","name":"Dan Brown","image":{"@type":"ImageObject","@id":"https://www.crowdstrike.com/#personlogo","inLanguage":"en-US","url":"http://2.gravatar.com/avatar/bdd12da9f05f5441df85bcc5cda6c485?s=96&d=mm&r=g","contentUrl":"http://2.gravatar.com/avatar/bdd12da9f05f5441df85bcc5cda6c485?s=96&d=mm&r=g","caption":"Dan Brown"},"url":"https://www.crowdstrike.com/blog/author/danbrown/"}]}</script>
+
+<link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/header/megamenu-content.json" as="json"><link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/header/top-nav.json" as="json"><link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/data/blog/blog-nav.json" as="json"><style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='single-post.min.css-css' href='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/styles/pages/single-post.min.css?ver=1651603393' type='text/css' media='all' />
+<link rel='stylesheet' id='theme-styles-css' href='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/styles/theme-styles.min.css?ver=1651603393' type='text/css' media='screen' />
+<link rel='stylesheet' id='tablepress-default-css' href='https://www.crowdstrike.com/wp-content/tablepress-combined.min.css?ver=4' type='text/css' media='all' />
+<script type="76d23604497372fd57abbdbb-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/fetch-inject.js?ver=1651603393' id='fetch-inject-js'></script>
+<script type="76d23604497372fd57abbdbb-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-navigation.min.js?ver=1651603393' id='blog-navigation-js'></script>
+<script type="76d23604497372fd57abbdbb-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-categories.min.js?ver=1651603393' id='blog-categories-js'></script>
+<script type="76d23604497372fd57abbdbb-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-category-sidebar.min.js?ver=1651603393' id='blog-category-sidebar-js'></script>
+<link rel='shortlink' href='https://www.crowdstrike.com/?p=18618' />
+<link rel="icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" sizes="32x32" />
+<link rel="icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" />
+<meta name="msapplication-TileImage" content="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" />
+</head>
+<body class="post-template-default single single-post postid-18618 single-format-standard lang-en">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5V5LPNC&nojs=1"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "CrowdStrike",
+        "url": "http://www.crowdstrike.com",
+        "logo": "http://www.crowdstrike.com/wp-content/img/cs_logo.png",
+        "sameAs": [
+            "http://www.facebook.com/CrowdStrike/",
+            "http://www.twitter.com/CrowdStrike/",
+            "https://plus.google.com/101967380457820256808/",
+            "http://www.linkedin.com/company/crowdstrike",
+            "http://www.youtube.com/user/CrowdStrike"
+        ]
+    }
+</script>
+<div data-id="wistia_player_embed"></div>
+<div id="modal-mask" class="modal_insert_location">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<div id="modal-inner-mask" class="modal_mask">
+<div class="close_button"><i id="modal-close" class="fa fa-close"></i></div>
+<div id="modal-insert" class="modal_content"></div>
+</div>
+</div>
+</div>
+</div>
+</div><div id="blogNavInsertLocation"></div>
+<div class="cs_page_container ">
+<div class="search_modal">
+<div class="cs_header_container search_modal__section centered">
+
+<input type="text" id="addsearchfield" class="addsearch" disabled="disabled" placeholder="Search" />
+<script type="76d23604497372fd57abbdbb-text/javascript" async="async" src="https://addsearch.com/js/?key=7737a29b854de71521b1cd72c4118cfc"></script>
+</div>
+</div>
+<header id="megaMenu" class="cs_main_menu 0">
+<div id="headerPromobar"></div>
+<nav class="header_top_menu">
+<div class="cs_header_container centered">
+<div id="megamenu_top_insert" class="menu_inner_section"></div>
+</div>
+</nav>
+<nav class="header_bottom_menu">
+<div class="mega_menu">
+<div class="cs_header_container centered mega_menu__header">
+<div class="header_logo">
+<a href="/">
+<svg width="173px" height="32px" viewBox="0 0 173 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Homepage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+<g id="Home" transform="translate(-72.000000, -7240.000000)" fill="#FEFEFE">
+<g id="Group-24" transform="translate(72.000000, 7240.000000)">
+<g id="Group-7" transform="translate(13.000000, 3.526700)">
+<path d="M14.5154,12.2448 L14.5154,11.9378 L11.9154,9.6998 L11.6124,9.6998 C10.8974,10.4898 9.7934,11.0818 8.5584,11.0818 C6.6304,11.0818 5.1134,9.6118 5.1134,7.5938 C5.1134,5.5758 6.6304,4.1058 8.5584,4.1058 C9.7934,4.1058 10.8974,4.6978 11.6124,5.4878 L11.9154,5.4878 L14.5154,3.2498 L14.5154,2.9428 C13.1504,1.2758 11.0064,0.2008 8.5794,0.2008 C4.1174,0.2008 0.7384,3.3598 0.7384,7.5938 C0.7384,7.7578 0.7754,7.9088 0.7864,8.0698 C2.6124,9.3118 4.2244,10.3058 5.6124,11.2158 C7.6134,12.4818 9.2284,13.6468 10.5584,14.7298 C12.2164,14.3108 13.5604,13.4018 14.5154,12.2448 M2.3674,12.1658 C3.4094,13.4458 4.8804,14.3638 6.6154,14.7558 C5.4434,14.0968 4.3084,13.4498 3.2514,12.7338 C2.9414,12.5418 2.6654,12.3558 2.3674,12.1658" id="Fill-1"></path>
+<path d="M29.571,14.0437 L28.921,11.2357 L28.683,11.0817 C28.553,11.1477 28.445,11.2357 28.12,11.2357 C27.621,11.2357 27.318,10.7087 27.058,10.2927 C26.625,9.6337 26.278,9.2827 25.975,9.1297 C27.556,8.4277 28.618,7.1117 28.618,5.2247 C28.618,2.3067 26.625,0.4637 22.921,0.4637 L16.465,0.4637 L16.465,14.7237 L20.754,14.7237 L20.754,9.7217 L21.144,9.7217 C22.097,9.7217 23.311,11.7837 23.874,12.7057 C25.044,14.5707 25.975,14.9867 27.643,14.9867 C28.423,14.9867 29.073,14.7017 29.463,14.3507 L29.571,14.0437 Z M24.242,5.4657 C24.242,6.4097 23.549,6.8697 22.747,6.8697 L20.754,6.8697 L20.754,3.9737 L22.747,3.9737 C23.549,3.9737 24.242,4.5007 24.242,5.4657 L24.242,5.4657 Z" id="Fill-3"></path>
+<path d="M46.1426,7.5939 C46.1426,3.3599 42.7636,0.2009 38.2796,0.2009 C33.7946,0.2009 30.4156,3.3599 30.4156,7.5939 C30.4156,11.8279 33.7946,14.9869 38.2796,14.9869 C42.7636,14.9869 46.1426,11.8059 46.1426,7.5939 M41.7666,7.5939 C41.7666,9.6339 40.2066,11.0819 38.2796,11.0819 C36.3516,11.0819 34.7916,9.6339 34.7916,7.5939 C34.7916,5.5539 36.3516,4.1059 38.2796,4.1059 C40.2066,4.1059 41.7666,5.5539 41.7666,7.5939" id="Fill-5"></path>
+</g>
+<polygon id="Fill-8" points="80.6103 3.9906 76.5163 3.9906 73.9813 11.8886 71.2953 3.9906 68.6963 3.9906 66.0313 11.8446 63.4973 3.9906 59.4023 3.9906 59.2073 4.3196 64.4503 18.2506 67.0493 18.2506 69.9953 10.4846 72.9633 18.2506 75.5633 18.2506 80.8053 4.3196"></polygon>
+<path d="M96.5105,11.0987 C96.5105,6.8427 93.6725,3.9907 89.0585,3.9907 L82.4945,3.9907 L82.4945,18.2507 L89.0585,18.2507 C93.6725,18.2507 96.5105,15.3987 96.5105,11.0987 M92.1345,11.1207 C92.1345,13.4457 90.7695,14.7407 88.8855,14.7407 L86.7835,14.7407 L86.7835,7.5007 L88.8855,7.5007 C90.7695,7.5007 92.1345,8.7957 92.1345,11.1207" id="Fill-9"></path>
+<polygon id="Fill-11" points="119.2316 7.5008 123.5206 7.5008 123.5206 3.9908 110.6536 3.9908 110.6536 7.5008 114.9426 7.5008 114.9426 18.2508 119.2316 18.2508"></polygon>
+<path d="M137.233,8.7513 C137.233,5.8333 135.24,3.9903 131.536,3.9903 L125.08,3.9903 L125.08,18.2503 L129.37,18.2503 L129.37,13.2483 L130.388,13.2483 L133.052,18.2503 L137.32,18.2503 L137.515,17.9213 L134.655,12.6343 C136.193,11.9103 137.233,10.6163 137.233,8.7513 M132.857,8.9923 C132.857,9.9363 132.164,10.3963 131.362,10.3963 L129.37,10.3963 L129.37,7.5003 L131.362,7.5003 C132.164,7.5003 132.857,8.0273 132.857,8.9923" id="Fill-12"></path>
+<polygon id="Fill-14" points="139.832 18.2507 144.121 18.2507 144.121 3.9907 139.832 3.9907"></polygon>
+<polygon id="Fill-15" points="154.9957 10.3747 159.8477 4.3197 159.6527 3.9907 155.0827 3.9907 151.1177 9.0587 151.1177 3.9907 146.8287 3.9907 146.8287 18.2507 151.1177 18.2507 151.1177 13.8627 151.8977 12.9417 155.5377 18.2507 160.0217 18.2507 160.2167 17.9217"></polygon>
+<polygon id="Fill-16" points="161.3862 3.9903 161.3862 18.2513 172.1732 18.2513 172.1732 14.7413 165.6742 14.7413 165.6742 12.7663 170.5702 12.7663 170.5702 9.4753 165.6742 9.4753 165.6742 7.5013 172.1092 7.5013 172.1092 3.9903"></polygon>
+<g id="Group-23" transform="translate(0.000000, 0.526700)">
+<path d="M103.7658,17.8933 C106.9078,17.8933 109.6348,16.3583 109.6348,13.3983 C109.6348,10.1723 106.8858,9.3383 104.4598,8.6363 C103.5058,8.3513 102.5298,8.0213 102.5298,7.3193 C102.5298,6.8143 103.0718,6.5073 103.8958,6.5073 C105.3048,6.5073 106.4958,7.3853 107.1018,7.9563 L107.4048,7.9563 L109.4188,5.5433 L109.4188,5.2363 C108.3578,4.0303 106.1928,3.1093 103.8088,3.1093 C100.4728,3.1093 98.1568,4.9073 98.1568,7.5173 C98.1568,10.3263 100.7108,11.5553 102.8768,12.1693 C104.2858,12.5643 105.2408,12.6303 105.2408,13.3983 C105.2408,13.9473 104.5678,14.2763 103.5268,14.2763 C102.2048,14.2763 100.6028,13.4203 99.8238,12.6523 L99.5208,12.6523 L97.5288,15.1533 L97.5288,15.4603 C98.8058,16.8853 101.1008,17.8933 103.7658,17.8933" id="Fill-17"></path>
+<path d="M29.8197,30.9998 C28.7807,28.6218 26.6937,25.5708 18.5177,21.2138 C14.7477,19.1178 8.3067,15.8908 2.5137,9.7578 C3.0387,11.9718 5.7287,16.8368 17.2987,22.9118 C20.5027,24.6648 25.9207,26.3088 29.8197,30.9998" id="Fill-19"></path>
+<path d="M29.298,26.9271 C28.312,24.1171 26.532,20.5191 18.091,15.1751 C13.98,12.4811 7.945,9.0981 0,0.4731 C0.568,2.7981 3.078,8.8441 15.73,16.6931 C19.886,19.5091 25.25,21.2461 29.298,26.9271" id="Fill-21"></path>
+</g>
+</g>
+</g>
+</g>
+</svg> </a>
+</div>
+<div id="megaSearch" data-id="search" class="search_btn fa-solid fa-magnifying-glass"></div>
+<div id="csMobileMenuBtn" class="mobile_menu_btn"><span></span></div>
+<div class="mega_menu__content">
+<ul id="megamenu_bottom_nav_insert" class="mega_menu__links"></ul>
+<div id="megamenu_bottom_nav_content" class="mega_menu__body"></div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="cs_page_content">
+<div class="mobile_nav_section">
+<div class="mobile_nav_content">
+<div id="megamenu_mobile_main_nav" class="list_items_content"></div>
+</div>
+</div>
+<div class="cs_main_section">
+<main class="main">
+<article>
+<div class="container">
+<div class="row">
+<div class="col-12 col-lg-8">
+<h1>Understanding Indicators of Attack (IOAs): The Power of Event Stream Processing in CrowdStrike Falcon</h1>
+<div class="publish_info">
+<p>March 14, 2017</p> <a href="https://www.crowdstrike.com/blog/author/danbrown/" title="Posts by Dan Brown" rel="author">Dan Brown</a> <a href="https://www.crowdstrike.com/blog/category/endpoint-protection/" title="Endpoint &amp; Cloud Security">Endpoint &amp; Cloud Security</a> </div>
+<div class="post_image"><img width="530" height="349" src="https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="IOAs" srcset="https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs.jpg 530w, https://www.crowdstrike.com/wp-content/uploads/2017/03/IOAs-300x198.jpg 300w" sizes="(max-width: 530px) 100vw, 530px" /></div>
+<div class="blog_content">
+<p>Event Stream Processing (ESP) has been a central component of CrowdStrike Falcon’s IOA approach since CrowdStrike&#8217;s inception.  In this post we&#8217;ll take a closer look at ESP — along with its utility and challenges — in an endpoint protection platform like CrowdStrike Falcon.</p>
+<p>ESP is really a category of approaches, with a subset of those approaches being commonly referred to as Complex Event Processing (CEP).  Leveraging ESP in the information security space is an approach that has been evaluated in various forms, at least academically, since at least as far back as the 1990&#8217;s.  Basically, ESP can be contrasted with systems that use retrospective, or &#8220;offline&#8221; analysis methods, such as table-based queries commonly associated with SQL, Splunk, and cloud technologies such as column-oriented databases.  For systems intended to identify patterns in a stream of events, retrospective queries are inefficient – frequently requiring that redundant computations be performed repeatedly.  ESP’s intent is to answer the same questions as offline retrospective querying, but by using more efficient <a href="https://en.wikipedia.org/wiki/Online_algorithm">&#8220;online” algorithms</a>, which do not require access to an entire and finite data set in order to perform useful analysis.</p>
+<p>Here is an example.  Suppose you have a stream of process creation events from endpoint sensors.  Each event might contain information such as:</p>
+<ul>
+<li>Identifier for the machine</li>
+<li>Identifier for the process</li>
+<li>Identifier for the parent process</li>
+<li>Filename of the created process&#8217; executable filename</li>
+</ul>
+<p>Given just that information, one could find all occurrences where an Internet Explorer process spawned a command shell.  With a retrospective query system like SQL, we would need a nested query that first finds all process instances where<em> ImageFileName==&#8217;cmd.exe&#8217;</em>, and then joins that result set with another query on<em> ImageFileName==&#8217;iexplore.exe&#8217;</em>, and where <em>ParentProcessId==ProcessId</em>.  This search is obviously inefficient, since we must make two passes through the data.  What’s worse, doing this retrospectively with a standing query requires a huge amount of unnecessarily redundant computation.  In contrast, ESP provides a much more efficient approach by statefully holding onto only relevant data, and then correlating later events with that information.</p>
+<p>One straightforward ESP-based approach would be to store each instance of iexplore.exe as it is observed on the endpoint, hanging onto that knowledge for later correlation.  When an instance of cmd.exe is observed, we can take the ParentProcessId of the new event and compare it with the current set of saved iexplore.exe ProcessIds.  This approach is clearly more efficient than the retrospective query.  This example is highly simplified.  There are many approaches that can be classified as ESP, but this stateful correlation approach is a straightforward starting point to explain the concept.</p>
+<p>Keep in mind that while ESP is a very useful tool, it is not, by itself, a breakthrough technology.  However, while ESP itself is not challenging in theory, there are many challenges in making a robust ESP-based commercial solution.  Two important ones are scale and efficiency.</p>
+<p>While CrowdStrike Falcon is perhaps best known for its class-leading cloud technology, an important and often overlooked aspect of its platform is the endpoint sensor itself.  Being able to efficiently perform ESP correlation on the sensor (and in the kernel!)  is unique in the industry. By performing ESP on sensors, in addition to correlation that happens in the cloud, the CrowdStrike Falcon platform can operate on data at scales that are <a href="https://www.crowdstrike.com/blog/what-sets-crowdstrike-falcon-apart/">too prohibitive</a> to achieve by centralizing all of the data.  For example, while CrowdStrike Falcon gathers and processes a <em>lot </em> of data proactively in the cloud, sending all registry read operations to the cloud would multiply the data transmission, storage, and computational costs by perhaps 1000X.  And registry reads are useful for ESP correlation. Clearly, having to first centralize all data before being able to correlate it is the wrong approach.  Yet somehow, that bottleneck-laden approach is still common practice.</p>
+<p>However, simply &#8220;doing ESP&#8221; — even when correlation is done on the endpoint — is still not sufficient to create a detection and prevention platform that is truly “next-generation.”  Another important consideration is the nature of the events themselves, because details matter.  CrowdStrike Falcon sensor has access to over 1,000 types of events, many of which provide the sensor with data that is entirely unique in the industry, resulting in a detection and prevention capability that is second to none.  These events indicate activity ranging from simple file I/O operations to privilege escalation.  Behavioral IOA correlation ties these together to detect and prevent malicious activity.  The result is technology sophisticated enough to detect when credential theft is occurring from a reflectively injected module in PowerShell, and to prevent that activity before it can actually be observed by the attacker.</p>
+<div id="attachment_18622" style="width: 784px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-18622" loading="lazy" class="size-full wp-image-18622" src="https://www.crowdstrike.com/wp-content/uploads/2017/03/Falcon-UI.png" alt="CrowdStrike Falcon UI showing an example of a process tree with IOAs indicating malicious behavior related to a document exploit (in this case, a PDF opened in Adobe Acrobat Reader). The green arrow indicates code injection. (Other symbols indicate whether the processes are engaged in file and network operations. The plus or minus symbols are for collapsing/expanding parts of the process tree.)" width="774" height="340" /><p id="caption-attachment-18622" class="wp-caption-text">CrowdStrike Falcon UI showing an example of a process tree with IOAs indicating malicious behavior related to a document exploit (in this case, a PDF opened in Adobe Acrobat Reader). The green arrow indicates code injection. (Other symbols indicate whether the processes are engaged in file and network operations. The plus or minus symbols are for collapsing/expanding parts of the process tree.)</p></div>
+<p>Another significant challenge that faces a would-be adopter of ESP is the question, &#8220;Where do ESP patterns come from?&#8221;  Just relying on what you know from coarse-grained, centralized data is not enough to illuminate what behaviors distinguish malicious software from benign.  Human insight combined with sophisticated analytical methods and data gathering techniques are required.  This synthesis of human-computer effort also enables CrowdStrike to leverage machine learning methods to further accelerate the pace and accuracy of IOA development.  Perhaps one day the need for human insight may be eliminated from the process of developing ESP-based IOAs.  And perhaps in that Utopian future, when my job has been completely automated, I will be able to once again find gainful employment blogging about security.</p>
+<p>Of course, some data outside of ESP is still useful to send to humans for analysis.  This data helps expert threat hunters in CrowdStrike&#8217;s OverWatch group find new ways of detecting malicious behavior and malware.  As one example among many, CrowdStrike&#8217;s platform proactively collects all information about inter-process activity — including data that is completely unique in the industry — and makes it all available to analysts. Using that data, OverWatch threat hunters can perform additional analysis that culminates in deploying new IOAs into the product rapidly through the cloud, automating detection of newly discovered behaviors and malware.  The number of different ways that the resulting platform can detect instances of malicious behavior is striking.</p>
+<p>So to do ESP right you need:</p>
+<ol>
+<li>An excellent data collection platform,</li>
+<li>A highly optimized sensor capable of providing those events without impacting users or server performance, and</li>
+<li>An agile and mature IOA development pipeline that starts with world-class adversary hunters.</li>
+</ol>
+<p>There are other methods for identifying malicious behavior under the IOA umbrella besides ESP,  and more are being added every day to the list of methods under active research at CrowdStrike.  Combining human expertise in information security with ESP technology has long been and will remain a core component of CrowdStrike’s approach, making the company a technology leader in the endpoint protection space.  CrowdStrike pioneered the use of ESP in the Endpoint Protection Platform market, and it will be unsurprising if others try to imitate CrowdStrike&#8217;s approach, given its success.</p>
+<p>Perhaps the most obvious evidence of this leadership is the simple fact that, unlike others in the industry, CrowdStrike&#8217;s IOA philosophy, message, and technical approach have remained consistent over the years and been well proven by withstanding the test of time.</p>
+<p>To learn more about CrowdStrike’s pioneering work in IOA behavioral detection, please read the whitepaper: <a href="https://www.crowdstrike.com/resources/white-papers/indicators-attack-vs-indicators-compromise/"><em>Indicators of Attack Vs. Indicators of Compromise</em></a>.</p>
+<p>&nbsp;</p>
+</div>
+<style>
+    .list-share-buttons{
+        margin-bottom: 40px;
+        margin-left: auto;
+    }
+
+    .share-button {
+        float: left;
+        color: #999;
+        border: 1px solid #e4e4e4;
+        text-align: center;
+        transition: all 0.15s ease;
+        margin-right: 5px;
+        margin-bottom: 40px;
+        margin-left: auto;
+        font-size: 13px;
+        padding: 0.5em 0.9em;
+    }
+
+    .tweet-btn{
+        color: #999999;
+    }
+    .li-btn{
+        color: #999999;
+    }
+    .tweet-btn:hover{
+        color: #1DA1F2;
+    }
+
+    .li-btn:hover{
+        color: #2867B2;
+    }
+
+    .fa{
+        margin-right:5px;
+    }
+
+</style>
+<div>
+<ul class="list-share-buttons">
+
+<li class="share-button">
+<a class="tweet-btn " target="_blank" rel="noopener noreferrer" href="https://twitter.com/share?text=Understanding+Indicators+of+Attack+%28IOAs%29%3A+The+Power+of+Event+Stream+Processing+in+CrowdStrike+Falcon&amp;url=https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/" onclick="if (!window.__cfRLUnblockHandlers) return false; window.open(this.href, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');" data-cf-modified-76d23604497372fd57abbdbb-="">
+<span class="fa-brands fa-twitter"></span>
+<span>Tweet</span>
+</a>
+</li>
+
+<li class="share-button">
+<a class="li-btn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.crowdstrike.com/blog/understanding-indicators-attack-ioas-power-event-stream-processing-crowdstrike-falcon/&amp;title=Understanding+Indicators+of+Attack+%28IOAs%29%3A+The+Power+of+Event+Stream+Processing+in+CrowdStrike+Falcon" onclick="if (!window.__cfRLUnblockHandlers) return false; window.open(this.href, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');" data-cf-modified-76d23604497372fd57abbdbb-="">
+<span class="fa-brands fa-linkedin"></span>
+<span>Share</span>
+</a>
+</li>
+</ul>
+</div>
+<a href="https://go.crowdstrike.com/try-falcon-prevent.html">
+<img class="post_cta" src="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/images/blog/breaches-stop-here-post-cta.jpeg">
+</a>
+<h5>Related Content</h5>
+<div class="row recent_articles">
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/understanding-cve-2022-23648-kubernetes-vulnerability/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2022/04/Blog_1060x698.jpeg" alt="">
+</div>
+<div class="post_info">
+<h6>CVE-2022-23648: Kubernetes Container Escape Using Containerd CRI Plugin and Mitigation</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/demonstrating-falcon-fusion-automated-response-against-mitre-test-scenarios/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2022/04/0322_16_MITRE_ATTCK_04_Blog_1060x698.jpeg" alt="">
+</div>
+<div class="post_info">
+<h6>Falcon Fusion Accelerates Orchestrated and Automated Response Time</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/adversary-focused-platform-approach-to-cloud-security/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2022/04/22-PP-040_CNAPP_Announcement_Blog_1060x698.jpeg" alt="">
+</div>
+<div class="post_info">
+<h6>CrowdStrike Delivers Adversary-Focused, Platform Approach to CNAPP and Cloud Security</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+</div>
+</div>
+<div class="col-12 col-lg-4 sidebar">
+<div class="blog_subsection">
+<div class="blog_section_subtitle">
+<div class="title">Categories</div>
+</div>
+</div>
+<div class="blog_featured_category_list" id="blog_category_sidebar_item"></div>
+<div class="social">
+<h6>Connect with Us</h6>
+<div class="social_icons">
+<a href="https://www.twitter.com/CrowdStrike"><span class="fa-brands fa-twitter"></span></a>
+<a href="https://www.facebook.com/CrowdStrike"><span class="fa-brands fa-facebook"></span></a>
+<a href="https://www.linkedin.com/company/crowdstrike"><span class="fa-brands fa-linkedin"></span></a>
+<a href="https://www.youtube.com/user/CrowdStrike"><span class="fa-brands fa-youtube"></span></a>
+<a href="https://www.crowdstrike.com/blog/feed"><span class="fa fa-rss"></span></a>
+</div>
+</div>
+<a class="free_trial_sidebar" href="https://www.crowdstrike.com/resources/reports/forrester-wave-endpoint-detection-and-response-2022/">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2021/07/Sidebar_EPP_ForresterWave_EDR.jpeg">
+</a>
+<div id="sideBarFeaturedArticles"></div>
+<div class="subscribe_cta">
+<h6>SUBSCRIBE</h6>
+<p>Sign up now to receive the latest notifications and updates from CrowdStrike.</p>
+<a class="button white-text white-outline white-text-hover dark-red-background-hover dark-red-outline-hover" data-behavior="modal" data-template-id="modal-42284" href="#">Sign Up</a>
+</div>
+<div class="demo_cta">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2021/07/red-falcon.svg">
+<h6>See CrowdStrike Falcon in Action</h6>
+<p>Detect, prevent, and respond to attacks— even malware-free intrusions—at any stage, with next-generation endpoint protection.</p>
+<a class="button white-text red-background red-outline white-text-hover dark-red-background-hover dark-red-outline-hover" href="https://www.crowdstrike.com/see-demo/">See Demo</a>
+</div>
+</div>
+</div>
+<div class="post_nav row">
+<div class="col-12">
+<div class="links"><span class="fa fa-angle-double-left"></span> <a href="https://www.crowdstrike.com/blog/economics-ransomware-scadaics-changes-equation/" rel="prev">The Economics of Ransomware: How SCADA/ICS Changes the Equation</a></div>
+<div class="links"><a href="https://www.crowdstrike.com/blog/tech-center/how-to-manage-policies-in-falcon/" rel="next">How to Manage Policies in CrowdStrike Falcon</a> <span class="fa fa-angle-double-right"></span></div>
+</div>
+</div>
+</div>
+</article>
+<section id="freeTrialCta" class="blog-free-trial-cta">
+<div class="container">
+<div class="row">
+<div class="col-12">
+<div class="content">
+<h1 class="free-trial-header">TRY CROWDSTRIKE FREE FOR 15 DAYS</h1>
+<a class="button white-text red-background red-outline white-text-hover dark-red-background-hover dark-red-outline-hover" id="freeTrialOpenTrigger" href="#">GET STARTED WITH A FREE TRIAL</a>
+</div>
+</div>
+</div>
+</div>
+<div id="freeTrialContent" class="free-trial-content-wrapper unstuck" style="display: none;">
+<div class="container">
+<p class="free-trial-close textright white"><a class="free-trial-close-trigger red" id="freeTrialCloseTrigger">X</a></p>
+</div>
+<div class="container free-trial-iframe-wrapper">
+<iframe id="footer-form-frame" height="490" width="800" src="https://go.crowdstrike.com/WF-Trial-to-Pay_LP-Registration-Footer.html" class=""></iframe>
+</div>
+</div>
+</section>
+<script type="76d23604497372fd57abbdbb-text/javascript">
+    fetchInject([
+        'https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/pages/blog.min.js?ts=1651688220000',
+    ])
+</script> </main>
+<footer class="simple">
+<div class="container">
+<div class="row">
+<div class="col-md-12 top">
+<span class="footer-logo"><a class="red" href="https://www.crowdstrike.com"><i class="cs-icon-cs-logo"> </i></a></span>
+<ul class="row social-links">
+<li class="circle-icon-outline">
+<a href="https://twitter.com/CrowdStrike" target="_blank"><i class="fa-brands fa-twitter"></i></a></li>
+<li class="circle-icon-outline">
+<a href="https://www.facebook.com/CrowdStrike/" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+</li>
+<li class="circle-icon-outline">
+<a href="https://www.linkedin.com/company/crowdstrike" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+</li>
+<li class="circle-icon-outline">
+<a href="http://www.youtube.com/user/CrowdStrike" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+</li>
+</ul>
+</div>
+<div class="col-md-12 bottom">
+<ul class="row footer-lower-links">
+<li class="footer-copyright">Copyright © 2022 CrowdStrike</li>
+<li><a href="https://www.crowdstrike.com/privacy-notice/">Privacy</a></li>
+<li><a href="https://www.crowdstrike.com/request-information/">Request Info</a></li>
+<li><a href="https://www.crowdstrike.com/blog">Blog</a></li>
+<li><a href="https://www.crowdstrike.com/contact-us/">Contact Us</a></li>
+<li>1.888.512.8906</li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</div>
+<script type="76d23604497372fd57abbdbb-text/javascript" async="async" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/theme-scripts.min.js?ver=1651603393' id='theme-scripts-js'></script>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="76d23604497372fd57abbdbb-|49" defer=""></script></body>
+</html>

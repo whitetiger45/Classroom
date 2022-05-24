@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" country="us">
+<head>
+
+<style>.async-hide {
+            opacity: 0 !important
+        } </style>
+<script data-cfasync="false">if (!window.location.hostname.match(/marketodesigner/i)) {
+            (function (a, s, y, n, c, h, i, d, e) {
+                s.className += ' ' + y;
+                h.start = 1 * new Date;
+                h.end = i = function () {
+                    s.className = s.className.replace(RegExp(' ?' + y), '')
+                };
+                (a[n] = a[n] || []).hide = h;
+                setTimeout(function () {
+                    i();
+                    h.end = null
+                }, c);
+                h.timeout = c;
+            })(window, document.documentElement, 'async-hide', 'dataLayer', 1900,
+                {'GTM-N8HXDD2': true})
+        }</script>
+<script data-cfasync="false" async src="https://www.googleoptimize.com/optimize.js?id=GTM-N8HXDD2" onerror="dataLayer.hide.end && dataLayer.hide.end()"></script>
+
+<script data-cfasync="false">(function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5V5LPNC');</script>
+
+<script type="5c8af11256080b4d7216da2e-text/javascript" src="https://cdn.cookielaw.org/consent/bee15b7c-b632-450e-9003-9c8b60b3b978/OtAutoBlock.js"></script>
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" data-document-language="true" type="5c8af11256080b4d7216da2e-text/javascript" charset="UTF-8" data-domain-script=bee15b7c-b632-450e-9003-9c8b60b3b978></script>
+<script type="5c8af11256080b4d7216da2e-text/javascript">
+    function OptanonWrapper() { }
+</script>
+<meta charset="UTF-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="cleartype" content="on">
+<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+<title>How to Import IOCs Into the CrowdStrike Falcon Platform</title>
+<meta name="description" content="Learn how to use the CrowdStrike Falcon Platform API to import and manage IOCs." />
+<link rel="canonical" href="https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to Import IOCs Into the CrowdStrike Falcon Platform" />
+<meta property="og:description" content="Learn how to use the CrowdStrike Falcon Platform API to import and manage IOCs." />
+<meta property="og:url" content="https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/" />
+<meta property="og:site_name" content="crowdstrike.com" />
+<meta property="article:publisher" content="https://www.facebook.com/CrowdStrike/" />
+<meta property="article:published_time" content="2020-10-30T07:00:23+00:00" />
+<meta property="article:modified_time" content="2021-12-30T17:14:33+00:00" />
+<meta property="og:image" content="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg" />
+<meta property="og:image:width" content="530" />
+<meta property="og:image:height" content="349" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@CrowdStrike" />
+<meta name="twitter:site" content="@CrowdStrike" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Ted Pan" />
+<meta name="twitter:label2" content="Est. reading time" />
+<meta name="twitter:data2" content="8 minutes" />
+<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.crowdstrike.com/#website","url":"https://www.crowdstrike.com/","name":"crowdstrike.com","description":"Next-Generation Endpoint Protection","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.crowdstrike.com/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/#primaryimage","inLanguage":"en-US","url":"https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg","contentUrl":"https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg","width":530,"height":349,"caption":"CrowdStrike Tech Center"},{"@type":"WebPage","@id":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/#webpage","url":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/","name":"How to Import IOCs Into the CrowdStrike Falcon Platform","isPartOf":{"@id":"https://www.crowdstrike.com/#website"},"primaryImageOfPage":{"@id":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/#primaryimage"},"datePublished":"2020-10-30T07:00:23+00:00","dateModified":"2021-12-30T17:14:33+00:00","author":{"@id":"https://www.crowdstrike.com/#/schema/person/2ea0f39d34fb7a32dd580aeab71752b0"},"description":"Learn how to use the CrowdStrike Falcon Platform API to import and manage IOCs.","breadcrumb":{"@id":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/"]}]},{"@type":"BreadcrumbList","@id":"https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"How to Consume Threat Feeds"}]},{"@type":"Person","@id":"https://www.crowdstrike.com/#/schema/person/2ea0f39d34fb7a32dd580aeab71752b0","name":"Ted Pan","image":{"@type":"ImageObject","@id":"https://www.crowdstrike.com/#personlogo","inLanguage":"en-US","url":"http://0.gravatar.com/avatar/69d62dc2e858f688a1b7bf75a9bef337?s=96&d=mm&r=g","contentUrl":"http://0.gravatar.com/avatar/69d62dc2e858f688a1b7bf75a9bef337?s=96&d=mm&r=g","caption":"Ted Pan"},"url":"https://www.crowdstrike.com/blog/author/ted-pan/"}]}</script>
+
+<link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/header/megamenu-content.json" as="json"><link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/header/top-nav.json" as="json"><link rel="preload" href="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/data/blog/blog-nav.json" as="json"><style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='single-post.min.css-css' href='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/styles/pages/single-post.min.css?ver=1651603393' type='text/css' media='all' />
+<link rel='stylesheet' id='theme-styles-css' href='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/styles/theme-styles.min.css?ver=1651603393' type='text/css' media='screen' />
+<link rel='stylesheet' id='tablepress-default-css' href='https://www.crowdstrike.com/wp-content/tablepress-combined.min.css?ver=4' type='text/css' media='all' />
+<script type="5c8af11256080b4d7216da2e-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/fetch-inject.js?ver=1651603393' id='fetch-inject-js'></script>
+<script type="5c8af11256080b4d7216da2e-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-navigation.min.js?ver=1651603393' id='blog-navigation-js'></script>
+<script type="5c8af11256080b4d7216da2e-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-categories.min.js?ver=1651603393' id='blog-categories-js'></script>
+<script type="5c8af11256080b4d7216da2e-text/javascript" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/components/blog-category-sidebar.min.js?ver=1651603393' id='blog-category-sidebar-js'></script>
+<link rel='shortlink' href='https://www.crowdstrike.com/?p=41814' />
+<link rel="icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" sizes="32x32" />
+<link rel="icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" />
+<meta name="msapplication-TileImage" content="https://www.crowdstrike.com/wp-content/uploads/2018/09/favicon-96x96.png" />
+</head>
+<body class="post-template-default single single-post postid-41814 single-format-standard lang-en">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5V5LPNC&nojs=1"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Organization",
+        "name": "CrowdStrike",
+        "url": "http://www.crowdstrike.com",
+        "logo": "http://www.crowdstrike.com/wp-content/img/cs_logo.png",
+        "sameAs": [
+            "http://www.facebook.com/CrowdStrike/",
+            "http://www.twitter.com/CrowdStrike/",
+            "https://plus.google.com/101967380457820256808/",
+            "http://www.linkedin.com/company/crowdstrike",
+            "http://www.youtube.com/user/CrowdStrike"
+        ]
+    }
+</script>
+<div data-id="wistia_player_embed"></div>
+<div id="modal-mask" class="modal_insert_location">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<div id="modal-inner-mask" class="modal_mask">
+<div class="close_button"><i id="modal-close" class="fa fa-close"></i></div>
+<div id="modal-insert" class="modal_content"></div>
+</div>
+</div>
+</div>
+</div>
+</div><div id="blogNavInsertLocation"></div>
+<div class="cs_page_container ">
+<div class="search_modal">
+<div class="cs_header_container search_modal__section centered">
+
+<input type="text" id="addsearchfield" class="addsearch" disabled="disabled" placeholder="Search" />
+<script type="5c8af11256080b4d7216da2e-text/javascript" async="async" src="https://addsearch.com/js/?key=7737a29b854de71521b1cd72c4118cfc"></script>
+</div>
+</div>
+<header id="megaMenu" class="cs_main_menu 0">
+<div id="headerPromobar"></div>
+<nav class="header_top_menu">
+<div class="cs_header_container centered">
+<div id="megamenu_top_insert" class="menu_inner_section"></div>
+</div>
+</nav>
+<nav class="header_bottom_menu">
+<div class="mega_menu">
+<div class="cs_header_container centered mega_menu__header">
+<div class="header_logo">
+<a href="/">
+<svg width="173px" height="32px" viewBox="0 0 173 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Homepage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+<g id="Home" transform="translate(-72.000000, -7240.000000)" fill="#FEFEFE">
+<g id="Group-24" transform="translate(72.000000, 7240.000000)">
+<g id="Group-7" transform="translate(13.000000, 3.526700)">
+<path d="M14.5154,12.2448 L14.5154,11.9378 L11.9154,9.6998 L11.6124,9.6998 C10.8974,10.4898 9.7934,11.0818 8.5584,11.0818 C6.6304,11.0818 5.1134,9.6118 5.1134,7.5938 C5.1134,5.5758 6.6304,4.1058 8.5584,4.1058 C9.7934,4.1058 10.8974,4.6978 11.6124,5.4878 L11.9154,5.4878 L14.5154,3.2498 L14.5154,2.9428 C13.1504,1.2758 11.0064,0.2008 8.5794,0.2008 C4.1174,0.2008 0.7384,3.3598 0.7384,7.5938 C0.7384,7.7578 0.7754,7.9088 0.7864,8.0698 C2.6124,9.3118 4.2244,10.3058 5.6124,11.2158 C7.6134,12.4818 9.2284,13.6468 10.5584,14.7298 C12.2164,14.3108 13.5604,13.4018 14.5154,12.2448 M2.3674,12.1658 C3.4094,13.4458 4.8804,14.3638 6.6154,14.7558 C5.4434,14.0968 4.3084,13.4498 3.2514,12.7338 C2.9414,12.5418 2.6654,12.3558 2.3674,12.1658" id="Fill-1"></path>
+<path d="M29.571,14.0437 L28.921,11.2357 L28.683,11.0817 C28.553,11.1477 28.445,11.2357 28.12,11.2357 C27.621,11.2357 27.318,10.7087 27.058,10.2927 C26.625,9.6337 26.278,9.2827 25.975,9.1297 C27.556,8.4277 28.618,7.1117 28.618,5.2247 C28.618,2.3067 26.625,0.4637 22.921,0.4637 L16.465,0.4637 L16.465,14.7237 L20.754,14.7237 L20.754,9.7217 L21.144,9.7217 C22.097,9.7217 23.311,11.7837 23.874,12.7057 C25.044,14.5707 25.975,14.9867 27.643,14.9867 C28.423,14.9867 29.073,14.7017 29.463,14.3507 L29.571,14.0437 Z M24.242,5.4657 C24.242,6.4097 23.549,6.8697 22.747,6.8697 L20.754,6.8697 L20.754,3.9737 L22.747,3.9737 C23.549,3.9737 24.242,4.5007 24.242,5.4657 L24.242,5.4657 Z" id="Fill-3"></path>
+<path d="M46.1426,7.5939 C46.1426,3.3599 42.7636,0.2009 38.2796,0.2009 C33.7946,0.2009 30.4156,3.3599 30.4156,7.5939 C30.4156,11.8279 33.7946,14.9869 38.2796,14.9869 C42.7636,14.9869 46.1426,11.8059 46.1426,7.5939 M41.7666,7.5939 C41.7666,9.6339 40.2066,11.0819 38.2796,11.0819 C36.3516,11.0819 34.7916,9.6339 34.7916,7.5939 C34.7916,5.5539 36.3516,4.1059 38.2796,4.1059 C40.2066,4.1059 41.7666,5.5539 41.7666,7.5939" id="Fill-5"></path>
+</g>
+<polygon id="Fill-8" points="80.6103 3.9906 76.5163 3.9906 73.9813 11.8886 71.2953 3.9906 68.6963 3.9906 66.0313 11.8446 63.4973 3.9906 59.4023 3.9906 59.2073 4.3196 64.4503 18.2506 67.0493 18.2506 69.9953 10.4846 72.9633 18.2506 75.5633 18.2506 80.8053 4.3196"></polygon>
+<path d="M96.5105,11.0987 C96.5105,6.8427 93.6725,3.9907 89.0585,3.9907 L82.4945,3.9907 L82.4945,18.2507 L89.0585,18.2507 C93.6725,18.2507 96.5105,15.3987 96.5105,11.0987 M92.1345,11.1207 C92.1345,13.4457 90.7695,14.7407 88.8855,14.7407 L86.7835,14.7407 L86.7835,7.5007 L88.8855,7.5007 C90.7695,7.5007 92.1345,8.7957 92.1345,11.1207" id="Fill-9"></path>
+<polygon id="Fill-11" points="119.2316 7.5008 123.5206 7.5008 123.5206 3.9908 110.6536 3.9908 110.6536 7.5008 114.9426 7.5008 114.9426 18.2508 119.2316 18.2508"></polygon>
+<path d="M137.233,8.7513 C137.233,5.8333 135.24,3.9903 131.536,3.9903 L125.08,3.9903 L125.08,18.2503 L129.37,18.2503 L129.37,13.2483 L130.388,13.2483 L133.052,18.2503 L137.32,18.2503 L137.515,17.9213 L134.655,12.6343 C136.193,11.9103 137.233,10.6163 137.233,8.7513 M132.857,8.9923 C132.857,9.9363 132.164,10.3963 131.362,10.3963 L129.37,10.3963 L129.37,7.5003 L131.362,7.5003 C132.164,7.5003 132.857,8.0273 132.857,8.9923" id="Fill-12"></path>
+<polygon id="Fill-14" points="139.832 18.2507 144.121 18.2507 144.121 3.9907 139.832 3.9907"></polygon>
+<polygon id="Fill-15" points="154.9957 10.3747 159.8477 4.3197 159.6527 3.9907 155.0827 3.9907 151.1177 9.0587 151.1177 3.9907 146.8287 3.9907 146.8287 18.2507 151.1177 18.2507 151.1177 13.8627 151.8977 12.9417 155.5377 18.2507 160.0217 18.2507 160.2167 17.9217"></polygon>
+<polygon id="Fill-16" points="161.3862 3.9903 161.3862 18.2513 172.1732 18.2513 172.1732 14.7413 165.6742 14.7413 165.6742 12.7663 170.5702 12.7663 170.5702 9.4753 165.6742 9.4753 165.6742 7.5013 172.1092 7.5013 172.1092 3.9903"></polygon>
+<g id="Group-23" transform="translate(0.000000, 0.526700)">
+<path d="M103.7658,17.8933 C106.9078,17.8933 109.6348,16.3583 109.6348,13.3983 C109.6348,10.1723 106.8858,9.3383 104.4598,8.6363 C103.5058,8.3513 102.5298,8.0213 102.5298,7.3193 C102.5298,6.8143 103.0718,6.5073 103.8958,6.5073 C105.3048,6.5073 106.4958,7.3853 107.1018,7.9563 L107.4048,7.9563 L109.4188,5.5433 L109.4188,5.2363 C108.3578,4.0303 106.1928,3.1093 103.8088,3.1093 C100.4728,3.1093 98.1568,4.9073 98.1568,7.5173 C98.1568,10.3263 100.7108,11.5553 102.8768,12.1693 C104.2858,12.5643 105.2408,12.6303 105.2408,13.3983 C105.2408,13.9473 104.5678,14.2763 103.5268,14.2763 C102.2048,14.2763 100.6028,13.4203 99.8238,12.6523 L99.5208,12.6523 L97.5288,15.1533 L97.5288,15.4603 C98.8058,16.8853 101.1008,17.8933 103.7658,17.8933" id="Fill-17"></path>
+<path d="M29.8197,30.9998 C28.7807,28.6218 26.6937,25.5708 18.5177,21.2138 C14.7477,19.1178 8.3067,15.8908 2.5137,9.7578 C3.0387,11.9718 5.7287,16.8368 17.2987,22.9118 C20.5027,24.6648 25.9207,26.3088 29.8197,30.9998" id="Fill-19"></path>
+<path d="M29.298,26.9271 C28.312,24.1171 26.532,20.5191 18.091,15.1751 C13.98,12.4811 7.945,9.0981 0,0.4731 C0.568,2.7981 3.078,8.8441 15.73,16.6931 C19.886,19.5091 25.25,21.2461 29.298,26.9271" id="Fill-21"></path>
+</g>
+</g>
+</g>
+</g>
+</svg> </a>
+</div>
+<div id="megaSearch" data-id="search" class="search_btn fa-solid fa-magnifying-glass"></div>
+<div id="csMobileMenuBtn" class="mobile_menu_btn"><span></span></div>
+<div class="mega_menu__content">
+<ul id="megamenu_bottom_nav_insert" class="mega_menu__links"></ul>
+<div id="megamenu_bottom_nav_content" class="mega_menu__body"></div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="cs_page_content">
+<div class="mobile_nav_section">
+<div class="mobile_nav_content">
+<div id="megamenu_mobile_main_nav" class="list_items_content"></div>
+</div>
+</div>
+<div class="cs_main_section">
+<main class="main">
+<article>
+<div class="container">
+<div class="row">
+<div class="col-12 col-lg-8">
+<a href="/blog/tech-center/" class="back-to-tech-center"><i class="cs-icon-circle-arrow-left-2"></i>Back to Tech Center</a>
+<h1>How to Consume Threat Feeds</h1>
+<div class="publish_info">
+<p>October 30, 2020</p> <a href="https://www.crowdstrike.com/blog/author/ted-pan/" title="Posts by Ted Pan" rel="author">Ted Pan</a> <a href="https://www.crowdstrike.com/blog/category/tech-center/" title="Tech Center">Tech Center</a> </div>
+<div class="post_image"><img width="530" height="349" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="CrowdStrike Tech Center" srcset="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg 530w, https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2-300x198.jpg 300w" sizes="(max-width: 530px) 100vw, 530px" /></div>
+<div class="blog_content">
+<h3>Introduction</h3>
+<p>As part of the CrowdStrike API, the “Custom IOC APIs” allows you to retrieve, upload, update, search, and delete custom<a href="https://www.crowdstrike.com/cybersecurity-101/indicators-of-compromise/"> Indicators of Compromise (IOCs)</a> that you want CrowdStrike to identify.</p>
+<p>With the ability to upload IOCs to the endpoints can automatically detect and prevent attacks identified by the indicators provided from a threat feed.<br />
+<b></b></p>
+<h3>Prerequisites</h3>
+<p>To get started with the CrowdStrike API, you’ll want to first define the API client and set its scope. Refer to this <a href="https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/">guide to getting access</a> to the CrowdStrike API for setting up a new API client key. For the new API client, make sure the scope includes read and write access for IOCs (Indicators of Compromise).</p>
+<p><img loading="lazy" class="alignnone wp-image-27292" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/iocclient-1-1024x779.png" alt="IOC Client Scope" width="600" height="457" /></p>
+<p>As example IOCs, we will be using the test domain “evil-domain.com” and the file “this_does_nothing.exe” (<a href="https://crowdstrikeinc.box.com/s/xgeflbbeo8m5yzfypw3ga5a2lfs36gjx">this_does_nothing.exe (zipped)</a>, <a href="https://crowdstrikeinc.box.com/s/phec13ociraudmf3d8oq5odi2m4dv6ee">Source Code (zipped)</a>, which has a sha256 hash value of 4e106c973f28acfc4461caec3179319e784afa9cd939e3eda41ee7426e60989f .<br />
+<b></b></p>
+<h3>Beginning with the Crowdstrike API</h3>
+<p>CrowdStrike leverages Swagger to provide documentation, reference information, and a simple interface to try out the API.</p>
+<p>Before accessing the Swagger UI, make sure that you’re already logged into the Falcon Console.</p>
+<p>Here’s a link to <a href="https://assets.falcon.crowdstrike.com/support/api/swagger.html#/">CrowdStrike’s Swagger UI</a>.  Authorize with your Client ID and Client Secret that’s associated with the IOC scope as shown in the <a href="https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/">guide to getting access to the CrowdStrike API</a>.</p>
+<p><img loading="lazy" class="alignnone wp-image-27293" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/authorize-1-796x1024.png" alt="Authorize API" width="501" height="645" /></p>
+<p>After you’re authorized, find the <a href="https://assets.falcon.crowdstrike.com/support/api/swagger.html#/iocs">IOCs resource</a> on the page. These are going to be the requests that we’ll demonstrate in this guide.</p>
+<h3>Creating an IOC</h3>
+<p>First, let’s create a couple of new IOCs. We will add an IOC for the domain “evil-domain.com” and the file hash “4e106c973f28acfc4461caec3179319e784afa9cd939e3eda41ee7426e60989f” from our sample file.</p>
+<p>Click on <strong>POST /indicators/entities/iocs/v1</strong> to expand it. This will provide you with descriptions of the parameters and how you can use them. It also shows sample responses below as well.</p>
+<p><img loading="lazy" class="alignnone wp-image-27294" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/POST-indicators-1.png" alt="POST indicators" width="601" height="277" srcset="https://www.crowdstrike.com/wp-content/uploads/2016/07/POST-indicators-1.png 1002w, https://www.crowdstrike.com/wp-content/uploads/2016/07/POST-indicators-1-300x138.png 300w, https://www.crowdstrike.com/wp-content/uploads/2016/07/POST-indicators-1-768x354.png 768w" sizes="(max-width: 601px) 100vw, 601px" /></p>
+<p>&nbsp;</p>
+<p>The information provided here is great at helping you understand how to issue the requests and is all very interesting, but we can actually take it to the next step by making a request directly from the interface with the “Try it out” button. This guides you on how to implement the CrowdStrike API and allows you to test requests directly while having the documentation readily available.</p>
+<p>Click on “Try it out”.</p>
+<p><img loading="lazy" class="alignnone wp-image-27295" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Try-it-out-1.png" alt="Try it out button" width="602" height="251" /></p>
+<p>The “Try it out” button will make the Example Value box editable. It is prepopulated with placeholder values which we will replace in just a moment. We can see that even though there are several keys that we can modify, the only required ones are type, value, and policy. We’ll use the required keys for now and just enter the necessary values that we need to create the IOCs.</p>
+<p>We can create an individual IOC or multiple IOCs in a single request, so we’re going to add both sample IOCs with our single request. You can edit your <strong>Example Values</strong> manually or just replace the existing contests with the following:</p>
+<pre>[
+    {
+        "policy": "detect",
+        "type":"sha256",
+        "value":"4e106c973f28acfc4461caec3179319e784afa9cd939e3eda41ee7426e60989f"
+    },
+    {
+        "policy": "detect",
+        "type":"domain",
+        "value":"evil-domain.com"
+    }
+]</pre>
+<p>Hit the “Execute” button at the bottom and you can see your response body below.</p>
+<p><img loading="lazy" class="alignnone wp-image-27338" src="https://www.crowdstrike.com/wp-content/uploads/2020/10/Execute-POST-1-1024x654.png" alt="Execute POST" width="600" height="383" /></p>
+<p>If everything went as expected, you will receive a “200” under Code and no “errors” in the body of the response. If you receive a “401” error and see “access denied” in the body of the message, double check your authorization.</p>
+<p>Note: The actual curl command will include authorization information that is not shown here.</p>
+<p><img loading="lazy" class="alignnone wp-image-27339" src="https://www.crowdstrike.com/wp-content/uploads/2020/10/POST-Create-IOC-Workflow-1.gif" alt="POST Create IOC Workflow" width="601" height="514" /></p>
+<h3>Listing IOCs</h3>
+<p>Now that we’ve created a few IOCs in the CrowdStrike Platform, let’s list them out. Click on <strong>GET /indicators/queries/iocs/v1</strong> to expand it.</p>
+<p><img loading="lazy" class="alignnone wp-image-27298" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/GET-Indicators-1-1024x623.png" alt="Get indicators request" width="602" height="366" /></p>
+<p>Again, it’ll provide you with a description of the available parameters and how to use them. Now, click on the “Try it out” button.</p>
+<p>Something that you might notice right away is that instead of a single Example Value box, the IOC search resource provides a series of fields where you can enter values in directly.</p>
+<p>For example, you can enter “sha256” into the “types” box and then hit “Execute”.</p>
+<p><img loading="lazy" class="alignnone wp-image-27299" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-GET-Indicators-1-1024x864.png" alt="Execute GET Indicators" width="600" height="506" srcset="https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-GET-Indicators-1-1024x864.png 1024w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-GET-Indicators-1-300x253.png 300w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-GET-Indicators-1-768x648.png 768w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-GET-Indicators-1.png 1217w" sizes="(max-width: 600px) 100vw, 600px" /></p>
+<p>After we execute the request, it will pull up the sha256 hash of the IOC that we created earlier and list it in the details section below. CrowdStrike provides many other parameters that you can use to perform your searches. For example, you can narrow down your search to only IOCs created after a specified time or for specific hash values. Take a look at the other fields to see what else you can do.</p>
+<p><img loading="lazy" class="alignnone wp-image-27300" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/IOC-Search-Results-1-1024x618.png" alt="IOC Search Results" width="604" height="364" /></p>
+<h3>An example detection from an imported IOC</h3>
+<p>To demonstrate what a detection based on your custom IOC looks like, we will use a Windows machine with CrowdStrike Falcon installed.<br />
+You can run our test tool “this_does_nothing.exe” (see beginning of article) and verify in the command window that opens, that the sha256 hash matches the IOC we uploaded.</p>
+<p><img loading="lazy" class="alignnone wp-image-27301" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Sample-File-Execution-1.png" alt="Sample File Execution" width="602" height="404" srcset="https://www.crowdstrike.com/wp-content/uploads/2016/07/Sample-File-Execution-1.png 683w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Sample-File-Execution-1-300x201.png 300w" sizes="(max-width: 602px) 100vw, 602px" /></p>
+<p>Immediately after you execute the test tool, you will see a detection in the Falcon UI.</p>
+<p><img loading="lazy" class="alignnone wp-image-27302" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Detection-in-Falcon-1-1024x417.png" alt="Detection in Falcon" width="599" height="244" /></p>
+<h3>Deleting an IOC</h3>
+<p>So far, we’ve created a few IOCs and searched for them. Now, let’s use the Delete request to remove IOCs that we no longer want detected.</p>
+<p>Click on <strong>DELETE /indicators/entities/iocs/v1</strong> to expand it. Since deleting an IOC is a very straight forward process, there are only two parameters available here, just the type and value, both of which are required.</p>
+<p>Click on the “Try it out” button.</p>
+<p><img loading="lazy" class="alignnone wp-image-27303" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Delete-IOC-Try-it-out-1-1024x752.png" alt="Delete IOC Try it out" width="602" height="442" srcset="https://www.crowdstrike.com/wp-content/uploads/2016/07/Delete-IOC-Try-it-out-1-1024x752.png 1024w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Delete-IOC-Try-it-out-1-300x220.png 300w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Delete-IOC-Try-it-out-1-768x564.png 768w, https://www.crowdstrike.com/wp-content/uploads/2016/07/Delete-IOC-Try-it-out-1.png 1217w" sizes="(max-width: 602px) 100vw, 602px" /></p>
+<p>The Delete resource also provides fields that you can fill in. We’ll enter the same sha256 value where the type is “sha256” and the value is “4e106c973f28acfc4461caec3179319e784afa9cd939e3eda41ee7426e60989f”. Just enter those values into the fields and hit the “Execute” button.</p>
+<p><img loading="lazy" class="alignnone wp-image-27304" src="https://www.crowdstrike.com/wp-content/uploads/2016/07/Execute-Delete-Indicators-1-1024x649.png" alt="Execute Delete Indicators" width="601" height="381" /></p>
+<p>Now let’s verify that we have deleted the file hash by executing the Search IOC request again.</p>
+<p>Expand the <strong>GET /indicators/queries/iocs/v1</strong> again and this time, let’s leave all the fields blank. Since none of the fields are required, this will search through all the IOCs in our CrowdStrike environment.</p>
+<p>When we receive the response, we can see that the only IOC still listed is the domain.</p>
+<p><img loading="lazy" class="alignnone wp-image-27337" src="https://www.crowdstrike.com/wp-content/uploads/2020/10/Verify-sha256-indicator-is-deleted-1-1024x456.png" alt="Verify sha256 indicator is deleted" width="605" height="269" /></p>
+<p>You can now delete the evil-domain.com with the delete request as well.</p>
+<h3>Conclusion</h3>
+<p>This guide is just the start of your journey with the CrowdStrike API. There is plenty of additional information in the <a href="https://assets.falcon.crowdstrike.com/support/api/swagger.html#/">CrowdStrike API Swagger UI</a>, as well as in the <a href="https://falcon.crowdstrike.com/support/documentation/88/custom-ioc-apis">Custom IOC APIs Documentation</a> accessible through the Falcon console Docs menu.</p>
+<h3>More resources</h3>
+<ul>
+<li style="font-weight: 400;" aria-level="1"><a href="https://go.crowdstrike.com/try-falcon-prevent.html"><span style="font-weight: 400;">CrowdStrike 15-Day Free Trial</span></a></li>
+<li style="font-weight: 400;" aria-level="1"><a href="https://go.crowdstrike.com/product-demo-platform.html"><span style="font-weight: 400;">Request a demo</span></a></li>
+<li style="font-weight: 400;" aria-level="1"><a href="https://www.crowdstrike.com/resources/white-papers/guide-to-av-replacement/"><span style="font-weight: 400;">Guide to AV Replacement</span></a></li>
+<li style="font-weight: 400;" aria-level="1"><a href="https://www.crowdstrike.com/endpoint-security-products/"><span style="font-weight: 400;">CrowdStrike Products</span></a></li>
+<li style="font-weight: 400;" aria-level="1"><a href="https://www.crowdstrike.com/cloud-security-products/"><span style="font-weight: 400;">CrowdStrike Cloud Security</span></a></li>
+</ul>
+</div>
+<style>
+    .list-share-buttons{
+        margin-bottom: 40px;
+        margin-left: auto;
+    }
+
+    .share-button {
+        float: left;
+        color: #999;
+        border: 1px solid #e4e4e4;
+        text-align: center;
+        transition: all 0.15s ease;
+        margin-right: 5px;
+        margin-bottom: 40px;
+        margin-left: auto;
+        font-size: 13px;
+        padding: 0.5em 0.9em;
+    }
+
+    .tweet-btn{
+        color: #999999;
+    }
+    .li-btn{
+        color: #999999;
+    }
+    .tweet-btn:hover{
+        color: #1DA1F2;
+    }
+
+    .li-btn:hover{
+        color: #2867B2;
+    }
+
+    .fa{
+        margin-right:5px;
+    }
+
+</style>
+<div>
+<ul class="list-share-buttons">
+
+<li class="share-button">
+<a class="tweet-btn " target="_blank" rel="noopener noreferrer" href="https://twitter.com/share?text=How+to+Consume+Threat+Feeds&amp;url=https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/" onclick="if (!window.__cfRLUnblockHandlers) return false; window.open(this.href, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');" data-cf-modified-5c8af11256080b4d7216da2e-="">
+<span class="fa-brands fa-twitter"></span>
+<span>Tweet</span>
+</a>
+</li>
+
+<li class="share-button">
+<a class="li-btn" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.crowdstrike.com/blog/tech-center/consume-ioc-and-threat-feeds/&amp;title=How+to+Consume+Threat+Feeds" onclick="if (!window.__cfRLUnblockHandlers) return false; window.open(this.href, '_blank', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');" data-cf-modified-5c8af11256080b4d7216da2e-="">
+<span class="fa-brands fa-linkedin"></span>
+<span>Share</span>
+</a>
+</li>
+</ul>
+</div>
+<a href="https://go.crowdstrike.com/try-falcon-prevent.html">
+<img class="post_cta" src="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/images/blog/breaches-stop-here-post-cta.jpeg">
+</a>
+<h5>Related Content</h5>
+<div class="row recent_articles">
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/tech-center/custom-cloud-policies/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg" alt="">
+</div>
+<div class="post_info">
+<h6>How to Create Custom Cloud Security Posture Policies</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/tech-center/falcon-fusion-and-real-time-response/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg" alt="">
+</div>
+<div class="post_info">
+<h6>How to automate workflows with Falcon Fusion and Real Time Response</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+<a class="col-12 col-md-4 recent_articles_item" href="/blog/tech-center/automate-workflows-spotlight/">
+<div class="post_image">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2016/07/TechCenter-2.jpg" alt="">
+</div>
+<div class="post_info">
+<h6>How to Automate Workflows with Falcon Spotlight</h6>
+<div class="excerpt"></div>
+</div>
+</a>
+</div>
+</div>
+<div class="col-12 col-lg-4 tech_center_sidebar">
+<div class="social">
+<h6>Connect With Us</h6>
+<a class="rss-image" href="https://www.crowdstrike.com/blog/category/tech-center/feed">
+<img src="https://www.crowdstrike.com/wp-content/themes/main-theme/dist/images/blog/rss-subscribe.png">
+</a>
+</div>
+<a class="free_trial_sidebar" href="https://www.crowdstrike.com/resources/reports/forrester-wave-endpoint-detection-and-response-2022/">
+<img src="https://www.crowdstrike.com/wp-content/uploads/2021/07/Sidebar_EPP_ForresterWave_EDR.jpeg">
+</a>
+<div class="featured_articles_sidebar">
+<h6>Related Technical Docs</h6>
+<a class="post" href="/blog/tech-center/custom-cloud-policies/">
+<div class="title">How to Create Custom Cloud Security Posture Policies</div>
+<div class="date"></div>
+</a>
+<a class="post" href="/blog/tech-center/falcon-fusion-and-real-time-response/">
+<div class="title">How to automate workflows with Falcon Fusion and Real Time Response</div>
+<div class="date"></div>
+</a>
+<a class="post" href="/blog/tech-center/automate-workflows-spotlight/">
+<div class="title">How to Automate Workflows with Falcon Spotlight</div>
+<div class="date"></div>
+</a>
+<a class="post" href="/blog/tech-center/falcon-spotlight-for-vulnerability-management/">
+<div class="title">Using Falcon Spotlight for Vulnerability Management</div>
+<div class="date"></div>
+</a>
+<a class="post" href="/blog/tech-center/generate-your-first-detection/">
+<div class="title">How to Generate Your First Detection</div>
+<div class="date"></div>
+</a>
+<a class="post" href="/blog/tech-center/manage-host-firewall/">
+<div class="title">How to Manage a Host Firewall with CrowdStrike</div>
+<div class="date"></div>
+</a>
+</div>
+<a href="/blog/tech-center/" class="back-to-tech-center"><i class="cs-icon-circle-arrow-left-2"></i>Back to Tech Center</a>
+</div>
+</div>
+<div class="post_nav row">
+<div class="col-12">
+<div class="links"><span class="fa fa-angle-double-left"></span> <a href="https://www.crowdstrike.com/blog/tech-center/integrate-with-your-siem/" rel="prev">How to Integrate with your SIEM</a></div>
+<div class="links"><a href="https://www.crowdstrike.com/blog/tech-center/kernel-exploit-prevention/" rel="next">How to Enable Kernel Exploit Prevention</a> <span class="fa fa-angle-double-right"></span></div>
+</div>
+</div>
+</div>
+</article>
+<section id="freeTrialCta" class="blog-free-trial-cta">
+<div class="container">
+<div class="row">
+<div class="col-12">
+<div class="content">
+<h1 class="free-trial-header">TRY CROWDSTRIKE FREE FOR 15 DAYS</h1>
+<a class="button white-text red-background red-outline white-text-hover dark-red-background-hover dark-red-outline-hover" id="freeTrialOpenTrigger" href="#">GET STARTED WITH A FREE TRIAL</a>
+</div>
+</div>
+</div>
+</div>
+<div id="freeTrialContent" class="free-trial-content-wrapper unstuck" style="display: none;">
+<div class="container">
+<p class="free-trial-close textright white"><a class="free-trial-close-trigger red" id="freeTrialCloseTrigger">X</a></p>
+</div>
+<div class="container free-trial-iframe-wrapper">
+<iframe id="footer-form-frame" height="490" width="800" src="https://go.crowdstrike.com/WF-Trial-to-Pay_LP-Registration-Footer.html" class=""></iframe>
+</div>
+</div>
+</section>
+<script type="5c8af11256080b4d7216da2e-text/javascript">
+    fetchInject([
+        'https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/pages/blog.min.js?ts=1651687260000',
+    ])
+</script> </main>
+<footer class="simple">
+<div class="container">
+<div class="row">
+<div class="col-md-12 top">
+<span class="footer-logo"><a class="red" href="https://www.crowdstrike.com"><i class="cs-icon-cs-logo"> </i></a></span>
+<ul class="row social-links">
+<li class="circle-icon-outline">
+<a href="https://twitter.com/CrowdStrike" target="_blank"><i class="fa-brands fa-twitter"></i></a></li>
+<li class="circle-icon-outline">
+<a href="https://www.facebook.com/CrowdStrike/" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+</li>
+<li class="circle-icon-outline">
+<a href="https://www.linkedin.com/company/crowdstrike" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+</li>
+<li class="circle-icon-outline">
+<a href="http://www.youtube.com/user/CrowdStrike" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+</li>
+</ul>
+</div>
+<div class="col-md-12 bottom">
+<ul class="row footer-lower-links">
+<li class="footer-copyright">Copyright © 2022 CrowdStrike</li>
+<li><a href="https://www.crowdstrike.com/privacy-notice/">Privacy</a></li>
+<li><a href="https://www.crowdstrike.com/request-information/">Request Info</a></li>
+<li><a href="https://www.crowdstrike.com/blog">Blog</a></li>
+<li><a href="https://www.crowdstrike.com/contact-us/">Contact Us</a></li>
+<li>1.888.512.8906</li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</div>
+<script type="5c8af11256080b4d7216da2e-text/javascript" async="async" src='https://www.crowdstrike.com/wp-content/themes/main-theme/dist/scripts/theme-scripts.min.js?ver=1651603393' id='theme-scripts-js'></script>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="5c8af11256080b4d7216da2e-|49" defer=""></script></body>
+</html>
