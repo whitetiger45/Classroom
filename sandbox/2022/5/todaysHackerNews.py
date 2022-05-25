@@ -9,11 +9,11 @@
 #   this is a stable, dirty version of what is a work in progress; 
 #   as more files are consumed, it will be improved.
 import urllib.request
-import re, traceback
+import os, re, traceback
 
 from subprocess import call
 
-findTodaysStories = lambda line: re.finditer("""<a class=\Sstory-link\S href="(.*)">""",line)
+todaysTopStories = lambda line: re.finditer("""<a class=\Sstory-link\S href="(.*)">""",line)
 cout_t = {"info":"*","error":"x","success":"✓","debug":"DEBUG","warn":"!"}
 
 def cout(message_type,message):
@@ -44,23 +44,40 @@ def dispatchStripHTML(blob):
     except:
         cout("error",f"{traceback.format_exc()}")
 
-def main():
+def getYesterdaysNews():
+    ret = []
     try:
-        with urllib.request.urlopen("https://thehackernews.com/") as fd:
-            lines = [ line.decode("utf-8").strip() for line in fd.readlines() ]
-        headlines = flatten(list(map((lambda l: [m.group(1) for m in findTodaysStories(l)]),lines)))
+        if os.path.exists(out_file):
+            with open(out_file,"r") as fd:
+                ret = [line.strip() for line in fd.readlines()]
+    except:
+        cout("error",f"{traceback.format_exc()}")
+    return ret
 
-        with open(out_file, "w") as fd:
-            [ fd.write(f"{line}\n") for line in headlines ]
 
-        for headline in headlines:
-            downloadUrl(headline)
+def main(url):
+    try:
+        with urllib.request.urlopen(url) as fd:
+            thehackerNewsHomepage = [ line.decode("utf-8").strip() for line in fd.readlines() ]
+        latestNews = flatten(list(map((lambda l: [m.group(1) for m in todaysTopStories(l)]),thehackerNewsHomepage)))
+
+        yesterdaysHeadlines = getYesterdaysNews()
+        latestNews = list(set(latestNews) - set(yesterdaysHeadlines))
+
+        if latestNews:
+            with open(out_file, "w") as fd:
+                [ fd.write(f"{line}\n") for line in latestNews ]
+
+            for headline in latestNews:
+                downloadUrl(headline)
+        else:
+            cout("info","You've read all of the latest articles. Check back in a couple hours.")
 
     except:
         cout("error",f"{traceback.format_exc()}")
 
 if __name__ == '__main__':
-    out_file = "todaysHeadlines.txt"
+    out_file = "latestNews.txt"
     cout("success","Running.")
-    main()
+    main("https://thehackernews.com/")
     cout("success",f"Done. Today's headlines saved to {out_file}.")

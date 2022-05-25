@@ -1,0 +1,13 @@
+stripHTML Change Tracker:
+-------------------------
+Current Version: 1.1
+Released: 2022.05.25
+
+Changes:
+    2022.05.24:
+      - changed 'w' flag to 'a' when writing output so files can be concatenated
+      - added findTagsInline lambda using re.finditer
+    2022.05.25:
+      - added parseHTMLFile, stripTagL, saveParsedFile functions
+      - added STATUS string
+      - commented out unused functions to test changes; tested on file 'enhanced-fileless-attack-detection-with-crowdstrike-falcon.html' that could not be parsed using v1.0.

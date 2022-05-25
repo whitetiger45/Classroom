@@ -8,9 +8,14 @@
 #   this is a stable, dirty version of what is a work in progress; 
 #   as more files are consumed, it will be improved.
 import argparse, copy, html
-import os, re, sys, traceback
+import os, re, string, sys, traceback
 from collections import deque
 from pathlib import Path
+
+USAGE = -1
+SUCCESS = 0
+NOT_SERIOUS = 3
+FATAL = 6
 
 usage = f"""Usage: {sys.argv[0]} -f <file>.html"""
 
@@ -27,8 +32,16 @@ tag_t = {
 9:"li",
 10:"div",
 11:"ol",
-12:"ul"
+12:"ul",
+13:"span",
+14:"polygon",
+15:"path",
+16:"script",
+17:"style"
 }
+
+# these are tags that we want to avoid copying to our output file.
+skip_tag_t = [tag_t[6],tag_t[7],tag_t[14],tag_t[15],tag_t[16],tag_t[17]]
 
 # a function for looking up the index of HTML element tag indexes in tag_t
 index = lambda v: list(tag_t.values()).index(v)
@@ -46,14 +59,16 @@ deflate = lambda lst: list(filter((lambda l: l != ""),lst))
 # normalize a unicode string and remove escape bytes
 normalize = lambda line: line.encode("ascii","ignore").decode("ascii","ignore")
 
-# function to add a newline character to a line with multiple tags
+# regular expressions to find html tags
 # i.e. <h4 style="text-align: left;"><strong>3 </strong>&#8212; <strong>Collection</strong></h4><ol>
 addNewline = lambda line: line.replace("><",">\n<")
-
-# regular expression to find html tags
-singleOpeningTag = lambda line: re.match("(<.*?>){0,1}([\s\S]+){0,}",line)
+findTagsInline = lambda line: re.finditer("><",line)
+findTags = lambda line: re.finditer("<([\S]+).*?>(.*?)</.*?>|<([0-9a-zA-Z]+).*?>(.*?)",line)
+stripTagL = lambda line: re.match("<([0-9a-zA-Z]+).*?>(.+)",line)
+# list(map((lambda l: [m.groups() for m in findTags(l)]),lines)) # helper for debugging
+singleOpeningTag = lambda line: re.match("(<.*?>){0,1}([\s\S]+$){1,}",line)
 singleClosingTag = lambda line: re.match("([\s\S]+){1}(<.+>?){1}",line)
-multiTagLine = lambda line: re.search("([\s\S]+)?(<.+?>){1}",line)
+# multiTagLine = lambda line: re.search("([\s\S]+)?(<.+?>){1}",line) # unused
 
 # a function to dispatch calls to singleOpeningTag and singleClosingTag lambdas
 def tagDispatcher(**kwargs):
@@ -144,10 +159,10 @@ def getStatesIndexes(state):
     blanks = getBlankElementsInRange(blanks,distanceObj["s_idx"],distanceObj["e_idx"])
     blanks.sort()
     #cout("debug",f"(x={x},y={y})")
-    #cout("debug",f"state[{x}]: {state[x]}")
-    #cout("debug",f"state[{y}]: {state[y]}")
+    # cout("debug",f"state[{x}]: {state[x]}")
+    # cout("debug",f"state[{y}]: {state[y]}")
     # cout("debug",f"blanks: {blanks}")
-    #cout("debug",f"distanceObj: {distanceObj}")
+    cout("debug",f"distanceObj: {distanceObj}")
     return x,y,blanks,distanceObj["s_idx"],distanceObj["e_idx"]
 
 def replace(**kwargs):
@@ -161,12 +176,17 @@ def stripTagDispatcher(lines):
         cout("info",f"Title: {title}")
     except:
         pass
-    state = [stripOutterTag(line,tag_t[index("p")]) for line in lines]
+    # cout("debug",f"{lines}")
+    state = [stripInnerTag(line,tag_t[index("span")]) for line in lines]
+    cout("debug",f"{state}")
+    # state = [stripOutterTag(line,tag_t[index("p")]) for line in lines]
+    state = [stripOutterTag(line,tag_t[index("p")]) for line in state]
+    cout("debug",f"{state}")
     state = [stripInnerTag(line,tag_t[index("em")]) for line in state]
     state = [stripInnerTag(line,tag_t[index("a")]) for line in state]
     state = [stripInnerTag(line,tag_t[index("b")]) for line in state]
     state = [stripInnerTag(line,tag_t[index("strong")]) for line in state]
-    state = [stripSelfClosingTag(line,tag_t[index("img")]) for line in state]
+    state = [stripSelfClosingTag(line,tag_t[index("img") ]) for line in state]
 
     htmlBodyStart,htmlBodyEnd,emptyLinesIdxList,emptyLinesListStartIdx,emptyLinesListEndIdx = getStatesIndexes(state)
     emptyLinesIdxListCpy = copy.deepcopy(emptyLinesIdxList)
@@ -272,9 +292,58 @@ def inlineHTMLElementStrip(line):
     #cout("debug",f"Recursing with: {listWord}")
     return inlineHTMLElementStrip(listWord)
 
+def parseHTMLFile(lines):
+    global STATUS
+    documentText = []
+    try:
+        stepOne = "".join(line for line in lines)
+        stepTwo = stepOne.replace("<","\n<")
+        stepThree = stepTwo.find("</head>\n")
+        stepFour = stepTwo[stepThree+len("</head>\n"):]
+        stepFiveA = stepFour.find("<p>")
+        stepFiveB = -1
+        if stepFiveA != -1:
+            stepFiveB = stepFour[-1:0:-1].find(">p/<")
+            stepFiveB = len(stepFour)-(stepFiveB+len(">p/<"))
+            stepSix = stepFour[stepFiveA:stepFiveB].split("\n")
+            for line in stepSix:
+                m = stripTagL(line)
+                if m and m[1] not in skip_tag_t:
+                    documentText.append(m[2])
+            cout("debug",f"documentText: {documentText}")
+        else:
+            cout("error","Did not find the initial '<p>' tag. Time for an upgrade!")            
+    except:
+        cout("error",f"{traceback.format_exc()}")
+    return documentText
+
+def saveParsedFile(state):
+    global STATUS
+    try:
+        with open(out_file, "a") as fd:
+            for idx in range(0,len(state)-1):
+                if(
+                    state[idx+1][0].islower() or
+                    state[idx+1][0] == " " or
+                    state[idx+1][0] in string.punctuation
+                ):
+                    if state[idx][-1] == " " or state[idx+1][0] == " ":
+                        fd.write(f"{state[idx]}")
+                    else:
+                        fd.write(f"{state[idx]} ")
+                else:
+                    fd.write(f"{state[idx]}\n")
+            fd.write(f"{state[-1]}\n")
+            fd.write("\n")
+    except:
+        cout("error",f"{traceback.format_exc()}")
+        STATUS = NOT_SERIOUS
+
 def main(argv):
+    global STATUS
     if sys.argv[1] != "-f" or len(sys.argv) != 3:
-        cout("error",f"{usage}")
+        STATUS = USAGE
+        cout("info",f"{usage}")
         return
 
     in_file = sys.argv[2]
@@ -282,18 +351,36 @@ def main(argv):
         with open(in_file, "r") as fd:
             lines = [ line.strip() for line in fd.readlines() ]
 
-        lines = flatten([ addNewline(line).split("\n") for line in lines ])
-        state = stripTagDispatcher(lines)
-        # state = list(map(inlineHTMLElementStrip, state))
+        # lines = flatten([ addNewline(line).split("\n") for line in lines ]) # comment out to test parseHTMLFile
+        # state = stripTagDispatcher(lines) # comment out to test parseHTMLFile
+        # state = list(map(inlineHTMLElementStrip, state)) # comment out to test parseHTMLFile
+        state = parseHTMLFile(lines)
+        state = list(map(html.unescape,state))
+        state = list(map(normalize,state))
+        state = deflate(state)
+        
+        ###########################################################################################
+        # 2022.05.26
+        # note: 
+        #   more work needed because of exception thrown when using normalize for unicode strings
+        # htmlBodyStart,htmlBodyEnd,emptyLinesIdxList,emptyLinesListStartIdx,emptyLinesListEndIdx = getStatesIndexes(state)
         # cout("debug",f"{state}")
-
-        with open(out_file, "w") as fd:
-            [ fd.write(f"{line}\n") for line in state ]
+        ###########################################################################################
+        if state:
+            saveParsedFile(state)
+        else:
+            cout("warn","Uh-oh...state is empty. Check program output(s) to see what went wrong.")
+            STATUS = NOT_SERIOUS
     except:
         cout("error",f"{traceback.format_exc()}")
+        STATUS = FATAL
 
 if __name__ == '__main__':
+    STATUS = SUCCESS
     out_file = "output.txt"
     cout("success","Running.")
     main(sys.argv)
-    cout("success",f"Done. Check {out_file}.")
+    if STATUS == SUCCESS:
+        cout("success",f"Done. Check {out_file}.")
+    else:
+        cout("error",f"return code: {STATUS}")
