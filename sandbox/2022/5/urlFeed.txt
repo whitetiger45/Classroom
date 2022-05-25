@@ -1,0 +1,3 @@
+https://www.cynet.com/incident-response/nist-incident-response/
+https://www.cynet.com/incident-response/incident-response-sans-the-6-steps-in-depth/
+https://www.cynet.com/endpoint-protection-and-edr/what-does-edr-stand-for-endpoint-detection-response-101/

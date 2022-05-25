@@ -1,296 +1,526 @@
-If one word could sum up the 2021 infosecurity year (well, actually three), it would be these: "supply chain attack". 
-A software supply chain attack happens when hackers manipulate the code in third-party software components to compromise the 'downstream' applications that use them. In 2021, we have seen a dramatic rise in such attacks: high profile security incidents like the SolarWinds, Kaseya, and 
-Codecov
-What does this have to do with secrets, you might ask? In short, a lot. Take the Codecov case (we'll go back to it quickly): it is a textbook example to illustrate how hackers leverage hardcoded credentials to gain initial access into their victims' systems and harvest more secrets down the chain. 
-Secrets-in-code remains one of the most overlooked vulnerabilities in the application security space, despite being a priority target in hackers' playbooks. In this article, we will talk about secrets and how keeping them out of source code is today's number one priority to secure the software development lifecycle.
-What is a secret?
-Secrets are digital authentication credentials (API keys, certificates, tokens, etc.) that are used in applications, services or infrastructures. Much like a password (plus a device in case of 2FA) is used to authenticate a person, a secret authenticates systems to enable interoperability. But there is a catch: unlike passwords, secrets are meant to be distributed. 
-To continually deliver new features, software engineering teams need to interconnect more and more building blocks. Organizations are watching the number of credentials in use across multiple teams (development squad, SRE, DevOps, security etc.) explode. Sometimes developers will keep keys in an insecure location to make it easier to change the code, but doing so often results in the information mistakenly being forgotten and inadvertently published.
-In the application security landscape, hardcoded secrets are really a different type of vulnerability. First, since source code is a very leaky asset, meant to be cloned, checked out, and forked on multiple machines very frequently, secrets are leaky too. But, more worryingly, let's not forget that code also has a memory. 
-Any codebase is managed with some kind of version control system (VCS), keeping a historical timeline of all the modifications ever made to it, sometimes over decades. The problem is that still-valid secrets can be hiding anywhere on this timeline, opening a new dimension to the attack surface. Unfortunately, most security analyses are only done on the current, ready-to-be-deployed, state of a codebase. In other words, when it comes to credentials living in an old commit or even a never-deployed branch, these tools are totally blind.
-Six million secrets pushed to GitHub
-Last year, monitoring the commits pushed to GitHub in real-time, GitGuardian detected more than 6 million leaked secrets
-A large share of those secrets was giving access to corporate resources. No wonder then that an attacker looking to gain a foothold into an enterprise system would first look at its public repositories on GitHub, and then at the ones owned by its employees. Many developers use GitHub for personal projects and can happen to leak by mistake corporate credentials (yes, it happens regularly!). 
-With valid corporate credentials, attackers operate as authorized users, and detecting abuse becomes difficult. The time for a credential to be compromised after being pushed to GitHub is a mere 4 seconds, meaning it should be immediately revoked and rotated to neutralize the risk of being breached. Out of guilt, or lacking technical knowledge, we can see why people often take the wrong path
-Another bad mistake for enterprises would be to tolerate the presence of secrets inside non-public repositories. GitGuardian's State of Secrets Sprawl report highlights the fact that private repositories hide much more secrets than their public equivalent. The hypothesis here is that private repositories give the owners a false sense of security, making them a bit less concerned about potential secrets lurking in the codebase.
-That's ignoring the fact that these forgotten secrets could someday have a devastating impact if harvested by hackers. 
-To be fair, application security teams are well aware of the problem. But the amount of work to be done to investigate, revoke and rotate the secrets committed every week, or dig through years of uncharted territory, is simply overwhelming.
-Headline breaches... and the rest
-However, there is an urgency. Hackers are actively looking for "dorks" on GitHub, which are easily recognized patterns to identify leaked secrets. And GitHub is not the only place where they can be active, any registry (like Docker Hub) or any source code leak can potentially become a goldmine to find exploitation vectors.
-As evidence, you just have to look at recently disclosed breaches: a favorite of many open-source projects, Codecov is a code coverage tool. Last year, it was compromised by attackers who gained access by extracting a static cloud account credential from its official Docker image. After having successfully accessed the official source code repository, they were able to tamper with a CI script and harvest hundreds of secrets from Codecov's user base. 
-More recently, Twitch's entire codebase was leaked, exposing more than 6,000 Git repositories and 3 million documents. Despite lots of evidence demonstrating a certain level of AppSec maturity, nearly 7,000 secrets could be surfaced
-A few years ago, Uber was not so lucky. An employee accidentally published some corporate code on a public GitHub repository, that was his own. Hackers found out and detected a cloud service provider's keys granting access to Uber's infrastructure. A massive breach ensued. 
-The bottom line is that you can't really be sure when a secret will be exploited, but what you must be aware of is that malicious actors are monitoring your developers, and they are looking for your code. Also keep in mind that these incidents are just the tip of the iceberg, and that probably many more breaches involving secrets are not publicly disclosed. 
-Conclusion
-Secrets are a core component of any software stack, and they are especially powerful, therefore they require very strong protection. Their distributed nature and the modern software development practices make it very hard to control where they end up, be it source code, production logs, Docker images, or instant messaging apps. Secrets detection and remediation capability is a must because even secrets can be exploited in an attack leading to a major breach. Such scenarios happen every week and as more and more services and infrastructure are used in the enterprise world, the number of leaks is growing at a very fast rate. The earlier action is taken, the easier it is to protect source code from future threats.
-Note - 
-Found this article interesting? Follow THN on 
-Facebook
-Twitter 
-LinkedIn
-SHARE
-SHARE data breach hacking news software security source code supply chain attack
-Popular This Week
-New Unpatched Bug Could Let Attackers Steal Money from PayPal Users
-Web Trackers Caught Intercepting Online Forms Even Before Users Hit Submit
-Microsoft Warns Rise in XorDdos Malware Targeting Linux Devices
-Cisco Issues Patch for New IOS XR Zero-Day Vulnerability Exploited in the Wild
-Hackers Trick Users with Fake Windows 11 Downloads to Distribute Vidar Malware
-New Bluetooth Hack Could Let Attackers Remotely Unlock Smart Locks and Cars
-Comments
-Latest Stories
-Other Stories
-Make software security a priority in 2022
-Learn more about how security-aware developers represent a vast and largely untapped resource that can support cyber defenses.
-Uncover the secure developer inside every coder
-Empower developers to deliver secure coding that is intrinsic to their daily process.
-Java Spring Framework 0-Day Bug Threatens Enterprise Security
-Maintainers of Spring Framework have released an emergency patch to address RCE flaw.
-Learn Hacking Skills with 9 Python Courses
-Get this video training with lifetime access today for just $39!
-Online Courses and Software
-A to Z Cybersecurity Certification Training
-Get Paid to Hack Computer Networks When You Become a Certified Ethical Hacker.
-CompTIA Campus Premium
-One-Stop-Shop for All CompTIA Certifications! Get 1-Yr Access to Courses, Live Hands-On Labs, Practice Exams and Updated Content
-Network, Security and Ethical Hacking
-Your 28-Hour Roadmap as an Ultimate Security Professional  Master Network Monitoring, PenTesting, and Routing Techniques and Vulnerabilities
-Complete Linux Certification Training
-Know Your Way Around Networks and Client-Server Linux Systems  Techniques, Command Line, Shell Scripting, and More
-Cybersecurity Newsletter  Stay Informed
-Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
+Incident response is a structured process organizations use to identify and deal with cybersecurity incidents. Response includes several stages, including preparation for incidents, detection and analysis of a security incident, containment, eradication, and full recovery, and post-incident analysis and learning.
+Well present the National Institute of Standards and Technology (NIST) framework for incident response, and show how to build your incident response plan according to NIST principles, with templates and real life examples you can follow to get started.
+In this article:
+What is the NIST Incident Response Framework?
+What is an Incident Response Plan?
+7 Reasons You Need an Incident Response Plan
+Key Roles in an Incident Response Team
+NIST Recommendations for Organizing A Computer Security Incident Response Team (CSIRT)
+Incident Response Team Models
+Selecting a Team Model
+How to Organize Incident Response
+The NIST Incident Response Life Cycle
+Four Steps of the NIST Incident Response Process
+1. Preparation
+2. Detection and Analysis
+3. Containment, Eradication, and Recovery
+4. Post-Incident Activity
+Building Your Own Incident Response Process: Incident Response Plan Templates
+Real Life Incident Response Examples
+Best Practices for Building Your Incident Response Plan
+What is the NIST Incident Response Framework?
+The National Institute of Standards and Technology (NIST) is an agency operated by the United States Department of Commerce which provides standards and recommendations for many technology sectors.
+Within NIST, the Information Technology Laboratory (ITL) is responsible for developing standards and measurement methods for IT, including information security. ITL developed an influential model for incident response (IR), the Computer Security Incident Handling Guide (
+Special Publication 800-61 ).
+The NIST incident response process is a cyclical activity featuring ongoing learning and advancements to discover how to best protect the organization. It includes four main stages: preparation, detection/analysis, containment/eradication, and recovery.
+What is an Incident Response Plan?
+Incident response is an organizational process that enables timely, effective response to cyberattacks. The incident response process includes identifying an attack, understanding its severity and prioritizing it, investigating and mitigating the attack, restoring operations, and taking action to ensure it wont recur.
+An incident response plan (IRP) is a set of documented procedures detailing the steps that should be taken in each phase of incident response. It should include guidelines for roles and responsibilities, communication plans, and standardized response protocols.
+7 Reasons You Need an Incident Response Plan
+A strong incident response process can dramatically reduce the damage caused to an organization when disaster strikes. An incident response plan helps codify and distribute the incident response plan across the organization.
+Here are the main reasons you must have a strong incident response plan in place:
+Prepares you for emergency security incidents happen without warning, so its essential to prepare a process ahead of time
+Repeatable process without an incident response plan, teams cannot respond in a repeatable manner or prioritize their time
+Coordination in large organizations, it can be hard to keep everyone in the loop during a crisis. An incident response process can help achieve this
+Exposes gaps in mid-sized organizations with limited staff or limited technical maturity, an incident response plan exposes obvious gaps in the security process or tooling which can be addressed before a crisis occurs
+Preserves critical knowledge an incident response plan ensures critical knowledge and best practices for dealing with a crisis are not forgotten over time and lessons learned are incrementally added
+Practice makes perfect an incident response plan creates a clear, repeatable process that is followed in every incident, improving coordination and effectiveness of response over time
+Documentation and accountability an incident response plan with clear documentation reduces an organizations liabilityit allows you to demonstrate to compliance auditors or authorities what was done to prevent the breach
+Key Roles in an Incident Response Team
+To execute an incident response plan, you need an incident response team . In a large organization the roles may be carried out by full-time employees or entire teams; in smaller organizations, they can be filled by employees with other full-time roles, who also participate in the incident response process.
+The following are essential roles within the team:
+Incident response managers have at least two members of staff responsible for approving the incident response plan and coordinating activity when an incident occurs.
+Security analysts review alerts, identify possible incidents and perform an initial investigation to understand the scope of an attack.
+Threat researchers responsible for providing contextual information around a threat, using information from the web, threat intelligence feeds, data from security tools, etc.
+Other stakeholders these can include senior management or board members, HR, PR, and senior security staff such as the Chief Information Security Office (CISO)
+Third parties such as lawyers, outsourced security services, or law enforcement agencies.
+NIST Recommendations for Organizing A Computer Security Incident Response Team (CSIRT)
+The NIST Computer Security Incident Handling Guide provides in-depth guidelines on how to build an incident response capability within an organization. It covers several models for incident response teams , how to select the best model, and best practices for operating the team.
+Incident Response Team Models
+NIST offers three models for incident response teams:
+Central centralized body that handles incident response for the entire organization.
+Distributed multiple incident response teams, with each one responsible for a physical location (e.g. branch office), a department or a part of the IT infrastructure
+Coordinated a central incident response team that works together with distributed incident response teams, without having authority over them. The central team serves as a knowledge center and offers assistance with complex, critical, or organization-wide incidents.
+Within each of these models, staff can be employees, partially outsourced, or fully outsourced. Employees can also be full- or part-time.
+Selecting a Team Model
+NIST provides several considerations for selecting an incident response model:
+Does incident response need to be available 24/7? Do incident responders need to be on-site or is phone contact sufficient? Real-time availability and on-site presence is best because it allows immediate response to an incident, which can prevent damage.
+Should staff be part-time or full-time? Part-time employees can be used to make up a virtual incident response team, like a volunteer emergency response unit. When an incident occurs, the IT help desk can be the first point of contact. They can perform an initial investigation, rapidly call on incident response team members, and whomever is available can respond to the incident.
+Should staff be security experts? What level of expertise is needed? Incident response requires broad knowledge of IT systems, communication protocols, attack techniques, and also the organizations environment, systems and procedures. Outsourced teams typically have stronger security expertise, but employees have a better understanding of the IT environment, normal vs. malicious behavior, and of which systems are critical, etc.
+How much will the incident response team cost ? Because incident responders need special expertise, and are often required to be on-site 24/7, they can represent a major investment. Managed Security Service Providers (MSSP) can also be costly, and there is an additional cost of security tooling, physical facilities and secure communication methods.
+How to Organize Incident Response
+The NIST Incident Response Guide provides several guidelines for organizing and operating an incident response unit.
+Establish a formal incident response capability
+Even if your organization is small, take incident response seriously and establish a formal incident response body. If it is not possible to establish a full-time incident response team, create a virtual team with part-time staff, and give this team full authority and responsibility. This will dramatically improve your capability to respond when a cyberattack strikes.
+Create an incident response policy
+This is a precursor to the incident response plan which lays out the organizational framework for incident response. It specifies what is considered a security incident, who is responsible for incident response, roles and responsibilities, documentation and reporting requirements.
+Define an incident response plan
+According to NIST methodology, an incident response plan is not merely a list of steps to perform when an incident happens. It is a roadmap for the organizations incident response program, including short- and long-term goals, metrics for measuring success, training and job requirements for incident response roles.
+Develop incident response procedures
+These are the detailed steps incident response teams will use to respond to an incident. They should be based on the incident response policy and plan and should address all four phases of the incident response lifecycle: preparation, detection and analysis, containment, eradication and recovery, and post-incident activity.
+The NIST Incident Response Life Cycle
+NIST defines a four-step process for incident response, illustrated in the diagram below. The NIST process emphasizes that incident response is not a linear activity that starts when an incident is detected and ends with eradication and recovery. Rather, incident response is a cyclical activity, where there is continuing learning and improvement to discover how to better defend the organization.
+Source: 
+NIST
+After every incident there is a substantial effort to document and investigate what happened during the incident, to feed back to earlier stages and to enable better preparation, detection and analysis for future incidents.
+There is also a feedback loop from the containment and eradication step to detection and analysismany parts of an attack are not fully understood at the detection stage and are only revealed when incident responders enter the scene. These lessons can help the team detect and analyze attacks more fully the next time around.
+The Four Steps of NIST Incident Response
+1. Preparation
+To prepare for incidents, compile a list of IT assets such as networks, servers and endpoints, identifying their importance and which ones are critical or hold sensitive data. Set up monitoring so you have a baseline of normal activity. Determine which types of security events should be investigated, and create detailed response steps for common types of incidents.
+Cynet 360 provides all the core capabilities required for sound incident preparation, including a centralized visibility interface showing all endpoint configurations, process execution, installed software, network traffic and user activity.
+2. Detection and Analysis
+Detection involves collecting data from IT systems, security tools, publicly available information and people inside and outside the organization, and identifying precursors (signs that an incident may happen in the future) and indicators (data showing that an attack has happened or is happening now).
+Analysis involves identifying a baseline or normal activity for the affected systems, correlating related events and seeing if and how they deviate from normal behavior.
+An integrated security platform like 
+Cynet 360 can do this for you, automatically identifying behavioral baselines, detecting anomalies that represent suspicious behavior, and collecting all relevant data across networks, endpoints and users to help you investigate it.
+Learn more about how Cynet 360 provides detection capabilities against a wide range of attack vectors with its natively integrated 
+EDR , user behavior rules , network detection rules and deception modules.
+3. Containment, Eradication, and Recovery
+The goal of containment is to stop the attack before it overwhelms resources or causes damage. Your containment strategy will depend on the level of damage the incident can cause, the need to keep critical services available to employees and customers, and the duration of the solutiona temporary solution for a few hours, days or weeks, or a permanent solution.
+As part of containment, it is important to identify the attacking host and validate its IP address. This allows you to block communication from the attacker and also identify the threat actor to understand their mode of operation, search for and block other communication channels they may be using.
+Cynet 360 can help you take remote manual action to contain security incidents, including stopping malicious processes, deleting files, resetting passwords and restarting affected devices. It can also perform automatic containment actions such as stopping rapid encryption of files or automatically isolating endpoints infected by malware from the network.
+Cynet response orchestration capabilities provide the means to terminate attackers presence and activity from all parts of the environment: infected hosts, malicious files, compromised user accounts and attacker-controlled traffic. 
+Learn more about Cynet 360s incident containment capabilities .
+In the eradication and recovery stage, after the incident has been successfully contained, you should act to remove all elements of the incident from the environment. This might include identifying all affected hosts, removing malware, and closing or resetting passwords for breached user accounts.
+Finally, once the threat is eradicated, restore systems and recover normal operations as quickly as possible, taking steps to ensure the same assets are not attacked again.
+4. Post-Incident Activity
+A central part of the NIST incident response methodology is learning from previous incidents to improve the process.
+You should ask, investigate and document the answers to the following questions:
+What happened, and at what times?
+How well did the incident response team deal with the incident? Were processes followed, and were they sufficient?
+What information was needed sooner?
+Were any wrong actions taken that caused damage or inhibited recovery?
+What could staff do differently next time if the same incident occurred?
+Could staff have shared information better with other organizations or other departments?
+Have we learned ways to prevent similar incidents in the future?
+Have we discovered new precursors or indicators of similar incidents to watch for in the future?
+What additional tools or resources are needed to help prevent or mitigate similar incidents?
+Use your findings to improve the process, adjust your incident response policy, plan, and procedures, and feed the new data into the preparation stage of your incident response process.
+Building Your Own Incident Response Process: Incident Response Plan Templates
+One more thing that can save you time as you prepare an incident response plan is to use ready-made templates shared by other organizations. You can adapt these templates to your specific needs.
+The following templates can help you get a head start on your incident response plan:
+Cynet Incident Response Plan Template  includes team responsibilities, testing, process overview, and checklist. 
+Download .DOC file
+IltaNet Incident Response Plan  includes team responsibilities, incident notifications, types of incidents and classification procedure, and definition of breach. 
+Download .ASHX file
+Thycotic Incident Response Template  includes roles, responsibility and contacts, threat classification, incident response phases and actions in each phase. 
+Get .DOC file *
+Sysnet Security Incident Response Plan Template  includes roles and responsibilities, external contacts, incident response steps, and types of incidents. 
+Get .DOC file *
+California Government Department of Technology Incident Response Plan  includes 17-step incident response procedure, with more detailed plans for specific incident types. 
+Download .DOC file
+I-Sight Incident Response Template  includes incident definitions and examples, roles and responsibilities, incident response stages and procedures. 
+Get .DOC file * (*) Website requires registration
+Learn more in our detailed guide to incident response plan templates
+Real Life Incident Response Examples
+When building an incident response plan, it is useful to see examples of real plans created by other organizations which have been fine-tuned over time based on their experience. See the following examples of incident response plans by leading organizations:
+Organization
+Example Plan Includes
+Link to Example
+U.S. Department of Homeland Security
+Roles and responsibilities, core incident response capabilities, coordinating structures https://us-cert.cisa.gov/sites/default/files/ncirp/National_Cyber_Incident_Response_Plan.pdf
+Carnegie Mellon University
+Definitions of incidents, roles and responsibilities, incident response phases, insider threat guidelines https://www.cmu.edu/iso/governance/procedures/docs/incidentresponseplan1.0.pdf
+University at Buffalo
+Incident response contact information, incident classification and impact, reporting and notifications http://www.buffalo.edu/ubit/policies/guidance-documents/incident-response-plan.html
+Write State University
+Incident response steps, security tools, checklist upon detection of intrusion https://www.wright.edu/information-technology/policies/incident-response-plan
+University of Oklahoma Health Sciences Center
+PCI DSS incident response plan including roles and responsibilities, incident response phases, detailed workflow diagram https://it.ouhsc.edu/policies/documents/infosecurity/PCI%20DSS%20Security%20Incident%20Response%20Plan%20Final.pdf
+Best Practices for Building Your Incident Response Plan
+Create a simple, well-defined process
+An incident response plan, even if it is very well thought out, must be simple and crystal clear to be effective. Keep details, procedures and explanations to a minimum to ensure that staff can very easily follow the plan in the urgency and confusion of a real security incident.
+Create a communication strategy
+Clarify who needs to be informed of a security breach, which communication channels should be used and what level of detail should be provided. There should be clear guidelines on how to inform operations, senior management, affected parties inside and outside the organization, law enforcement, and the press. This is a commonly overlooked part of the incident response process.
+Use an incident response plan template
+Dont reinvent the wheel. Always start your incident response plan from a template created by others in the industry and adapt it to your specific needs. For example, you can start from this template provided by TechTarget which includes incident scope, planning scenarios, logical sequence of events for incident response, team roles, notification and escalation procedures.
+Put your incident response plan to the test
+Conduct realistic drills and exercises to see how the incident response plan is carried out in practice, and be ready to adapt the plan according to lessons learned. Test your tools to ensure they are able to detect an attack as early as possible in the kill chain, and ensure the team can identify a threat and contain it before sensitive data leaves your network.
+Use a centralized approach
+Organizations should not be logging into multiple tools and correlating information between them during the urgency of an attack. Processes and tooling should support a centralized incident response process where an analyst can view all the information about an incident in one place.
+Put incident response technology in place
+Incident response tools/technology provides you with the means to eradicate discovered malicious presence and activity from your environment as well as optimize response workflows by automating repetitive tasks. They can:
+Provide a complete picture of an attack operation, correlating data from endpoints, user behavior and network communications
+Enable remote manual response by security analysts, such as blocking users, killing processes, restarting hosts, deleting files or changing password.
+Enable automated response , for example automated quarantine of an endpoint when malware is discovered, or automatically stopping a malicious process that encrypts or deletes large numbers of files.
+Cynets 24/7 Incident Response Team
+Cynet has an outsourced incident response team available to anyone including small, medium and large organizations. The incident response team provides professional security staff who are equipped to carry out fast, effective incident response activities.
+Cynet can deploy the Cynet security platform in just minutes across hundreds to thousands of endpoints. They can scan, identify, analyze and attend to threats before any harm is done. The Cynet incident response team can assist with:
+24/7 incident response such as identification, containment, eradication and recovery
+Deep forensic investigations collecting data to determine the scope of an attack and who is accountable
+Threat hunting analyze security data to proactively identify advanced threats
+Malware analysis examining malware in a sandbox to see its components and how to remediate it
+Contact Cynet for immediate help
+For emergency assistance from Cynets security experts, call them now at US 1-(347)-474-0048, International +44-203-290-9051, or complete the form below.
+On-Demand Demo
+Watch an on-demand demo video of EDR in action
+Watch
+Presentation template
+The Definitive 'IR Management & Reporting' PPT
+Download
+What is Incident Response?
+Incident response is a structured process organizations use to identify and deal with cybersecurity incidents. Response includes several stages, including preparation for incidents, detection and analysis of a security incident, containment, eradication, and full recovery, and post-incident analysis and learning.
+What is NIST?
+The National Institute of Standards and Technology is an agency operated by the USA Department of Commerce, that provides standards and recommendations for many technology sectors.
+Within NIST, the Information Technology Laboratory (ITL) is responsible for developing standards and measurement methods for IT, including information security. ITL developed an influential model for incident response, the Computer Security Incident Handling Guide (
+Special Publication 800-61
+NIST Recommendations for Organizing A Computer Security Incident Response Team (CSIRT)
+The NIST Computer Security Incident Handling Guide provides in-depth guidelines on how to build an incident response capability within an organization. It covers several models for incident response teams
+Incident Response Team Models
+NIST offers three models for incident response teams:
+Central
+Distributed
+Coordinated
+Within each of these models, staff can be employees, partially outsourced, or fully outsourced. Employees can also be full- or part-time.
+Selecting a Team Model
+NIST provides several considerations for selecting an incident response model:
+Does incident response need to be available 24/7?
+Should staff be part time or full time?
+Should staff be security experts?
+How much will the incident response team cost?
+How to Organize Incident Response
+The NIST Incident Response Guide provides several guidelines for organizing and operating an incident response unit.
+Establish a formal incident response capability
+Even if your organization is small, take incident response seriously and establish a formal incident response body. Even if it is a virtual incident response team with part-time staff, defining this team and giving it authority and responsibility will dramatically improve your capability to respond when a cyberattack strikes.
+Create an incident response policy
+This is a precursor to the incident response plan
+Define an incident response plan 
+According to NIST methodology, an incident response plan is not merely a list of steps to perform when an incident happens. It is a roadmap for the organizations incident response program, including short- and long-term goals, metrics for measuring success, training and job requirements for incident response roles.
+Develop incident response procedures
+These are the detailed steps incident response teams will use to respond to an incident. They should be based on the incident response policy and plan and should address all four phases of the incident response lifecycle: preparation, detection & analysis, containment, eradication and recovery, and post-incident activity.
+The NIST Incident Response Cycle
+NIST defines a four-step process for incident response
+Source: 
+NIST
+After every incident there is a substantial effort to document and investigate what happened during the incident, to feed back to earlier stages and to enable better preparation, detection and analysis for future incidents.
+There is also a feedback loop from the containment and eradication step to detection and analysismany parts of an attack are not fully understood at the detection stage and are only revealed when incident responders enter the scene. These lessons can help the team detect and analyze attacks more fully the next time around.
+The Four Steps of NIST Incident Response
+1. Preparation
+To prepare for incidents, compile a list of IT assets such as networks, servers and endpoints, identifying their importance and which ones are critical or hold sensitive data. Set up monitoring so you have a baseline of normal activity. Determine which types of security events should be investigated, and create detailed response steps for common types of incidents.
+Cynet 360 provides all the core capabilities that are required for sound incident preparation, including a centralized visibility interface showing all endpoint configurations, process execution, installed software, network traffic and user activity.
+2. Detection and Analysis
+Detection
+Analysis
+An integrated security platform like 
+Cynet 360
+Learn more about how Cynet 360 provides detection capabilities against a wide range of attack vectors with its natively integrated 
+EDR
+UBA
+Network Analytics
+Deception
+3. Containment, Eradication, and Recovery
+The goal of containment
+As part of containment, it is important to identify the attacking host and validate its IP address. This allows you to block communication from the attacker and also identify the threat actor, to understand their mode of operation, search for and block other communication channels they may be using.
+Cynet 360 can help you take remote manual action to contain security incidents, including stopping malicious processes, deleting files, resetting passwords and restarting affected devices. It can also perform automatic containment actions such as stopping rapid encryption of files or automatically isolating endpoints infected by malware from the network.
+Cynet response orchestration capabilities provide the means to terminate attackers presence and activity from all parts of the environment: infected hosts, malicious files, compromised user accounts and attacker-controlled traffic. Learn more about Cynet 360s incident containment capabilities.
+In the eradication and recovery
+Finally, once the threat is eradicated, restore systems and recover normal operations as quickly as possible, taking steps to ensure the same assets are not attacked again.
+4. Post-Incident Activity
+A central part of the NIST incident response methodology is learning from previous incidents to improve the process.
+You should ask, investigate and document the answers to the following questions:
+What happened, and at what times?
+How well did the incident response team deal with the incident? Were processes followed, and were they sufficient?
+What information was needed sooner?
+Were any wrong actions taken that caused damage or inhibited recovery?
+What could staff do different next time if the same incident occurred?
+Could staff have shared information better with other organizations or other departments?
+Have we learned ways to prevent similar incidents in the future?
+Have we discovered new precursors or indicators of similar incidents to watch for in the future?
+What additional tools or resources are needed to help prevent or mitigate similar incidents?
+Use your findings to improve the process, adjust your incident response policy, plan, and procedures, and feed the new data into the preparation stage of your incident response process.
+Cynets 24/7 Incident Response Team
+Cynet has an outsourced incident response team that anyone can use, including small, medium and large organizations. The incident response team provides professional security staff who are equipped to carry out fast, effective incident response activities.
+Cynet can deploy the Cynet security platform in just minutes across hundreds to thousands of endpoints. They can scan, identify, analyze and attend to threats before any harm is done. The Cynet incident response team can assist with:
+24/7 incident response
+Deep forensic investigations
+Threat hunting
+Malware analysis
+Contact Cynet for immediate help
+For emergency assistance from Cynets security experts, call them now at US 1-(347)-474-0048, International +44-203-290-9051, or complete the form below.
+Lets Get Started
+Ready to extend visibility, threat detection and response?
+Request a Demo
+XDR Platform
+Platform Overview
+Cynet Protector
+Cynet Responder
+Cynet Correlator
+Endpoint Detection & Response (EDR)
+Ransomware Protection
+SSPM
+Services
+CyOps 24/7 MDR
+Immediate IR Assistance
+Attack Techniques
+Security Updates
+Threat Intelligence Reports
+Partners
+Partner Program Overview
+Partner Portal
+Solution Providers
+Service Providers
+Incident Responders
+Technology Partners
+Resources
+Case Studies
+Datasheets eBooks
+Webinars
+White Papers
+Company
+Why Cynet
+About us
+News
+Careers
+Contact Us
+Copyright  2022 Cynet 
+Terms
+Privacy
 
-Malicious actors can gain unauthorized access to users' online accounts via a new technique called "account pre-hijacking," new research has found.
-The attack takes aim at the account creation process that's ubiquitous in websites and other online platforms, enabling an adversary to perform a set of actions before an unsuspecting victim creates an account in a target service.
-The study was led by independent security researcher Avinash Sudhodanan in collaboration with Andrew Paverd of the Microsoft Security Response Center (MSRC).
-Pre-hijacking banks on the prerequisite that an attacker is already in possession of a unique identifier associated with a victim, such as an email address or phone number, which can be obtained either from the target's social media accounts or credential dumps circulating on the web.
-The attacks can then play out in five different ways, including the use of the same email address during account creation by both the adversary and the victim, potentially granting the two parties concurrent access to the account. "If the attacker can create an account at a target service using the victim's email address before the victim creates an account, the attacker could then use various techniques to put the account into a pre-hijacked state," the researchers said "After the victim has recovered access and started using the account, the attacker could regain access and take over the account." The five types of pre-hijacking attacks are below -
-Classic-Federated Merge Attack federated identity
-Unexpired Session Identifier Attack
-Trojan Identifier Attack
-Unexpired Email Change Attack
-Non-Verifying Identity Provider (IdP) Attack
-In an empirical evaluation of 75 of the most popular websites from Alexa, 56 pre-hijacking vulnerabilities were identified on 35 services. This includes 13 Classic-Federated Merge, 19 Unexpired Session Identifier, 12 Trojan Identifier, 11 Unexpired Email Change, and one Non-Verifying IdP attacks -
-Dropbox - Unexpired Email Change Attack
-Instagram - Trojan Identifier Attack
-LinkedIn - Unexpired Session and Trojan Identifier Attacks
-Wordpress.com - Unexpired Session and Unexpired Email Change Attacks, and
-Zoom - Classic-Federated Merge and Non-verifying IdP Attacks "The root cause of all of the attacks [...] is a failure to verify ownership of the claimed identifier," the researchers said. "Although many services do perform this type of verification, they often do so asynchronously, allowing the user to use certain features of the account before the identifier has been verified. Although this might improve usability (reduces user friction during sign up), it leaves the user vulnerable to pre-hijacking attacks."
-While implementing strict identifier verification in services is crucial to mitigating pre-hijacking attacks, it's recommended that users secure their accounts with multi-factor authentication (MFA). "Correctly implemented MFA will prevent the attacker from authenticating to a pre-hijacked account after the victim starts using this account," the researchers noted. "The service must also invalidate any sessions created prior to the activation of MFA to prevent the Unexpired Session attack."
-On top of that, online services are also advised to periodically delete unverified accounts, enforce a low window to confirm a change of email address, and invalidate sessions during password resets for a defense in-depth approach to account management. "When a service merges an account created via the classic route with one created via the federated route (or vice-versa), the service must ensure that the user currently controls both accounts," Sudhodanan and Paverd said.
-Found this article interesting? Follow THN on 
-Facebook
-Twitter 
-LinkedIn
-SHARE
-SHARE 
-Account Hijacking
-Authentication bypass
-Microsoft password security
-Popular This Week
-New Unpatched Bug Could Let Attackers Steal Money from PayPal Users
-Web Trackers Caught Intercepting Online Forms Even Before Users Hit Submit
-Microsoft Warns Rise in XorDdos Malware Targeting Linux Devices
-Cisco Issues Patch for New IOS XR Zero-Day Vulnerability Exploited in the Wild
-Hackers Trick Users with Fake Windows 11 Downloads to Distribute Vidar Malware
-New Bluetooth Hack Could Let Attackers Remotely Unlock Smart Locks and Cars
-Comments
-Latest Stories
-Other Stories
-Make software security a priority in 2022
-Learn more about how security-aware developers represent a vast and largely untapped resource that can support cyber defenses.
-Uncover the secure developer inside every coder
-Empower developers to deliver secure coding that is intrinsic to their daily process.
-Java Spring Framework 0-Day Bug Threatens Enterprise Security
-Maintainers of Spring Framework have released an emergency patch to address RCE flaw.
-Learn Hacking Skills with 9 Python Courses
-Get this video training with lifetime access today for just $39!
-Online Courses and Software
-A to Z Cybersecurity Certification Training
-Get Paid to Hack Computer Networks When You Become a Certified Ethical Hacker.
-CompTIA Campus Premium
-One-Stop-Shop for All CompTIA Certifications! Get 1-Yr Access to Courses, Live Hands-On Labs, Practice Exams and Updated Content
-Network, Security and Ethical Hacking
-Your 28-Hour Roadmap as an Ultimate Security Professional  Master Network Monitoring, PenTesting, and Routing Techniques and Vulnerabilities
-Complete Linux Certification Training
-Know Your Way Around Networks and Client-Server Linux Systems  Techniques, Command Line, Shell Scripting, and More
-Cybersecurity Newsletter  Stay Informed
-Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
-
-An unknown advanced persistent threat (APT) group has been linked to a series of spear-phishing attacks targeting Russian government entities since the onset of the Russo-Ukrainian war in late February 2022. "The campaigns [...] are designed to implant a Remote Access Trojan (RAT) that can be used to surveil the computers it infects, and run commands on them remotely," Malwarebytes said
-The cybersecurity company attributed the attacks with low confidence to a Chinese hacking group, citing infrastructure overlaps between the RAT and Sakula Rat malware used by a threat actor known as 
-Deep Panda
-The attack chains, while leveraging different lures over the course of two months, all employed the same malware barring small differences in the source code.
-The campaign is said to have commenced around February 26, days after Russia's military invasion of Ukraine, with the emails distributing the RAT under the guise of an interactive map of Ukraine ("interactive_map_UA.exe").
-The development once again demonstrates threat actors' capabilities to adapt and adjust their attacks to world events, using the most relevant and up-to-date lures to maximize their chances of success.
-A second early March attack wave primarily targeted the state-controlled RT TV and involved the use of a rogue software fix for the 
-Log4Shell vulnerability
-Besides including the patch in the form of a compressed TAR file, the email message also came with a PDF document with instructions to install the patch and listed the best security practices to follow, including enabling two-factor authentication, using Kaspersky antivirus, and refraining from opening or replying to suspicious emails.
-In a further attempt to boost the authenticity of the email, the document also contained a 
-VirusTotal URL
-What's more, the email featured links to an attacker-controlled domain "rostec[.]digital" along with fraudulent profiles created on Facebook and Instagram alluding to the Russian defense conglomerate. "Interestingly, the threat actor created the Facebook page in June 2021, nine months before it was used in this campaign," the researchers said. "This was probably an attempt to attract followers, to make the page look more legitimate, and it suggests the APT group were planning this campaign long before the invasion of Ukraine."
-The third iteration of the attack that followed made use of another malicious executable file  this time "build_rosteh4.exe"  in an attempt to pass off the malware as though it's from Rostec.
-Lastly, in mid-April 2022, the attackers pivoted to a job-themed phishing bait for Saudi Aramco, a Saudi Arabian petroleum and natural gas company, the weaponized Microsoft Word document acting as a trigger for an infection sequence to deploy the RAT.
-The DLL payload employs a variety of advanced tricks to thwart analysis, including control flow flattening and string obfuscation, while also incorporating features that allow it to arbitrary files sent from a remote server to the infected host and execute command-line instructions.
-The findings closely follow findings from Check Point that a 
-Chinese adversarial collective
-Found this article interesting? Follow THN on 
-Facebook
-Twitter 
-LinkedIn
-SHARE
-SHARE cybersecurity hacking news
-Malware
-Remote Access Trojan russian hacker 
-Popular This Week
-New Unpatched Bug Could Let Attackers Steal Money from PayPal Users
-Web Trackers Caught Intercepting Online Forms Even Before Users Hit Submit
-Microsoft Warns Rise in XorDdos Malware Targeting Linux Devices
-Cisco Issues Patch for New IOS XR Zero-Day Vulnerability Exploited in the Wild
-Hackers Trick Users with Fake Windows 11 Downloads to Distribute Vidar Malware
-New Bluetooth Hack Could Let Attackers Remotely Unlock Smart Locks and Cars
-Comments 
-Latest Stories
-Other Stories
-Make software security a priority in 2022
-Learn more about how security-aware developers represent a vast and largely untapped resource that can support cyber defenses.
-Uncover the secure developer inside every coder
-Empower developers to deliver secure coding that is intrinsic to their daily process.
-Java Spring Framework 0-Day Bug Threatens Enterprise Security
-Maintainers of Spring Framework have released an emergency patch to address RCE flaw.
-Learn Hacking Skills with 9 Python Courses
-Get this video training with lifetime access today for just $39!
-Online Courses and Software
-A to Z Cybersecurity Certification Training
-Get Paid to Hack Computer Networks When You Become a Certified Ethical Hacker.
-CompTIA Campus Premium
-One-Stop-Shop for All CompTIA Certifications! Get 1-Yr Access to Courses, Live Hands-On Labs, Practice Exams and Updated Content
-Network, Security and Ethical Hacking
-Your 28-Hour Roadmap as an Ultimate Security Professional  Master Network Monitoring, PenTesting, and Routing Techniques and Vulnerabilities
-Complete Linux Certification Training
-Know Your Way Around Networks and Client-Server Linux Systems  Techniques, Command Line, Shell Scripting, and More
-Cybersecurity Newsletter  Stay Informed
-Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
-
-Security incidents occur. It's not a matter of "if," but of "when." That's why you implemented security products and procedures to optimize the incident response (IR) process.
-However, many security pros who are doing an excellent job in handling incidents find effectively communicating the ongoing process with their management a much more challenging task.
-Feels familiar?
-In many organizations, leadership is not security savvy, and they aren't interested in the details regarding all the bits and bytes in which the security pro masters. 
-Luckily, there is a template that security leads can use when presenting to management. It's called the 
-IR Reporting for Management template
-The IR Reporting for Management template enables CISOs and CIOs to communicate with the two key points that management cares aboutassurance that the incident is under control and a clear understanding of implications and root cause.
-Control is a key aspect of IR processes, in the sense that at any given moment, there is full transparency of what is addressed, what is known and needs to be remediated, and what further investigation is needed to unveil parts of the attack that are yet unknown.
-Management doesn't think in terms of trojans, exploits, and lateral movement, but rather they think in terms of business productivity  downtime, man-hours, loss of sensitive data.
-Mapping a high-level description of the attack route to damage that is caused is paramount to get the management's understanding and involvement  especially if the IR process requires additional spending.
-The IR Reporting for Management template follows the SANSNIST IR framework and will help you walk your management through the following stages:
-Identification
-Attacker presence is detected beyond doubt. Follow the template to answer key questions: 
-Was the detection made in-house or by a third-party? 
-How mature is the attack (in terms of its progress along the kill chain)? 
-What is the estimated risk? 
-Will the following steps be taken with internal resources or is there a need to engage a service provider?
-Containment
-First aid to stop the immediate bleeding before any further investigation, the attack root cause, the number of entities taken offline (endpoints, servers, user accounts), current status, and onward steps.
-Eradication
-Full cleanup of all malicious infrastructure and activities, a complete report on the attack's route and assumed objectives, overall business impact (man-hours, lost data, regulatory implications, and others per the varying context).
-Recovery
-Recovery rate in terms of endpoints, servers, applications, cloud workloads, and data.
-Lessons Learned
-How did that attack happen? Was it a lack of adequate security technology in place, insecure workforce practices, or something else? And how can we mend these issues? Provide a reflection on the previous stages across the IR process timeline, searching for what to preserve and what to improve.
-Naturally, there is no one-size-fits-all in a security incident. For example, there might be cases in which the identification and containment will take place almost instantly together, while in other events, the containment might take longer, requiring several presentations on its interim status. That's why this template is modular and can be easily adjustable to any variant.
-Communication with management is not a nice-to-have but a critical part of the IR process itself. The definitive IR Reporting to Management template helps security team leads make their efforts and results crystal clear to their management.
-Download the Definitive IR Reporting to Management template here.
-Found this article interesting? Follow THN on 
-Facebook
-Twitter 
-LinkedIn
-SHARE
-SHARE 
-Cynet
 Incident response
-Popular This Week
-New Unpatched Bug Could Let Attackers Steal Money from PayPal Users
-Web Trackers Caught Intercepting Online Forms Even Before Users Hit Submit
-Microsoft Warns Rise in XorDdos Malware Targeting Linux Devices
-Cisco Issues Patch for New IOS XR Zero-Day Vulnerability Exploited in the Wild
-Hackers Trick Users with Fake Windows 11 Downloads to Distribute Vidar Malware
-New Bluetooth Hack Could Let Attackers Remotely Unlock Smart Locks and Cars
-Comments
-Latest Stories
-Other Stories
-Make software security a priority in 2022
-Learn more about how security-aware developers represent a vast and largely untapped resource that can support cyber defenses.
-Uncover the secure developer inside every coder
-Empower developers to deliver secure coding that is intrinsic to their daily process.
-Java Spring Framework 0-Day Bug Threatens Enterprise Security
-Maintainers of Spring Framework have released an emergency patch to address RCE flaw.
-Learn Hacking Skills with 9 Python Courses
-Get this video training with lifetime access today for just $39!
-Online Courses and Software
-A to Z Cybersecurity Certification Training
-Get Paid to Hack Computer Networks When You Become a Certified Ethical Hacker.
-CompTIA Campus Premium
-One-Stop-Shop for All CompTIA Certifications! Get 1-Yr Access to Courses, Live Hands-On Labs, Practice Exams and Updated Content
-Network, Security and Ethical Hacking
-Your 28-Hour Roadmap as an Ultimate Security Professional  Master Network Monitoring, PenTesting, and Routing Techniques and Vulnerabilities
-Complete Linux Certification Training
-Know Your Way Around Networks and Client-Server Linux Systems  Techniques, Command Line, Shell Scripting, and More
-Cybersecurity Newsletter  Stay Informed
-Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
+The SANS Institute is a private organization, which provides research and education on information security. In this article, well outline, in detail, six components of a SANS incident response plan including elements such as preparation, identification, containment, and eradication. Read on to learn more about Cynets 24/7 incident response team and how they can help your organization.
+In this article:
+The concept of incident response
+What is SANS?
+SANS incident response plan
+Cynets 24/7 incident response team
+On-Demand Demo
+Watch an on-demand demo video of EDR in action
+Watch
+Presentation template
+The Definitive 'IR Management & Reporting' PPT
+Download
+What Is Incident Response?
+Incident response
+What Is SANS?
+The SANS Institute is a private organization established in 1989, which offers research and education on information security. It is the worlds largest provider of security training and certification, and maintains the largest collection of research about cybersecurity. SANS also operates the Internet Storm Center, an early warning system for global cyber threats.
+SANS Incident Response Plan
+The SANS Institute published a 20-page handbook that lays out a structured 6-step plan for incident response
+Preparation
+Incident Response Team
+Identification
+Containment
+Eradication
+Recovery
+Lessons learned
+Step 1: Preparation
+The goal of the preparation stage is to ensure that the organization can comprehensively respond to an incident at a moments notice.
+In a SANS incident response plan, these are critical elements that should be prepared in advance:
+Policy
+Response Plan/Strategy
+Communication
+Documentation
+Team
+Access control
+Training
+Tools
+Leveraging an integrated breach protection platform for incident response
+An integrated security platform like 
+Cynet 360
+Cynet 360 can help your organization perform remote manual action to contain security events. These actions can include deleting files, stopping malicious processes, resetting passwords and restarting devices that have been affected. Cynet can also help your organization carry out measures such as preventing rapid encryption of files or automatically isolating endpoints that have been the target of malware.
+Learn more about Cynet 360s incident response capabilities
+Step 2: Identification
+This step involves detecting deviations from normal operations in the organization, understanding if a deviation represents a security incident, and determining how important the incident is.
+The SANS incident response identification procedure includes the following elements:
+Setting up monitoring
+Analyzing events
+Identifying an incident
+Notifying CSIRT members strong{Assigning at least two incident responders to a live incident, one as the primary handler who assesses the incident and makes the decision, and the other to help investigate and gather evidence.
+Documenting everything
+Threat prevention and detection capabilities
+Step 3: Containment
+The goal of containment is to limit damage from the current security incident and prevent any further damage. Several steps are necessary to completely mitigate the incident, while also preventing destruction of evidence that may be needed for prosecution.
+The SANS containment process involves:
+Short-term containment
+System backup
+Long-term containment
+Step 4: Eradication
+Eradication is intended to actually remove malware or other artifacts introduced by the attacks, and fully restore all affected systems.
+The SANS eradication process involves:
+Reimaging
+Preventing the root cause
+Applying basic security best practices
+Scan for malware
+Step 5: Recovery
+The goal of recovery is to bring all systems back to full operation, after verifying they are clean and the threat is removed.
+The SANS recovery procedure involves:
+Defining time and date to restore operations
+Test and verifying
+Monitoring
+Do everything to prevent another incident
+Step 6: Lessons Learned
+No later than two weeks from the end of the incident, the CSIRT should compile all relevant information about the incident and extract lessons that can help with future incident response activity.
+The SANS lessons learned process includes:
+Completing documentation
+Publishing an incident report
+Identify ways to improve CSIRT performance
+Establish a benchmark for comparison
+Lessons learned meeting
+SANS suggests this general format for the incident report:
+When was the problem first detected and by whom
+The scope of the incident
+How it was contained and eradicated
+Worked performed during recovery
+Areas where the CIRT teams were effective
+Areas that need improvement
+Follow the SANS IR Framework with Cynet
+Cynet 360 provides powerful capabilities across the three first SANS stages:
+Identification  
+Cynet EDR network analytics
+UEBA deception technology
+Containment  Cynet 360 response orchestration
+Eradication  Cynet 360 provides complete visibility across all endpoint, user and network activity to accelerate and optimize investigations. It helps responders discover the root cause of an attack, understand its scope and impact, and eliminate malicious infrastructure and activity using its response orchestration
+Contact Cynet for immediate help
+For emergency assistance from Cynets security experts, call them at US 1-(347)-474-0048, International +44-203-290-9051, or complete the form below.
+Lets Get Started
+Ready to extend visibility, threat detection and response?
+Request a Demo
+XDR Platform
+Platform Overview
+Cynet Protector
+Cynet Responder
+Cynet Correlator
+Endpoint Detection & Response (EDR)
+Ransomware Protection
+SSPM
+Services
+CyOps 24/7 MDR
+Immediate IR Assistance
+Attack Techniques
+Security Updates
+Threat Intelligence Reports
+Partners
+Partner Program Overview
+Partner Portal
+Solution Providers
+Service Providers
+Incident Responders
+Technology Partners
+Resources
+Case Studies
+Datasheets eBooks
+Webinars
+White Papers
+Company
+Why Cynet
+About us
+News
+Careers
+Contact Us
+Copyright  2022 Cynet 
+Terms
+Privacy
 
-Popular video conferencing service Zoom has resolved
-XMPP
-Tracked from CVE-2022-22784 through CVE-2022-22787, the issues range between 5.9 and 8.1 in severity. Ivan Fratric of Google Project Zero has been credited with discovering and reporting all the four flaws in February 2022.
-The list of bugs is as follows -
-CVE-2022-22784
-CVE-2022-22785
-CVE-2022-22786
-CVE-2022-22787
-With Zoom's chat functionality built on top of the XMPP standard, successful exploitation of the issues could enable an attacker to force a vulnerable client to masquerade a Zoom user, connect to a malicious server, and even download a rogue update, resulting in arbitrary code execution stemming from a downgrade attack
-Fratric dubbed the zero-click attack sequence as a case of "
-XMPP Stanza Smuggling
-At its core, the issues take advantage of parsing inconsistencies between XML parsers in Zoom's client and server to "smuggle" arbitrary 
-XMPP stanzas
-Specifically, the exploit chain can be weaponized to hijack the software update mechanism and make the client connect to a man-in-the-middle server that serves up an old, less secure version of the Zoom client.
-While the downgrade attack singles out the Windows version of the app, CVE-2022-22784, CVE-2022-22785, and CVE-2022-22787 impact Android, iOS, Linux, macOS, and Windows.
-The patches arrive less than a month after Zoom addressed two high-severity flaws (CVE-2022-22782 and CVE-2022-22783) that could lead to local privilege escalation and exposure of memory contents in its on-premise Meeting services. Also fixed was another instance of a downgrade attack (CVE-2022-22781) in Zoom's macOS app.
-Users of the application are recommended to update to the latest version (5.10.0) to mitigate any potential threats arising out of active exploitation of the flaws.
-Found this article interesting? Follow THN on 
-Facebook
-Twitter 
-LinkedIn
-SHARE
-SHARE cybersecurity
-Google hacking news
-Video Conference Software
-Zoom
-Popular This Week
-New Unpatched Bug Could Let Attackers Steal Money from PayPal Users
-Web Trackers Caught Intercepting Online Forms Even Before Users Hit Submit
-Microsoft Warns Rise in XorDdos Malware Targeting Linux Devices
-Cisco Issues Patch for New IOS XR Zero-Day Vulnerability Exploited in the Wild
-Hackers Trick Users with Fake Windows 11 Downloads to Distribute Vidar Malware
-New Bluetooth Hack Could Let Attackers Remotely Unlock Smart Locks and Cars
-Comments
-Latest Stories
-Other Stories
-Make software security a priority in 2022
-Learn more about how security-aware developers represent a vast and largely untapped resource that can support cyber defenses.
-Uncover the secure developer inside every coder
-Empower developers to deliver secure coding that is intrinsic to their daily process.
-Java Spring Framework 0-Day Bug Threatens Enterprise Security
-Maintainers of Spring Framework have released an emergency patch to address RCE flaw.
-Learn Hacking Skills with 9 Python Courses
-Get this video training with lifetime access today for just $39!
-Online Courses and Software
-A to Z Cybersecurity Certification Training
-Get Paid to Hack Computer Networks When You Become a Certified Ethical Hacker.
-CompTIA Campus Premium
-One-Stop-Shop for All CompTIA Certifications! Get 1-Yr Access to Courses, Live Hands-On Labs, Practice Exams and Updated Content
-Network, Security and Ethical Hacking
-Your 28-Hour Roadmap as an Ultimate Security Professional  Master Network Monitoring, PenTesting, and Routing Techniques and Vulnerabilities
-Complete Linux Certification Training
-Know Your Way Around Networks and Client-Server Linux Systems  Techniques, Command Line, Shell Scripting, and More
-Cybersecurity Newsletter  Stay Informed
-Sign up for cybersecurity newsletter and get latest news updates delivered straight to your inbox daily.
+Endpoint Detection and Response (
+EDR
+This article will help you understand the core capabilities of EDR, how it is different from Endpoint Protection Platforms (EPP) and antivirus, and how it can help you secure your organization from the growing threat of endpoint-targeted attacks.
+If you want to learn about Extended Detection and Response (XDR), the next stage in the evolution of EDR, click here.
+In this article you will learn:
+What EDR stands for
+Security objectives and core capabilities of EDR technology
+Endpoint security terminology and the difference between EDR, EPP, NGAV, SIEM
+What are the main features offered by EDR solutions
+Want to dive deep into EDR? Here are some resources
+On-Demand Demo
+Watch an on-demand demo video of EDR in action
+Watch free EDR Trial
+Start a 14-day free 
+EDR trial
+Start
+EDR RFP Template
+Download a ready-to-use EDR RFP template
+Download
+What Does EDR Stand For?
+EDR
+E
+D
+R
+The primary function of EDR solutions is to alert security teams to malicious activity on endpoints, and enable real-time investigation of the root cause and scope of an attack. EDR has three key mechanisms:
+Endpoint data collectionaggregates data on events such as process execution, communication, and user logins.
+Detection engineperforms behavioral analysis to establish a baseline of typical endpoint activity, discover anomalies, and determine which anomalies represent malicious activity on the endpoint.
+Data recordingprovides security teams with real-time data about security incidents on endpoints, which they can use to investigate an incident in real time, contain and mitigate it.
+Endpoint SecurityUnderstanding the Terminology
+There are several components to a comprehensive endpoint security solution, and the various associated terms are often confused or conflated. Lets clear up this misunderstanding with precise definitions of the related concepts of EDR, EPP, AV/NGAV, and SIEM.
+What is the Difference Between EDR and EPP?
+According to Gartner, an 
+Endpoint Protection Platform
+EPP platform functionality can be divided into two broad categories:
+Prevention
+Detection and Response
+What is the Difference between EDR and Antivirus?
+Many people confuse the capabilities of EDR and antivirus (AV), assuming they only need to use one of them. However, these two technologies complement each other. Antivirus is a preventative tool that relies on signature-based detection, and it doesnt provide visibility into how attacks play out. AV can catch the malware, but it doesnt tell you where it came from or how it spread in your network.
+EDR, on the other hand, provides a full picture of how an attacker gained access to your system and what they did once inside. EDR can detect malicious activity on an endpoint as a result of zero-day exploits, advanced persistent threats, fileless or malware-free attacks, which dont leave signatures and can therefore evade legacy AV and even NGAV.
+What is the Difference Between EDR and SIEM?
+Security Information and Event Management (SIEM) collects log and event data from across your network to help identify behavior patterns, detect threats, and investigate security incidents. It is broader than EDR, which addresses endpoint activity specifically.
+In a large organization, EDR will likely be one of the data inputs of a SIEM. The SIEM can combine information on endpoint security incidents coming from the EDR system, with information from other parts of the security environment, such as network monitoring and alerts from other security tools.
+SIEM is also responsible for collecting historical data, for example recording endpoint data over several years, allowing analysts to see if this type of attack has happened before.
+EDR Features
+Some common EDR features include:
+Endpoint visibility
+Data collection
+Threat intelligence
+Automated alerts and forensics
+Trace back to original breach point
+Automated response measures on the endpoint
+Cynet: EDR and More
+EDR solutions only deal with the process behavior that prompts alerts. Organizations can use EDR tools to attend to specific parts of common Tactics, Techniques, and Procedures (TTP) attackers use. However, EDR products are blind to other attack types.
+Lets turn our attention to the example of credential theft. The default process used by attackers involves dumping password hashes from memory using a customized tool or an open source tool. In this example, the attack method includes anomalous behavior, thus an EDR tool should identify these types of attacks. However, an attacker can acquire the same hashes by scraping the network traffic between two hosts, a process that doesnt include anomalous activity.
+A second example involves the attack technique of lateral movement. In this scenario, the attacker may be able to compromise many user account credentials and logs, connected to many hosts in the network. Here, the anomaly is the user activity and not the process behavior. The EDR would thus not identify the attack at all or would see the attack but without sufficient context, and this would trigger false positives. Therefore, process data is important, but organizations cannot rely on it as the only source of their security data.
+Another limitation of EDR tools is that they are restricted to endpoints and cannot help mitigate attacks or restore operations at the user or network level.
+Cynet 360 holistic cybersecurity solution
+Cynet 360 platform is a comprehensive cyber solution that is developed to run in the entire environment of an organization and not only its endpoints. To achieve this Cynet 360 protects all attack surfaces by tracking the three planes; network traffic, process behavior, and user activity. Attackers typically manifest themselves on one or several of these three planes.
+Continuous monitoring to detect and stop threats over this triad provides increased threat visibility. Organizations thus have the chance to monitor more stages in the attacks lifecycle so they can identify and block threats with greater success.
+As a subset of these capabilities, Cynet employs EDR technology with the following capabilities:
+Advanced endpoint threat detection
+Investigation and validation
+Rapid deployment and response
+Cynet 360 threat protection goes beyond attack detection and prevention. Using Cynet organizations can proactively monitor their internal environments, such as endpoints, hosts, files, and network. This can help organizations reduce their attack surface and the potential for multiple attacks. When it comes to active attacks, an organization must work to enclose the capabilities of the attacker to eradicate the presence of the attacker entirely. This includes disabling compromised users, deleting malicious processes and files, isolating infected hosts and blocking traffic controlled by the attacker.
+Learn more
+Lets Get Started
+Ready to extend visibility, threat detection and response?
+Request a Demo
+XDR Platform
+Platform Overview
+Cynet Protector
+Cynet Responder
+Cynet Correlator
+Endpoint Detection & Response (EDR)
+Ransomware Protection
+SSPM
+Services
+CyOps 24/7 MDR
+Immediate IR Assistance
+Attack Techniques
+Security Updates
+Threat Intelligence Reports
+Partners
+Partner Program Overview
+Partner Portal
+Solution Providers
+Service Providers
+Incident Responders
+Technology Partners
+Resources
+Case Studies
+Datasheets eBooks
+Webinars
+White Papers
+Company
+Why Cynet
+About us
+News
+Careers
+Contact Us
+Copyright  2022 Cynet 
+Terms
+Privacy
 
