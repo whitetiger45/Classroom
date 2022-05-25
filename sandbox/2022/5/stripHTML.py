@@ -7,6 +7,7 @@
 # note:
 #   this is a stable, dirty version of what is a work in progress; 
 #   as more files are consumed, it will be improved.
+# changes to be pushed:
 import argparse, copy, html
 import os, re, string, sys, traceback
 from collections import deque
@@ -17,7 +18,7 @@ SUCCESS = 0
 NOT_SERIOUS = 3
 FATAL = 6
 
-usage = f"""Usage: {sys.argv[0]} -f <file>.html"""
+usage = f"""Usage: {sys.argv[0]} [-f | --htmlfrompdf] <file>.html"""
 
 tag_t = {
 0:"title",
@@ -65,6 +66,7 @@ addNewline = lambda line: line.replace("><",">\n<")
 findTagsInline = lambda line: re.finditer("><",line)
 findTags = lambda line: re.finditer("<([\S]+).*?>(.*?)</.*?>|<([0-9a-zA-Z]+).*?>(.*?)",line)
 stripTagL = lambda line: re.match("<([0-9a-zA-Z]+).*?>(.+)",line)
+stripPDFToHTMLTagL = lambda line: re.match("<[0-9a-zA-Z]+.*?>(.+)",line)
 # list(map((lambda l: [m.groups() for m in findTags(l)]),lines)) # helper for debugging
 singleOpeningTag = lambda line: re.match("(<.*?>){0,1}([\s\S]+$){1,}",line)
 singleClosingTag = lambda line: re.match("([\s\S]+){1}(<.+>?){1}",line)
@@ -317,6 +319,30 @@ def parseHTMLFile(lines):
         cout("error",f"{traceback.format_exc()}")
     return documentText
 
+# this function is used to create speech-to-text-ready text from html files generated using the unix utility pdftohtml
+def parsePDFToHTMLFile(lines):
+    global STATUS
+    documentText = []
+    try:
+        stepOne = "".join(line for line in lines)
+        stepTwo = stepOne.replace("<","\n<")
+        stepThree = stepTwo.find("</head>\n")
+        stepFour = stepTwo[stepThree+len("</head>\n"):]
+        stepFiveA = stepFour.find("<body>")
+        stepFiveB = stepFour.find("</body>");
+        if stepFiveA != -1 and stepFiveB != -1:
+            stepSix = stepFour[stepFiveA:stepFiveB].split("\n")
+            for line in stepSix:
+                m = stripPDFToHTMLTagL(line)
+                if m:
+                    documentText.append(m[1])
+            cout("debug",f"documentText: {documentText}")
+        else:
+            cout("error","Did not find the initial '<body>' tag. Time for an upgrade!")            
+    except:
+        cout("error",f"{traceback.format_exc()}")
+    return documentText
+
 def saveParsedFile(state):
     global STATUS
     try:
@@ -341,7 +367,7 @@ def saveParsedFile(state):
 
 def main(argv):
     global STATUS
-    if sys.argv[1] != "-f" or len(sys.argv) != 3:
+    if sys.argv[1] not in ["-f","--htmlfrompdf"] or len(sys.argv) != 3:
         STATUS = USAGE
         cout("info",f"{usage}")
         return
@@ -354,7 +380,11 @@ def main(argv):
         # lines = flatten([ addNewline(line).split("\n") for line in lines ]) # comment out to test parseHTMLFile
         # state = stripTagDispatcher(lines) # comment out to test parseHTMLFile
         # state = list(map(inlineHTMLElementStrip, state)) # comment out to test parseHTMLFile
-        state = parseHTMLFile(lines)
+        state = []
+        if sys.argv[1] == "--htmlfrompdf":
+            state = parsePDFToHTMLFile(lines)
+        else:    
+            state = parseHTMLFile(lines)
         state = list(map(html.unescape,state))
         state = list(map(normalize,state))
         state = deflate(state)

@@ -1,13 +1,27 @@
 stripHTML Change Tracker:
 -------------------------
+Current Version: 1.1.2
+Released: 2022.05.25
+
+Changes:
+    2022.05.25:
+        - added stripPDFToHTMLTagL and parsePDFToHTMLFile
+        - added --htmlfrompdf cmdline flag
+        - added two files that were converted to html files from their original pdf version. this is to document how this program can be used to create speech-to-text-ready text from pdf files.
+
+Additional notes:
+    parsePDFToHTMLFile has only been tested on html files generated using the unix utility pdftohtml as of this release.
+
+-------------------------
 Current Version: 1.1
 Released: 2022.05.25
 
 Changes:
     2022.05.24:
-      - changed 'w' flag to 'a' when writing output so files can be concatenated
-      - added findTagsInline lambda using re.finditer
+        - changed 'w' flag to 'a' when writing output so files can be concatenated
+        - added findTagsInline lambda using re.finditer
     2022.05.25:
-      - added parseHTMLFile, stripTagL, saveParsedFile functions
-      - added STATUS string
-      - commented out unused functions to test changes; tested on file 'enhanced-fileless-attack-detection-with-crowdstrike-falcon.html' that could not be parsed using v1.0.
+        - added parseHTMLFile, stripTagL, saveParsedFile functions
+        - added STATUS variable, and values USAGE, SUCCESS, NOT_SERIOUS, FATAL.
+        - commented out unused functions to test changes; tested on file 'enhanced-fileless-attack-detection-with-crowdstrike-falcon.html' that could not be parsed using v1.0.
+

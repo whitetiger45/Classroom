@@ -1,0 +1,742 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img class="xflip" src="incidentHandlersHandbook-1_1.png"/><br/>
+WHITE PAPER<br/>
+<b>Incident Handler's<br/>Handbook<br/></b>Patrick Kral<br/>
+<b>Copyright SANS Institute 2021. Author Retains Full Rights.<br/></b>This paper was published by SANS Institute. Reposting is not permitted without express written permission.<br/>
+<hr/>
+<a name=2></a><img src="incidentHandlersHandbook-2_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-2_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-2_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-2_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-2_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<b>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;</b><br/>
+<b>The Incident Handlers Handbook&#160;</b><br/>
+&#160;<br/>&#160;<br/>
+<i>GIAC&#160;(GCIH)&#160;Gold Certification&#160;</i><br/>
+&#160;<br/>
+Author: Patrick Kral, patrick.kral@gmail.com&#160;<br/>
+&#160;<br/>
+Advisor: Dr. Craig Wright&#160;<br/>
+&#160;<br/>&#160;<br/>
+Accepted:&#160;December 5th, 2011&#160;<br/>
+&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>&#160;<br/>
+Abstract&#160; <br/>
+&#160; <br/>
+One&#160; of&#160; the&#160; greatest  challenges&#160; facing  today’s&#160; IT&#160; professionals&#160; is&#160; planning  and&#160; preparing  <br/>
+for  the  unexpected,  especially  in  response  to  a  security  incident.  An  incident  is  <br/>described  as  any  violation  of  policy,  law,  or  unacceptable  act&#160; that&#160; involves  information  <br/>assets,  such  as&#160; computers,  networks,  smartphones,  etc  (Bejtlich,  2005).  The  scope  of  <br/>
+this  document  is  limited  to  the  six  phases  of  the  incident  handling  process  (&#34;Incident  <br/>handling  step-­‐by-­‐step,&#34;  2011)  and  providing  the  basic  information  necessary  as  to  what&#160; <br/>
+each  step  entails.  Its  overall&#160; purpose  is  to  provide  the  basic  foundation  for  IT  <br/>professionals  and  managers  to  be  able  to  create  their  own  incident  response  policies,  <br/>standards,  and  teams  within  their  organizations.  This  document  will  also&#160; include  an  <br/>
+incident  handler’s  checklist  (template)  that  one  can  use  to  ensure  that  each  of  the  <br/>incident&#160; response  steps  is  being  followed  during  an  incident.&#160; <br/>
+<b>&#160;<br/>&#160;<br/>&#160;</b><br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+1&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=3></a><img src="incidentHandlersHandbook-3_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-3_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-3_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-3_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-3_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<b>1.&#160;Introduction&#160;</b><br/>
+An incident is a matter of when, not if, a compromise or violation of an organization’s&#160;<br/>
+security will happen.&#160;The preparation&#160;of the Computer Incident Response Team (CIRT)&#160;through&#160;<br/>
+planning, communication, and practice of the incident response&#160;process will provide the&#160;<br/>
+necessary experience needed should an incident occur within your organization.&#160;Each&#160;phase&#160;from&#160;<br/>
+preparation to&#160;lessons&#160;learned is&#160;extremely&#160;beneficial&#160;to follow in sequence, as each one builds&#160;<br/>
+upon the other.&#160;The following&#160;phases will provide a basic foundation to be able to perform&#160;<br/>
+incident response and allow one to create&#160;their own incident response plan.&#160;<br/>
+&#160;&#160;<br/>
+<b>2.&#160;Preparation&#160;</b><br/>
+This&#160;phase&#160;as its name implies deals with the preparing&#160;a team to be ready to handle&#160;an&#160;<br/>
+incident at a moment’s notice.&#160;An incident can range from anything such as a power outage or&#160;<br/>
+hardware failure to the&#160;most&#160;extreme incidents such as a violation of organizational policy by&#160;<br/>
+disgruntled employees or being hacked by state sponsored hackers&#160;(Bejtlich, 2005).&#160;Regardless&#160;<br/>
+of the cause of the incident preparation is the most&#160;crucial&#160;phase&#160;compared to all of the others, as&#160;<br/>
+it will determine how well your team will be able to respond in the event of&#160;a crises.&#160;<br/>
+There are several key elements to have implemented in this&#160;phase&#160;in order to help mitigate any&#160;<br/>
+potential problems that may hinder one’s ability to handle an incident.&#160;For the sake of brevity,&#160;<br/>
+the following should be performed:&#160;<br/>
+a.&#160;&#160;Policy&#160;–&#160;a policy provides a written set of principles, rules, or practices within an&#160;<br/>
+organization; it is one of the keystone elements that&#160;provide guidance as to whether an&#160;<br/>
+incident has occurred in an organization.&#160;A login banner can be one way to ensure that&#160;<br/>
+individuals&#160;attempting to log into an organization’s network will be aware of what is&#160;<br/>
+expected when utilizing an organization’s information assets;&#160;for example&#160;the login&#160;<br/>
+banner (dependent upon the local jurisdiction on privacy) can state that all activities will&#160;<br/>
+be monitored and any unauthorized users may civil or criminal penalties, etc.&#160;Without&#160;<br/>
+clear policies, one could leave their organization legally vulnerable to law suits, such as&#160;<br/>
+an employee being fired for looking at porn at work when there was no policy against&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+2&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=4></a><img src="incidentHandlersHandbook-4_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-4_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-4_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-4_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-4_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+such behavior within the organization and&#160;provided the opportunity for&#160;the said&#160;<br/>
+individual to be able to file an improper termination lawsuit&#160;(Newman, 2007).&#160;<br/>
+b.&#160;&#160;Response Plan/Strategy&#160;–&#160;after establishing organizational policies, now it is time to&#160;<br/>
+create a plan/strategy to handle incidents.&#160;Prioritization of incidents should be based upon&#160;<br/>
+organizational impact&#160;(Incident Response Process, 2008),&#160;for example&#160;a single&#160;<br/>
+workstation being non-functional can be considered minor, whereas a server being down&#160;<br/>
+could be considered a moderate impact (assuming there are backup servers for failover),&#160;<br/>
+and data being stolen directly from human&#160;resources that contain privileged information&#160;<br/>
+as high.&#160;The prioritization of the types of incidents based upon organizational impact can&#160;<br/>
+help build the case&#160;to receive management buy-in, because without management support&#160;<br/>
+then it is likely that the CIRT may not be given the resources necessary to properly&#160;<br/>
+handle&#160;a crisis.&#160;<br/>
+c.&#160;&#160;Communication&#160;–&#160;having a communication plan is necessary, due to the fact that it may&#160;<br/>
+be necessary to contact specific individuals during an incident.&#160;The entire CIRT should&#160;<br/>
+know whom to contact, when it is appropriate to contact them, and why.&#160;For example,&#160;at&#160;<br/>
+12:31pm the online ordering system for a popular e-commerce site during the holiday&#160;<br/>
+shopping season went down and no one is able to access the site; it would be prudent to&#160;<br/>
+contact the various individuals with&#160;specific&#160;expertise to get the system back up and&#160;<br/>
+running, as well as management to keep them updated as the situation progresses to&#160;<br/>
+resolution.&#160;By not having a&#160;communications plan, then it is likely that response time will&#160;<br/>
+be delayed and/or the wrong people would be contacted and one would not have the&#160;<br/>
+proper resources necessary to mitigate the problem&#160;(Creating a computer security&#160;<br/>
+incident response team: a process for getting started, 2006).&#160;<br/>
+<b>Please note:</b>&#160;it is also&#160;necessary&#160;to define when it is or is not appropriate to include law&#160;<br/>
+enforcement during an incident, due to the consequences that could either positively or&#160;<br/>
+negatively affect your organization.&#160;<br/>
+d.&#160;&#160;Documentation&#160;–&#160;it is extremely&#160;beneficial&#160;to stress that this element is&#160;particularly&#160;<br/>
+necessary and can be a&#160;substantial&#160;life saver when it comes to incident response.&#160;The&#160;<br/>
+most&#160;significant&#160;reason to document an incident is that if the incident is considered a&#160;<br/>
+criminal act, then it could be used as evidence to bring the suspect(s) to justice.&#160;The other&#160;<br/>
+reason for documentation that is just as&#160;important&#160;is for lessons learned.&#160;It is vital that&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+3&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=5></a><img src="incidentHandlersHandbook-5_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-5_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-5_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-5_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-5_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+everything that is done by the CIRT team is documented, that means every action taken&#160;<br/>
+(e.g.&#160;commands&#160;typed, systems affected, etc).&#160;Documentation should be able to answer&#160;<br/>
+the Who, What, When, Where, Why, and How questions should they ever arise; without&#160;<br/>
+such information one could leave a sense of uncertainty if something &#160;was called into&#160;<br/>
+question, like formatting a hard drive and reinstalling the operating system on a&#160;<br/>
+production server&#160;(Newman, 2007).&#160;<br/>
+<b>Tip:</b>&#160;Checklists with a place for notes, dates and times, and other pertinent information&#160;<br/>
+can be&#160;extremely&#160;handy, especially those that follow each step of incident response.&#160;<br/>
+e.&#160;&#160;Team&#160;–&#160;the CIRT should be made up of several people that consist of different disciplines&#160;<br/>
+to handle the various problems that could arise during or from&#160;an incident.&#160;Some of these&#160;<br/>
+team&#160;members can be attorneys, human resources, public relations, various IT staff with&#160;<br/>
+specific specializations, etc.&#160;It is&#160;particularly&#160;beneficial&#160;to have an open mind about who&#160;<br/>
+is to be included in the CIRT, because some individuals and/or professions may not be as&#160;<br/>
+obvious as the actual technical staff to handle an incident&#160;(Responding to it security&#160;<br/>
+incidents, 2011).&#160;<br/>
+f.&#160;&#160;Access Control&#160;–&#160;another key element is to ensure that the CIRT can have the appropriate&#160;<br/>
+permissions necessary to perform their job.&#160;An&#160;excellent&#160;example is&#160;to&#160;have&#160;a network or&#160;<br/>
+systems administrator being able to add/remove permissions to the accounts of the CIRT&#160;<br/>
+during an incident to&#160;allow them to mitigate the problem and then have those permissions&#160;<br/>
+removed when they are no longer needed&#160;(Responding to it security incidents, 2011).&#160;<br/>
+g.&#160;&#160;Tools&#160;–&#160;a CIRT without tools is like&#160;kayaking&#160;without a paddle, it is&#160;inherently&#160;difficult&#160;<br/>
+to get anything done.&#160;It is highly&#160;recommended having&#160;any available software and&#160;<br/>
+hardware that can be readily utilized during an incident; this can range from anti-malware&#160;<br/>
+to laptops with packets sniffers, screw drivers and other tools, as well&#160;as incident&#160;<br/>
+response checklists&#160;and other items that would be useful&#160;(Bejtlich, 2005).&#160;All of the tools&#160;<br/>
+one would need during an incident should be contained within a “jump bag” that can be&#160;<br/>
+quickly grabbed by CIRT members during an incident.&#160;<br/>
+h.&#160;&#160;Training&#160;–&#160;this is a must, because without it your team could be ill prepared and result in&#160;<br/>
+a complete failure of handling an incident properly despite the best of planning.&#160;It is&#160;<br/>
+recommended to have drills at regular interval to insure that each individual within the&#160;<br/>
+CIRT is able or knows how to perform their duties during an incident.&#160;&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+4&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=6></a><img src="incidentHandlersHandbook-6_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-6_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-6_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-6_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-6_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<b>Jump Bag&#160;Recommendations:&#160;</b><br/>
+•&#160;&#160;Incident Handlers Journal to be used for documenting the who, what, where, why, and how&#160;<br/>
+during an incident.&#160;<br/>
+•&#160;&#160;Contact list of all CIRT members.&#160;<br/>
+•&#160;&#160;USB&#160;Drives.&#160;<br/>
+•&#160;&#160;A&#160;bootable USB drive or Live CD with up-to-date anti-malware and other software tools that&#160;<br/>
+can read and/or write to file systems of the computing environment that the incident response&#160;<br/>
+is to be performed in.&#160;One example is that of&#160;the Bart’s PE disk for Windows XP (or later)&#160;<br/>
+environments.&#160;<br/>
+•&#160;&#160;A laptop with forensic software (e.g.&#160;FTK or EnCase), anti-malware utilities, and internet&#160;<br/>
+access (if necessary for researching solutions or downloading tools).&#160;<br/>
+•&#160;&#160;Computer and network tool kits to add/remove components, wire network cables, etc.&#160;<br/>
+•&#160;&#160;Hard duplicators with write-block capabilities to create forensically sound copies of hard&#160;<br/>
+drive images.&#160;<br/>
+•&#160;&#160;A bag that properly store all of the aforementioned tools in an organized and protective&#160;<br/>
+fashion.&#160;<br/>
+<b>&#160;</b><br/>
+<b>3.&#160;Identification&#160;</b><br/>
+This&#160;phase&#160;deals with the&#160;detection and determination of whether a deviation from normal&#160;<br/>
+operations within an organization is an incident, and its scope assuming that the deviation is&#160;<br/>
+indeed an incident.&#160;This particular step requires one to gather events from various sources such&#160;<br/>
+as log files, error messages, and other resources, such intrusion detection systems and firewalls,&#160;<br/>
+that may produce evidence as to determine whether an event is an incident.&#160;If a particular event&#160;<br/>
+is determine to be an incident, and then it should be reported as soon as possible in order to allow&#160;<br/>
+the CIRT enough time to collect evidence and prepare for the preceding steps&#160;(Bejtlich, 2005).&#160;<br/>
+At this stage&#160;of&#160;an incident CIRT members&#160;should be notified and communication should be&#160;<br/>
+coordinated between members&#160;along with designated command center staff (e.g. management&#160;<br/>
+and/or systems administrators).&#160;It is recommended that at least two incident handlers be available&#160;<br/>
+to handle an incident so that one can be the primary handler who can identify and assess the&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+5&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=7></a><img src="incidentHandlersHandbook-7_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-7_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-7_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-7_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-7_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+incident and the other to help gather evidence.&#160;Communication and coordination between&#160;<br/>
+members of the CIRT (and management) is critical, especially if the scope of the incident can&#160;<br/>
+have a significant impact on business operations. &#160;This is also the&#160;phase where incident&#160;<br/>
+responders should be documenting everything that they are doing, as stated&#160;earlier these&#160;<br/>
+documents should be able to answer the Who, What, Where, Why, and How questions in case&#160;<br/>
+the documentation is to be used to prosecute the perpetrator(s) in court&#160;(Newman, 2007). After&#160;<br/>
+determining the scope of the event&#160;and documenting the evidence, then the CIRT team can move&#160;<br/>
+forward with the next phase&#160;(Incident Response Process, 2008).&#160;<br/>
+A good example of the identification phase is a user&#160;contacting the help desk and reporting that&#160;<br/>
+their system is acting strangely or intrusion detection systems report unusual network traffic&#160;<br/>
+from certain hosts.&#160;It could come from something ominous as usual activity in system logs that&#160;<br/>
+have never appeared before a specific date.&#160;It is extremely&#160;beneficial&#160;to keep a&#160;truly&#160;open mind&#160;<br/>
+the number of possibilities that an incident could be identified. Two other examples worth&#160;<br/>
+mentioning are a missing USB drive or other storage media, and a user finding a USB drive&#160;<br/>
+somewhere that has public access and plugs into their computer kicking off an auto-run script&#160;<br/>
+that steals data or infects systems.&#160;&#160;<br/>
+&#160;<br/>
+<b>4.&#160;Containment&#160;</b><br/>
+The primary purpose of this phase is to limit the damage and prevent any further damage&#160;<br/>
+from happening&#160;(&#34;Uf&#160;it security,&#34; 2011).&#160;There are several steps to this phase; however, each one&#160;<br/>
+is necessary in order&#160;to&#160;completely&#160;mitigate&#160;the incident and prevent the destruction of any&#160;<br/>
+evidence that may be needed later for prosecution.&#160;&#160;<br/>
+The first step is Short-term Containment; basically the focus of this step is to limit the damage as&#160;<br/>
+soon as possible.&#160;Short-term containment can be as&#160;straightforward&#160;as isolating a network&#160;<br/>
+segment of infected workstations to taking down production servers that were hacked and having&#160;<br/>
+all traffic routed to failover servers.&#160;Short-term containment is not intended to be a long term&#160;<br/>
+solution to the problem; it is only intended to limit the incident before it gets worse&#160;(Bejtlich,&#160;<br/>
+2005).&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+6&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=8></a><img src="incidentHandlersHandbook-8_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-8_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-8_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-8_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-8_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+The second step is System Back-Up; it is&#160;necessary&#160;before wiping and reimaging any system to&#160;<br/>
+take a forensic image of the affected system(s) with tools that are well known in the computer&#160;<br/>
+forensics community such as Forensic Tool Kit (FTK),&#160;EnCase, et al.&#160;The reason behind this is&#160;<br/>
+that the forensic software&#160;will capture the affected system(s) as they were during the incident and&#160;<br/>
+thereby preserving evidence in the event that the incident resulted from a criminal act or to be&#160;<br/>
+used for observing how the system(s) were compromised during the lessons learned phase&#160;<br/>
+(Newman, 2007).&#160;<br/>
+The last step before the next phase is Long-term containment, which is&#160;essentially&#160;the step where&#160;<br/>
+the affected systems can be temporarily fix in order to allow them to continue to be used in&#160;<br/>
+production, if necessary, while rebuilding clean&#160;systems in the next phase.&#160;Basically the primary&#160;<br/>
+focus would&#160;remove&#160;accounts and/or backdoors left by attackers on affected systems, installing&#160;<br/>
+security patches on both affected and neighboring systems, and doing other work to limit any&#160;<br/>
+further escalation&#160;of the incident while allowing normal business operations to continue&#160;<br/>
+(Bejtlich, 2005).&#160;&#160;<br/>
+A good example of containment is disconnecting affected systems by either disconnect the&#160;<br/>
+affected system’s network cable or powering down switches and/or routers to entire portions of&#160;<br/>
+the network to isolate compromised systems from those that have not been compromised.&#160;This in&#160;<br/>
+turn will isolate&#160;the problem&#160;from the rest of the production network&#160;and limit the spread of any&#160;<br/>
+malware or reduce the risk of further systems&#160;being compromised.&#160;<br/>
+&#160;<br/>
+<b>5.&#160;Eradication&#160;</b><br/>
+This phase deals with the actual removal and restoration of&#160;affected&#160;systems.&#160;As with each of&#160;<br/>
+the prior phases of incident response, continued documentation of all actions taken will be&#160;<br/>
+necessary to determine the cost of man hours and other resources as a means of determining the&#160;<br/>
+overall impact to the organization.&#160;It is also necessary to ensure that proper steps were taken to&#160;<br/>
+remove malicious and other illicit content off of the affected systems, and ensuring that they are&#160;<br/>
+thoroughly&#160;clean&#160;(Incident Response Process, 2008).&#160;In general that would mean a complete&#160;<br/>
+reimaging of a system’s hard drive(s) to ensure that any malicious content was removed and&#160;<br/>
+prevent reinfection. This phase is also the point where defenses should be improved after&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+7&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=9></a><img src="incidentHandlersHandbook-9_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-9_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-9_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-9_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-9_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+learning what caused the incident and ensure that the system cannot be compromised again (e.g.&#160;<br/>
+installing patches to fix vulnerabilities that were exploited by the attacker, etc).&#160;<br/>
+A good example of&#160;actions performed during the eradication phase would be&#160;using the original&#160;<br/>
+disk images that were created prior to a system being deployed into production&#160;to restore the&#160;<br/>
+system and then installing patches and disabling unused services to harden the system against&#160;<br/>
+further attacks&#160;(e.g.&#160;disk&#160;images created with Clonezilla or Symantec Ghost).&#160;One would also&#160;<br/>
+scan affected systems and/or files with anti-malware&#160;software to ensure any malware that is&#160;<br/>
+latent is removed&#160;(i.e.&#160;using an anti-virus program like Kaspersky combined with CCleaner to&#160;<br/>
+disinfect systems and scan the Windows registry for keys that may initiate any latent malware).&#160;<br/>
+&#160;<br/>
+<b>6.&#160;Recovery&#160;</b><br/>
+The purpose of this phase is to bring affected systems back into the production environment&#160;<br/>
+carefully, as to insure that it will not lead another incident. It is&#160;essential&#160;to test, monitor, and&#160;<br/>
+validate the systems that are being put back into production to verify that they are not being&#160;<br/>
+reinfected by malware or compromised by some other means. Some of the important decisions to&#160;<br/>
+make during this phase are:&#160;&#160;<br/>
+•&#160;&#160;Time and date to&#160;restore operations&#160;–&#160;it is vital to have the system operators/owners make&#160;<br/>
+the final decision based upon the advice of the CIRT.&#160;<br/>
+•&#160;&#160;How to test and verify that the compromised systems are clean and fully functional.&#160;<br/>
+•&#160;&#160;The duration of monitoring to observe for abnormal behaviors.&#160;<br/>
+•&#160;&#160;The tools to test, monitor, and validate system behavior.&#160;<br/>
+There are many more&#160;beneficial&#160;decisions that could be listed; however, the above information&#160;<br/>
+should provide a few ideas as what is entailed.&#160;The primary goal overall, as stated earlier, is to&#160;<br/>
+prevent another incident from happening that was due to the same problems that cause the one&#160;<br/>
+that was just resolved&#160;(Responding to it security incidents, 2011).&#160;<br/>
+&#160;<br/>
+&#160;<br/>
+&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+8&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=10></a><img src="incidentHandlersHandbook-10_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-10_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-10_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-10_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-10_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<b>7.&#160;Lessons&#160;Learned&#160;</b><br/>
+The most&#160;critical&#160;phase after all of the others is Lessons Learned. The purpose of this phase is&#160;<br/>
+to complete any documentation that was not done during the incident, as well as any additional&#160;<br/>
+documentation that may be beneficial in future incidents.&#160;&#160;The&#160;document should also be written&#160;<br/>
+in a form of a report to provide a play-by-play review of the entire incident; this report should be&#160;<br/>
+able to answer the: Who, What, Where, Why, and How questions that may come up during the&#160;<br/>
+lessons learned meeting.&#160;The overall goal is to learn from the incidents that&#160;occurred&#160;within an&#160;<br/>
+organization to improve the team’s performance and provide reference materials in the event of a&#160;<br/>
+similar incident.&#160;The documentation can also be used as training materials for new team&#160;<br/>
+members or as a benchmark to be used in comparison in future&#160;crises&#160;(Bejtlich, 2005).&#160;&#160;<br/>
+The lessons learned&#160;meeting&#160;should be performed as soon as&#160;possible;&#160;a good rule of thumb is&#160;<br/>
+within 2 weeks after the incident.&#160;The meeting should go through the incident response report&#160;<br/>
+with finalization in an executive summary&#160;format. It should be kept short, as&#160;to not lose&#160;the&#160;<br/>
+audience’s attention and remain professional.&#160;<br/>
+A good example of performing lessons learned is to have a power point that summarizes the&#160;<br/>
+following information:&#160;&#160;<br/>
+•&#160;&#160;When was the problem was first detected and&#160;by whom.&#160;<br/>
+•&#160;&#160;The scope of the incident.&#160;&#160;<br/>
+•&#160;&#160;How it was contained and eradicated,&#160;<br/>
+•&#160;&#160;Worked performed during recovery.&#160;<br/>
+•&#160;&#160;Areas where the CIRT teams&#160;were&#160;effective.&#160;<br/>
+•&#160;&#160;Areas that need improvement.&#160;<br/>
+It should also include time for suggestions and discussion between members of how to improve&#160;<br/>
+the overall team. This phase is extremely&#160;beneficial&#160;to have members share ideas and&#160;<br/>
+information in order to improve team effectiveness in future incidents.&#160;<br/>
+&#160;<br/>
+&#160;<br/>
+&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+9&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=11></a><img src="incidentHandlersHandbook-11_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-11_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-11_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-11_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-11_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<b>8.&#160;Incident&#160;Handlers&#160;Checklist&#160;</b><br/>
+1.&#160;&#160;Preparation&#160;<br/>
+a.&#160;&#160;Are all members aware of the security&#160;policies of the organization?&#160;<br/>
+b.&#160;&#160;Do all members of the Computer Incident Response Team know whom to contact?&#160;<br/>
+c.&#160;&#160;&#160;Do all incident responders have access to journals and access to incident response&#160;<br/>
+toolkits to perform the actual incident response process?&#160;<br/>
+d.&#160;&#160;Have all&#160;members participated in incident response drills to practice the incident&#160;<br/>
+response process and to improve overall proficiency on a regularly established basis?&#160;<br/>
+2.&#160;&#160;Identification&#160;<br/>
+a.&#160;&#160;Where did the incident occur?&#160;<br/>
+b.&#160;&#160;Who reported or discovered the incident?&#160;<br/>
+c.&#160;&#160;How was&#160;it discovered?&#160;<br/>
+d.&#160;&#160;Are there any other areas that have been compromised by the incident?&#160;If so what are&#160;<br/>
+they and when were they discovered?&#160;<br/>
+e.&#160;&#160;What is the scope of the impact?&#160;<br/>
+f.&#160;&#160;What is the business impact?&#160;<br/>
+g.&#160;&#160;Have&#160;the source(s) of the incident been located?&#160;If so, where, when, and what are&#160;<br/>
+they?&#160;<br/>
+3.&#160;&#160;Containment&#160;<br/>
+a.&#160;&#160;Short-term containment&#160;<br/>
+i.&#160;&#160;Can the problem be isolated?&#160;<br/>
+1.&#160;&#160;If so, then proceed to isolate the affected systems.&#160;<br/>
+2.&#160;&#160;If not, then work with system owners and/or managers to determine&#160;<br/>
+further action necessary to contain the problem.&#160;<br/>
+ii.&#160;&#160;Are all affected systems isolated from non-affected systems?&#160;<br/>
+1.&#160;&#160;If so, then continue to the next step.&#160;<br/>
+2.&#160;&#160;If not, then continue to isolate affected systems until short-term&#160;<br/>
+containment has been accomplished to prevent the incident from&#160;<br/>
+escalating any further.&#160;<br/>
+b.&#160;&#160;System-backup&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+10&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=12></a><img src="incidentHandlersHandbook-12_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-12_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-12_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-12_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-12_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+i.&#160;&#160;Have forensic copies of affected systems been created for further analysis?&#160;<br/>
+ii.&#160;&#160;Have all commands and other documentation since the incident has occurred&#160;<br/>
+been kept up to date so far?&#160;<br/>
+1.&#160;&#160;If not, document all actions taken as soon as possible to&#160;ensure all&#160;<br/>
+evidence are retained for either prosecution and/or lessons learned.&#160;<br/>
+2.&#160;&#160;Are the forensic copies stored in a secure location?&#160;<br/>
+a.&#160;&#160;If so, then continue onto the next step.&#160;<br/>
+b.&#160;&#160;If not, then place the forensic images into a secure location to&#160;<br/>
+prevent&#160;accidental damage and/or tampering.&#160;<br/>
+c.&#160;&#160;Long-term containment&#160;<br/>
+i.&#160;&#160;If the system can be taken offline, then proceed to the Eradication phase.&#160;<br/>
+ii.&#160;&#160;If the system must remain in production proceed with long-term containment&#160;<br/>
+by removing all malware and other artifacts from&#160;affected systems, and harden&#160;<br/>
+the affected systems from further attacks until an ideal circumstance will&#160;<br/>
+allow the affected systems to be reimaged.&#160;<br/>
+4.&#160;&#160;Eradication&#160;<br/>
+a.&#160;&#160;If possible can the system be reimaged and then hardened with patches and/or other&#160;<br/>
+countermeasures to prevent or reduce the risk of attacks?&#160;<br/>
+i.&#160;&#160;If not, then please state why?&#160;<br/>
+b.&#160;&#160;Have all malware and other artifacts left behind by the attackers been removed and&#160;<br/>
+the affected systems hardened against further attacks?&#160;<br/>
+i.&#160;&#160;If not, then please explain why?&#160;<br/>
+5.&#160;&#160;Recovery&#160;<br/>
+a.&#160;&#160;Has the affected system(s) been patched and hardened against the recent attack, as&#160;<br/>
+well as possible future ones?&#160;<br/>
+b.&#160;&#160;What day and time would be feasible to restore the affected systems back into&#160;<br/>
+production?&#160;<br/>
+c.&#160;&#160;What tools are you going to use to test, monitor, and&#160;verify that the systems being&#160;<br/>
+restored to productions are not compromised by the same methods that cause the&#160;<br/>
+original incident?&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+11&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=13></a><img src="incidentHandlersHandbook-13_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-13_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-13_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-13_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-13_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+d.&#160;&#160;How long are you planning to monitor the restored systems and what are you going to&#160;<br/>
+look for?&#160;<br/>
+e.&#160;&#160;Are there any prior benchmarks that can be used as a baseline to compare monitoring&#160;<br/>
+results of the restored systems against those of the baseline?&#160;<br/>
+6.&#160;&#160;Lessons Learned&#160;<br/>
+a.&#160;&#160;Has all necessary documentation from the incident been written?&#160;<br/>
+i.&#160;&#160;If so, then generate the incident response report for the lessons learned&#160;<br/>
+meeting.&#160;<br/>
+ii.&#160;&#160;If not, then have documentation&#160;written as soon as possible before anything is&#160;<br/>
+forgotten and left out of the report.&#160;<br/>
+b.&#160;&#160;Assuming the incident response report has been completed, does it document and&#160;<br/>
+answer the following questions of each&#160;phase of the incident response process: (Who?&#160;<br/>
+What?&#160;Where?&#160;Why?&#160;And How?)?&#160;<br/>
+c.&#160;&#160;Can a lessons learned meeting be scheduled within two weeks after the incident has&#160;<br/>
+been resolved?&#160;<br/>
+i.&#160;&#160;If not, then please explain why and when is the next convenient time to hold&#160;<br/>
+it?&#160;<br/>
+d.&#160;&#160;Lessons Learned Meeting&#160;<br/>
+i.&#160;&#160;Review the incident response process of the incident that had occurred with all&#160;<br/>
+CIRT members.&#160;<br/>
+ii.&#160;&#160;Did the meeting discuss any mistake or areas where the response process&#160;<br/>
+could have been handled better?&#160;<br/>
+1.&#160;&#160;If no such conversations occurred, then please explain why?&#160;&#160;<br/>
+&#160;<br/>
+<b>9.&#160;Windows&#160;Template&#160;</b><br/>
+This template is intended to provide some useful commands and areas to look for anomalous&#160;<br/>
+behavior within the Windows environment.&#160;Please be aware that these commands are the same&#160;<br/>
+as those found on the SANS Intrusion Discovery Cheat Sheet; however this template will take it&#160;<br/>
+a step beyond it by providing additional information as to the commands usefulness.&#160;<br/>
+a.&#160;&#160;To look for unusual processes and services use the following commands:&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+12&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=14></a><img src="incidentHandlersHandbook-14_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-14_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-14_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-14_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-14_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+i.&#160;&#160;taskmgr.exe&#160;–&#160;it displays running processes and services.&#160;<br/>
+ii.&#160;&#160;In command prompt use these three commands:&#160;<br/>
+1.&#160;&#160;tasklist&#160;–&#160;it displays a list of running services along with their&#160;<br/>
+corresponding PID (process ID), session name, session number, and&#160;<br/>
+memory usage.&#160;Getting a&#160;PID can be useful for using the taskkill&#160;<br/>
+command to end the questionable process.&#160;<br/>
+2.&#160;&#160;wmic&#160;process list full&#160;–&#160;is a windows management interface control&#160;<br/>
+that will display all processes, along with detailed information such as&#160;<br/>
+their executable path and much more.&#160;<br/>
+3.&#160;&#160;&#160;tasklist&#160;/svc&#160;–&#160;will display a list of all processes along with their&#160;<br/>
+corresponding PID, and&#160;services&#160;that are tied to them.&#160;<br/>
+b.&#160;&#160;To look for unusual files and registry keys&#160;use the Windows search feature and look&#160;<br/>
+for files larger than 10MB, and use&#160;regedit&#160;to&#160;look for unusual entries in the following&#160;<br/>
+areas:&#160;<br/>
+HKLM\Software\Microsoft\Windows\CurrentVersion\Run&#160;<br/>
+HKLM\Software\Microsoft\Windows\CurrentVersion\Runonce&#160;<br/>
+HKLM\Software\Microsoft\Windows\CurrentVersion\RunonceEx&#160;<br/>
+Generally those three registry entries will contain startup configurations for specific&#160;<br/>
+programs, including malware.&#160;<br/>
+c.&#160;&#160;To look for unusual network usage the following Windows commands in the&#160;<br/>
+command line interface (cmd) provides an excellent view of network activity on a&#160;<br/>
+particular&#160;system:&#160;<br/>
+i.&#160;&#160;net&#160;view&#160;\\127.0.0.1&#160;(or localhost)&#160;–&#160;displays shared folders that are on the&#160;<br/>
+system.&#160;If there are shared folders that are not supposed to be there that can be&#160;<br/>
+a&#160;significant&#160;red flag.&#160;<br/>
+ii.&#160;&#160;net&#160;session&#160;–&#160;displays open sessions with other&#160;systems on the network. This&#160;<br/>
+is useful for detecting communications with other&#160;systems on the network and&#160;<br/>
+determines whether the connections are legitimate. A good example: is&#160;a&#160;https&#160;<br/>
+connection to a rogue server on the internet and heavy bandwidth usage from&#160;<br/>
+the compromised computer in question with that rogue server.&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+13&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=15></a><img src="incidentHandlersHandbook-15_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-15_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-15_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-15_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-15_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+iii.&#160;&#160;nbstat&#160;–S will display NetBIOS activity over TCP/IP on the various network&#160;<br/>
+interfaces that a machine in question may have.&#160;<br/>
+iv.&#160;&#160;netstat and its various flags (e.g.&#160;netstat&#160;–na, netstat&#160;–nao,&#160;etc) provides a&#160;<br/>
+tremendous amount of information between listening and established TCP/IP&#160;<br/>
+connections, along with their ports and whether the protocol used is TCP or&#160;<br/>
+UDP.&#160;This is useful for determining unusual traffic patterns on the computer&#160;<br/>
+in question.&#160;<br/>
+d.&#160;&#160;To look for unusual start up (or scheduled) tasks, use the following commands:&#160;<br/>
+i.&#160;&#160;msconfig&#160;–displays all startup configurations from services to files in the&#160;<br/>
+startup folder, etc. This is also useful for disabling anything trying startup&#160;<br/>
+during Windows login or boot-up, and to troubleshoot problems that are&#160;<br/>
+caused by nefarious or poorly written programs.&#160;<br/>
+ii.&#160;&#160;schtasks&#160;–&#160;displays tasks schedule to run at specific times.&#160;This is useful for&#160;<br/>
+not only troubleshooting problems, but also looking for would be logic&#160;<br/>
+bombs.&#160;<br/>
+iii.&#160;&#160;wmic&#160;startup list full&#160;–&#160;displays all of the services and programs that startup&#160;<br/>
+when Windows boots and/or upon Windows login.&#160;<br/>
+e.&#160;&#160;To look for unusual accounts&#160;use the following three commands:&#160;<br/>
+i.&#160;&#160;lusrmgr.msc&#160;–&#160;this command is only useful for looking for local accounts on&#160;a&#160;<br/>
+machine. Two account types&#160;to specifically look&#160;for are Administrator&#160;<br/>
+accounts that are not supposed to be on the machine and active Guest&#160;<br/>
+accounts, as those can lead to serious security compromises.&#160;<br/>
+ii.&#160;&#160;net&#160;user (in command prompt)&#160;–&#160;displays all user accounts on a local machine.&#160;<br/>
+iii.&#160;&#160;net&#160;localgroup administrators&#160;–&#160;display all local administrator user accounts.&#160;<br/>
+This is useful for finding administrator accounts that do not belong on&#160;a&#160;<br/>
+particular machine.&#160;<br/>
+f.&#160;&#160;The final and most&#160;crucial&#160;area to look for unusual behavior is within event viewer. It&#160;<br/>
+displays all of the event log content that Windows actively records. The command for&#160;<br/>
+it to type in the run command box is eventvwr.msc.&#160;<br/>
+i.&#160;&#160;Look for&#160;warnings, errors, and other&#160;events (e.g.&#160;system&#160;reboots during usual&#160;<br/>
+times, etc).&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+14&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=16></a><img src="incidentHandlersHandbook-16_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-16_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-16_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-16_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-16_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+ii.&#160;&#160;If the log files are missing, it is a&#160;reliable&#160;indicator that the machine has been&#160;<br/>
+or is compromised and the intruder is trying to hide his\her tracks.&#160;<br/>
+Please consult the&#160;“SANS Institute Intrusion Discovery Cheat Sheet for Windows” for more&#160;<br/>
+details and updated information at:&#160;http://www.sans.org/score/checklists/ID_Windows.pdf&#160;<br/>
+&#160;<br/>
+<b>10.&#160;&#160;UNIX&#160;</b><br/>
+This template&#160;is based off of a similar cheat sheet from the SANS Institute as the one for&#160;<br/>
+Windows; however, it is for UNIX based systems.&#160;Please be aware that the power behind UNIX&#160;<br/>
+systems is in the command line interface (or shell) and therefore it is&#160;necessary&#160;to be&#160;proficient in&#160;<br/>
+being able to use it for not only troubleshooting, but also determining whether a&#160;system&#160;was&#160;<br/>
+compromised.&#160;Please note that some of these commands may require root (or equivalent)&#160;<br/>
+privileges in order to use them (I would personally recommend using the&#160;sudo&#160;command, if&#160;<br/>
+available to perform root required tasks).&#160;<br/>
+a.&#160;&#160;To look for unusual processes and services use the following commands:&#160;<br/>
+i.&#160;&#160;ps&#160;-aux&#160;–&#160;displays running processes along with their&#160;process-id (PID),&#160;<br/>
+associated user-ids (UID #), name, and other&#160;pertinent information.&#160;Pay&#160;<br/>
+particular attention to any process that is using the UID 0 user-id, because&#160;<br/>
+those processes are running with root permissions.&#160;<br/>
+ii.&#160;&#160;ps&#160;–ef&#160;–&#160;displays the full listing of all processes and can be useful for finding&#160;<br/>
+undesirable processes that are running.&#160;<br/>
+iii.&#160;&#160;lsof&#160;–p (PID)&#160;–&#160;displays a specific process in more detail, by displaying the&#160;<br/>
+files and ports associated with that process.&#160;This is&#160;appropriate&#160;for examining&#160;<br/>
+any Trojan, worms, and other network based malware on a UNIX system.&#160;<br/>
+iv.&#160;&#160;lsof&#160;+L1&#160;–&#160;displays processes running from or accessing files that have been&#160;<br/>
+unlinked; basically it will show one to figure out if the attacker is hiding data&#160;<br/>
+or running&#160;a&#160;backdoor.&#160;<br/>
+b.&#160;&#160;To look for unusual files the “find” command along with its various flags allows one&#160;<br/>
+to search a UNIX system for malware. A few examples are listed below:&#160;<br/>
+i.&#160;&#160;find&#160;/&#160;-uid&#160;0&#160;-perm&#160;-4000&#160;–print&#160;–&#160;searches for files that have root permissions.&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+15&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=17></a><img src="incidentHandlersHandbook-17_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-17_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-17_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-17_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-17_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+ii.&#160;&#160;find&#160;/&#160;-size +50000k&#160;–print&#160;–&#160;searches for files of a specified or greater size.&#160;<br/>
+This is&#160;particularly&#160;useful for&#160;searching for files that may not belong on the&#160;<br/>
+system, like movies, games, et al.&#160;<br/>
+c.&#160;&#160;To look for unusual network usage coming from a system’s network interface type&#160;<br/>
+in the following command: ip link | grep PROMISC&#160;–&#160;this command will display&#160;<br/>
+any network interfaces that are running in promiscuous mode, which can be a&#160;clear&#160;<br/>
+indication of an attacker running a packet sniffer.&#160;<br/>
+d.&#160;&#160;Other useful commands to observe unusual network behavior&#160;are:&#160;<br/>
+i.&#160;&#160;netstat&#160;–nap&#160;–&#160;this displays listening ports and in turn can be useful for finding&#160;<br/>
+backdoors.&#160;<br/>
+ii.&#160;&#160;arp&#160;–a&#160;–&#160;displays all MAC to IP address mappings of the system and can be&#160;<br/>
+useful for finding addresses of systems that are not part of the network (e.g.&#160;a&#160;<br/>
+rouge wireless&#160;access point that allows one to gain access into the internal&#160;<br/>
+network from the outside).&#160;<br/>
+e.&#160;&#160;To look for scheduled jobs (i.e.&#160;tasks) by root or any other user, type in the following&#160;<br/>
+command:&#160;contrab&#160;–u root&#160;–l&#160;–&#160;this is useful for detecting logic bombs, scheduled&#160;<br/>
+connections to unknown hosts, and other potentially nefarious issues.&#160;<br/>
+i.&#160;&#160;Two additional commands to display system-wide&#160;cron&#160;jobs are:&#160;<br/>
+1.&#160;&#160;cat /etc/crontab&#160;–&#160;displays all jobs scheduled within the&#160;cron&#160;table.&#160;<br/>
+2.&#160;&#160;ls etc/cron.*&#160;-&#160;lists files within the cron subdirectories.&#160;<br/>
+f.&#160;&#160;To look for unusual accounts use the following commands to check the following&#160;<br/>
+files:&#160;<br/>
+i.&#160;&#160;sort&#160;–nk3&#160;–t: /etc/paswd | less&#160;–&#160;displays all accounts sorted by UID (e.g.&#160;<br/>
+UID0, etc), this is useful for finding accounts with root permissions or&#160;<br/>
+accounts that do not belong on the system.&#160;<br/>
+ii.&#160;&#160;egrep&#160;‘:0:’ /etc/passwd&#160;–&#160;displays only accounts with root permissions.&#160;<br/>
+iii.&#160;&#160;getent&#160;passwd&#160;| grep ‘:0:’&#160;–&#160;same as above, except for systems with multiple&#160;<br/>
+authentication mechanisms.&#160;<br/>
+iv.&#160;&#160;find&#160;/&#160;-nouser&#160;–print&#160;–&#160;searches the entire system for orphaned files that may&#160;<br/>
+have been deleted by an attacker’s temporary account.&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+16&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=18></a><img src="incidentHandlersHandbook-18_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-18_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-18_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-18_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-18_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+g.&#160;&#160;The best place to check for unusual system activity is the log files, especially in&#160;<br/>
+UNIX. Most log files are located in /var/log (or var/logs), or var/messages.&#160;A good&#160;<br/>
+command to use for viewing log files is: more&#160;–f /var/log/messages&#160;–&#160;this allows a&#160;<br/>
+page by page review of all logged events.&#160;Pay particular attention to user&#160;<br/>
+authentication logins and any unusual patterns such as missing entries and times that&#160;<br/>
+may indicate an intruder is trying to hide his/her tracks.&#160;<br/>
+h.&#160;&#160;Other&#160;commands&#160;to check&#160;for possible clues are:&#160;<br/>
+i.&#160;&#160;uptime&#160;–&#160;displays how long a system has been up and running. If the system’s&#160;<br/>
+uptime is shorter or longer than it should be, then it could be a&#160;clear&#160;indication&#160;<br/>
+that something has changed and&#160;therefore&#160;may need further review.&#160;<br/>
+ii.&#160;&#160;free&#160;–&#160;is useful for checking how much ram is used.&#160;This is useful for&#160;<br/>
+detecting processes that are using a lot of memory (e.g.&#160;an attacker searching&#160;<br/>
+or modifying a database, etc).&#160;<br/>
+iii.&#160;&#160;df&#160;–&#160;is useful for checking available disk space. This can provide a&#160;reliable&#160;<br/>
+indication as to whether an attacker is installing malware or removing files&#160;<br/>
+from a system.&#160;<br/>
+Please consult the&#160;“SANS Institute Intrusion Discovery Cheat Sheet for&#160;Linux” for more details&#160;<br/>
+and updated information at:&#160;http://www.sans.org/score/checklists/ID_Linux.pdf&#160;<br/>
+&#160;<br/>
+<b>11.&#160;&#160;References&#160;</b><br/>
+<i>Incident response process best practice</i>.&#160;(2008, September 25). Retrieved from&#160;<br/>http://security.tennessee.edu/pdfs/IRPBP.pdf&#160;&#160;<br/>
+<i>Responding to it security incidents</i>. (2011). Retrieved from http://technet.microsoft.com/en-<br/>us/library/cc700825.aspx&#160;<br/>
+<i>Creating a computer security incident&#160;response team: a process for getting started</i>.&#160;(2006,&#160;<br/>February 27). Retrieved from http://www.cert.org/csirts/Creating-A-CSIRT.html&#160;<br/>
+Bejtlich, R. (2005).&#160;<i>The tao of network security monitoring: beyond intrusion detection</i>. Boston,&#160;<br/>MA: Pearson Education, Inc.&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+17&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+<a name=19></a><img src="incidentHandlersHandbook-19_1.jpg"/><br/>
+<img src="incidentHandlersHandbook-19_2.jpg"/><br/>
+<img src="incidentHandlersHandbook-19_3.jpg"/><br/>
+<img src="incidentHandlersHandbook-19_4.jpg"/><br/>
+<img src="incidentHandlersHandbook-19_5.jpg"/><br/>
+The&#160; Incident&#160; Handlers&#160; Handbook&#160; <br/>
+<i>Incident handling step-by-step and computer crime investigation</i>. (2011). Retrieved from&#160;<br/>http://www.sans.org/security-training/incident-handling-step-by-step-computer-crime-<br/>investigation-day-1-799-cid&#160;<br/>
+<i>Uf&#160;it security incident response procedures, standards,&#160;and guidelines.</i>&#160;(2011, July 13).&#160;<br/>Retrieved from http://www.it.ufl.edu/policies/security/uf-it-sec-incident-response.html&#160;<br/>
+Newman, R. (2007).&#160;<i>Computer forensics: evidence collection and management</i>.&#160;Boca&#160;Raton, FL:&#160;<br/>Taylor &amp; Francis Group, LLC.&#160;<br/>
+&#160;<br/>
+Patrick&#160; Kral&#160; <br/>
+&#160; <br/>
+18&#160; <br/>
+@ 2021 SANS Institute<br/>
+Author Retains Full Rights<br/>
+<hr/>
+</body>
+</html>
