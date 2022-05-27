@@ -1,7 +1,25 @@
 stripHTML Change Tracker:
 -------------------------
-Current Version: 1.1.2
-Released: 2022.05.25
+Release: 1.1.3
+Date: 2022.05.27
+
+Changes:
+    2022.05.27:
+        - created stripHTML.TESTS.py for regression testing when changes are added with baseline file containing urls used to build previous releases. (urlFeed.TESTS.txt)
+        - fixed logic bug in stripHTMLDispatcher.py by adding else after except
+        - refactored downloadUrl and dispatchStripHTML to use check_call and check_output
+        - added filtering of files with ".pdf" to stripHTMLDispatcher
+    2022.05.26:
+        - changed writing to latestNews.txt in todaysHackerNews.py to appending to persist file
+        - moved sanity check on length of cmdline args to front of conditional statement in main
+        - refactored parsePDFToHTMLFile and parseHTMLFile to use re.search to include tags that have attributes (body[\s]* and p[\s]*)
+    2022.05.25:
+        - updated usage string to include version
+        - added '/*' to stripTagL and stripPDFToHTMLTagL regex to fix bug
+
+-------------------------
+Release: 1.1.2
+Date: 2022.05.25
 
 Changes:
     2022.05.25:
@@ -13,8 +31,8 @@ Additional notes:
     parsePDFToHTMLFile has only been tested on html files generated using the unix utility pdftohtml as of this release.
 
 -------------------------
-Current Version: 1.1
-Released: 2022.05.25
+Release: 1.1
+Date: 2022.05.25
 
 Changes:
     2022.05.24:

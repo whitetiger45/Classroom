@@ -7,18 +7,21 @@
 # note:
 #   this is a stable, dirty version of what is a work in progress; 
 #   as more files are consumed, it will be improved.
-# changes to be pushed:
 import argparse, copy, html
 import os, re, string, sys, traceback
 from collections import deque
 from pathlib import Path
 
+version = "1.1.3"
 USAGE = -1
 SUCCESS = 0
 NOT_SERIOUS = 3
 FATAL = 6
 
-usage = f"""Usage: {sys.argv[0]} [-f | --htmlfrompdf] <file>.html"""
+usage = f"""stripHTML v{version}
+
+Usage: {sys.argv[0]} [-f | --htmlfrompdf] <file>.html
+"""
 
 tag_t = {
 0:"title",
@@ -65,8 +68,8 @@ normalize = lambda line: line.encode("ascii","ignore").decode("ascii","ignore")
 addNewline = lambda line: line.replace("><",">\n<")
 findTagsInline = lambda line: re.finditer("><",line)
 findTags = lambda line: re.finditer("<([\S]+).*?>(.*?)</.*?>|<([0-9a-zA-Z]+).*?>(.*?)",line)
-stripTagL = lambda line: re.match("<([0-9a-zA-Z]+).*?>(.+)",line)
-stripPDFToHTMLTagL = lambda line: re.match("<[0-9a-zA-Z]+.*?>(.+)",line)
+stripTagL = lambda line: re.match("</*([0-9a-zA-Z]+).*?>(.+)",line)
+stripPDFToHTMLTagL = lambda line: re.match("</*[0-9a-zA-Z]+.*?>(.+)",line)
 # list(map((lambda l: [m.groups() for m in findTags(l)]),lines)) # helper for debugging
 singleOpeningTag = lambda line: re.match("(<.*?>){0,1}([\s\S]+$){1,}",line)
 singleClosingTag = lambda line: re.match("([\s\S]+){1}(<.+>?){1}",line)
@@ -302,17 +305,22 @@ def parseHTMLFile(lines):
         stepTwo = stepOne.replace("<","\n<")
         stepThree = stepTwo.find("</head>\n")
         stepFour = stepTwo[stepThree+len("</head>\n"):]
-        stepFiveA = stepFour.find("<p>")
+        # stepFiveA = stepFour.find("<p>")
+        stepFiveA = re.search("<p[\s]*.*?>",stepFour)
         stepFiveB = -1
-        if stepFiveA != -1:
+        # if stepFiveA != -1:
+        if stepFiveA:
+            stepFiveA = stepFiveA.span()[0]
             stepFiveB = stepFour[-1:0:-1].find(">p/<")
             stepFiveB = len(stepFour)-(stepFiveB+len(">p/<"))
             stepSix = stepFour[stepFiveA:stepFiveB].split("\n")
             for line in stepSix:
+                # cout("debug",f"line: {line}")
                 m = stripTagL(line)
                 if m and m[1] not in skip_tag_t:
+                    # cout("debug",f"m: {m.groups()}")
                     documentText.append(m[2])
-            cout("debug",f"documentText: {documentText}")
+            # cout("debug",f"documentText: {documentText}")
         else:
             cout("error","Did not find the initial '<p>' tag. Time for an upgrade!")            
     except:
@@ -328,15 +336,18 @@ def parsePDFToHTMLFile(lines):
         stepTwo = stepOne.replace("<","\n<")
         stepThree = stepTwo.find("</head>\n")
         stepFour = stepTwo[stepThree+len("</head>\n"):]
-        stepFiveA = stepFour.find("<body>")
+        # stepFiveA = stepFour.find("<body>")
+        stepFiveA = re.search("<body[\s]*.*?>",stepFour)
         stepFiveB = stepFour.find("</body>");
-        if stepFiveA != -1 and stepFiveB != -1:
+        # if stepFiveA != -1 and stepFiveB != -1:
+        if stepFiveA and stepFiveB != -1:
+            stepFiveA = stepFiveA.span()[0]
             stepSix = stepFour[stepFiveA:stepFiveB].split("\n")
             for line in stepSix:
                 m = stripPDFToHTMLTagL(line)
                 if m:
                     documentText.append(m[1])
-            cout("debug",f"documentText: {documentText}")
+            # cout("debug",f"documentText: {documentText}")
         else:
             cout("error","Did not find the initial '<body>' tag. Time for an upgrade!")            
     except:
@@ -367,7 +378,7 @@ def saveParsedFile(state):
 
 def main(argv):
     global STATUS
-    if sys.argv[1] not in ["-f","--htmlfrompdf"] or len(sys.argv) != 3:
+    if len(sys.argv) != 3 or sys.argv[1] not in ["-f","--htmlfrompdf"]:
         STATUS = USAGE
         cout("info",f"{usage}")
         return
@@ -385,6 +396,7 @@ def main(argv):
             state = parsePDFToHTMLFile(lines)
         else:    
             state = parseHTMLFile(lines)
+            # cout("debug",f"{state}")
         state = list(map(html.unescape,state))
         state = list(map(normalize,state))
         state = deflate(state)
