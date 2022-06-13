@@ -1,0 +1,192 @@
+# File Permission Experiment
+# Author: Bryan Kanu
+# Date: 2022.06.13
+# Description: Experimenting with different Unix/Linux file permissions
+
+# 1. create a directory
+  student@work:~$ mkdir test_dir
+
+# 2. create a file in the new directory
+  student@work:~$ python -c 'print("hello world")' > test_dir/file.txt
+
+# 3. check what our default file permissions are for directory and new file 
+  student@work:~$ ls -oh test_dir/         
+  total 20K
+    drwxrwxrwx  2 student 4.0K Jun 13 14:46 .
+    drwxr-xr-x 68 student 4.0K Jun 13 14:41 ..
+    -rw-rw-rw-  1 student   12 Jun 13 14:45 file.txt
+
+# 4. modify the directory permissions, removing r/w/x for everyone
+  student@work:~$ chmod ugo-rwx test_dir
+
+# 5. checking to see if we can execute ls on the test_dir now
+  student@work:~$ ls -oh test_dir
+  ls: cannot open directory 'test_dir/': Permission denied
+
+# 6. checking to see if can we run ls on the file.txt we created with directory x permissions
+  student@work:~$ chmod ugo+x test_dir/
+
+  student@work:~$ ls -oh test_dir/file.txt
+  -rw-rw-rw- 1 student 12 Jun 13 14:45 test_dir/file.txt
+
+# 7. since we can x in the directory, can we x anything?
+  student@work:~$ cat test_dir/file.txt
+  hello world
+
+# 8. removing r/w permission from file.txt
+  student@work:~$ chmod ugo-rw test_dir/file.txt
+
+  student@work:~$ ls -oh test_dir/
+  total 12K
+    drwxrwxrwx  2 student 4.0K Jun 13 14:43 .
+    drwxr-xr-x 68 student 4.0K Jun 13 14:41 ..
+    ----------  1 student   12 Jun 13 14:45 file.txt   
+
+# 9. can we cp or mv a file with only w permissions?
+  student@work:~$ chmod ugo+w test_dir/file.txt
+
+  student@work:~$ ls -oh test_dir/file.txt         
+  --w--w--w- 1 student 12 Jun 13 14:45 test_dir/file.txt
+
+  student@work:~$ cp test_dir/file.txt test_dir/file2.txt
+  cp: cannot open 'test_dir/file.txt' for reading: Permission denied
+
+  student@work:~$ mv test_dir/file.txt test_dir/file2.txt
+  mv: cannot move 'test_dir/file.txt' to 'test_dir/file2.txt': Permission denied
+
+# 10. what can we do with r permissions for the directory?
+  student@work:~$ chmod ugo-rwx test_dir/
+
+  student@work:~$ chmod ugo+r test_dir/
+
+  student@work:~$ ls -oh test_dir/
+  ls: cannot access 'test_dir/.': Permission denied
+  ls: cannot access 'test_dir/..': Permission denied
+  ls: cannot access 'test_dir/file.txt': Permission denied
+  total 0
+    d????????? ? ? ?            ? .
+    d????????? ? ? ?            ? ..
+    -????????? ? ? ?            ? file.txt
+
+# 11. let's add x permissions on the directory
+  student@work:~$ chmod ugo+x test_dir/
+
+  student@work:~$ lo test_dir/
+  total 20K
+    dr-xr-xr-x  2 student 4.0K Jun 13 15:20 .
+    drwxr-xr-x 68 student 4.0K Jun 13 14:41 ..
+    --w--w--w-  1 student   12 Jun 13 14:46 file.txt
+
+# 12. now let's try to rm/mv/cp a file
+  student@work:~$ mv test_dir/file.txt test_dir/file1.txt
+  mv: cannot move 'test_dir/file.txt' to 'test_dir/file1.txt': Permission denied
+
+  student@work:~$ rm test_dir/file.txt
+  rm: cannot remove 'test_dir/file.txt': Permission denied
+
+  student@work:~$ cp test_dir/file.txt test_dir/file1.txt
+  cp: cannot create regular file 'test_dir/file1.txt': Permission denied
+
+# 13. add w and x permissions, and remove r permissions for directory
+  student@work:~$ chmod ugo-r test_dir
+  
+  student@work:~$ ls -oh test_dir
+  ls: cannot open directory 'test_dir': Permission denied
+
+  student@work:~$ ls -oh test_dir/file.txt
+  -rwxrwxrwx 1 student 12 Jun 13 14:46 test_dir/file.txt  
+
+# 14. add rwx on directory, and only w permissions on the file
+  student@work:~$ chmod ugo+rwx test_dir
+
+  student@work:~$ chmod ugo-rwx test_dir/file.txt
+
+  student@work:~$ chmod ugo+w test_dir/file.txt
+
+  student@work:~$ ls -oh test_dir
+  total 16K
+    drwxrwxrwx  2 student 4.0K Jun 13 17:18 .
+    drwxr-xr-x 68 student 4.0K Jun 13 14:41 ..
+    --w--w--w-  1 student   12 Jun 13 14:46 file.txt
+
+  student@work:~$ cp test_dir/file.txt test_dir/file1.txt
+  cp: cannot open 'test_dir/file.txt' for reading: Permission denied
+
+  student@work:~$ mv test_dir/file.txt test_dir/file1.txt
+
+  student@work:~$ ls -oh test_dir/
+  total 16K
+    drwxrwxrwx  2 student 4.0K Jun 13 17:19 .
+    drwxr-xr-x 68 student 4.0K Jun 13 14:41 ..
+    --w--w--w-  1 student   12 Jun 13 14:46 file1.txt
+
+# 15. create a bash script to experiment with
+  student@work:~$ python -c 'print("#!/bin/bash\necho 99\n")' > test_dir/test_script.sh
+
+  student@work:~$ cat test_dir/test_script.sh                                          
+  #!/bin/bash
+  echo 99
+
+# 16. try to append text to the script after removing rwx on directory
+  student@work:~$ chmod ugo-rwx test_dir
+
+  student@work:~$ python -c 'print("echo 128")' >> test_dir/test_script.sh
+  bash: test_dir/test_script.sh: Permission denied 
+
+# 17. now add x permissions to dir
+  student@work:~$ chmod ugo+x test_dir
+
+  student@work:~$ ls -oh test_dir/
+  ls: cannot open directory 'test_dir/': Permission denied
+
+  student@work:~$ ls -oh test_dir/file1.txt
+  --w--w--w- 1 student 12 Jun 13 14:45 test_dir/file1.txt
+
+  student@work:~$ ls -oh test_dir/test_script.sh
+  -rw-rw-r-- 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+# 18. add x permission to test_script.sh
+  student@work:~$ ls -oh test_dir/test_script.sh
+  -rw-rw-r-- 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+  student@work:~$ chmod ugo+x test_dir/test_script.sh
+
+  student@work:~$ ls -oh test_dir/test_script.sh
+  -rwxrwxr-x 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+# 19. execute the file in the directory we don't have r or w permissions to
+  student@work:~$ ./test_dir/test_script.sh
+  99
+
+  student@work:~$ ls -oh test_dir
+  ls: cannot open directory 'test_dir': Permission denied
+
+# 20. remove r permissions from script and execute
+  student@work:~$ chmod ugo-r test_dir/test_script.sh
+
+  student@work:~$ ls -oh test_dir/test_script.sh
+  --wx-wx--x 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+  student@work:~$ ./test_dir/test_script.sh
+  /bin/bash: ./test_dir/test_script.sh: Permission denied
+
+
+# 21. remove x and add r on script, then execute using /bin/sh
+  student@work:~$ chmod ugo-x test_dir/test_script.sh
+
+  student@work:~$ chmod ugo+r test_dir/test_script.sh  
+
+  student@work:~$ ls -oh test_dir/test_script.sh
+  -rw-rw-r-- 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+  student@work:~$ sh test_dir/test_script.sh
+  99
+
+# 22. remove write permissions and execute with /bin/sh
+  student@work:~$ chmod ugo-w test_dir/test_script.sh
+
+  student@work:~$ ls -oh test_dir/test_script.sh
+  -r--r--r-- 1 student 21 Jun 13 15:21 test_dir/test_script.sh
+
+  student@work:~$ sh test_dir/test_script.sh
+  99  
