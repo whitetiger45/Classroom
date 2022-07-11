@@ -1,0 +1,9 @@
+[*] ladies predictions (127 matches):
+[*]	79 correct predictions (62.20%)
+[*]	48 incorrect predictions (37.80%)
+[*] mens predictions (127 matches):
+[*]	90 correct predictions (70.87%)
+[*]	37 incorrect predictions (29.13%)
+[*] mens and ladies predictions (254 matches):
+[*]	169 correct predictions (66.54%)
+[*]	85 incorrect predictions (33.46%)
