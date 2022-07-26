@@ -24,7 +24,11 @@ options = {
     6:"start_proc() -> PROC",
     7:"load_dyn_lib(DYN_LIB_PATH) -> DYNELF",
     8:"list_dyn_functions()",
-    9:"help()"
+    9:"print_dynelf_got()",
+    10:"print_dynelf_plt()",
+    11:"print_got()",
+    12:"print_plt()",
+    18:"help()"
 }
 
 def help():
@@ -75,6 +79,36 @@ def load_dyn_lib(dyn_lib_path):
         start_proc()
     DYNELF = DynELF(leak,PROC.elf.sym["main"],elf=ELF(dyn_lib_path))
 
+def print_dynelf_got():
+    if not DYNELF:
+        print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+        return
+    print("\nDYNELF_GOT_SYMBOL_NAME (DYNELF_GOT_SYMBOL_ADDRESS)\n")
+    for df_name,df_addr in DYNELF.elf.got.items():
+        print(f"[*]\t{df_name} ({hex(df_addr)})")
+
+def print_dynelf_plt():
+    if not DYNELF:
+        print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+        return
+    print("\nDYNELF_PLT_SYMBOL_NAME (DYNELF_PLT_SYMBOL_ADDRESS)\n")
+    for df_name,df_addr in DYNELF.elf.plt.items():
+        print(f"[*]\t{df_name} ({hex(df_addr)})")
+
+def print_got():
+    if not PROC:
+        start_proc()
+    print("\nGOT_SYMBOL_NAME (GOT_SYMBOL_ADDRESS)\n")
+    for s_name, s_addr in PROC.elf.got.items():
+        print(f"[*]\t{s_name} ({hex(s_addr)})")
+
+def print_plt():
+    if not PROC:
+        start_proc()
+    print("\nPLT_SYMBOL_NAME (PLT_SYMBOL_ADDRESS)\n")
+    for s_name, s_addr in PROC.elf.plt.items():
+        print(f"[*]\t{s_name} ({hex(s_addr)})")
+
 def read_payload(f_name):
     fd = open(f_name, "r", errors="backslashreplace")
     payload = "".join( line for line in fd.readlines() )
@@ -90,3 +124,5 @@ def save_payload(payload):
 def start_proc():
     global PROC
     PROC = process(context.path)
+
+help()
