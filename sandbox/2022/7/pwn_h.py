@@ -28,6 +28,8 @@ options = {
     10:"print_dynelf_plt()",
     11:"print_got()",
     12:"print_plt()",
+    13:"list_dynelf_segments()",
+    14:"disassemble_dyn(WHAT,N_BYTES)",
     18:"help()"
 }
 
@@ -45,6 +47,18 @@ def disassemble(what,n_bytes):
     except:
         print(f"[x] {traceback.format_exc()}")
 
+def disassemble_dyn(what,n_bytes):
+    if not DYNELF:
+        print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+        return
+    try:
+        if isinstance(what,str):
+            print(f"{DYNELF.elf.disasm(DYNELF.elf.sym[what],n_bytes)}")
+        elif isinstance(what,int):
+            print(f"{DYNELF.elf.disasm(what,n_bytes)}")
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
 def leak(address):
     data = PROC.elf.read(address, 4)
     log.debug("%#x => %s", address, enhex(data or b''))
@@ -57,6 +71,21 @@ def list_dyn_functions():
             print(f"[*]\t{df_name} ({hex(df_info)})")
     else:
         print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+
+def list_dynelf_segments():
+    if not DYNELF:
+        print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+        return
+    try:
+        print("\nDYNLIB_SEGMENT_START - DYNLIB_SEGMENT_END (DYNLIB_SEGMENT_SIZE BYTES)\n")
+        memory_segments = DYNELF.elf.memory.items()
+        idx = 0
+        while len(memory_segments) != 0:
+            segment = memory_segments.pop()
+            idx += 1
+            print(f"[*] segment-{idx}: {hex(segment[0])} - {hex(segment[1])} ({segment[1]-segment[0]} bytes)")
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 def list_functions():
     print("\nFUNCTION_NAME (FUNCTION_SIZE)\n")
