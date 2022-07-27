@@ -11,8 +11,10 @@ elif sys.argv[1] == "-f":
     context = ELF(f"{sys.argv[2]}")
 
 DYNELF = None
+DYNELF_SECTIONS = {}
 PAYLOAD_FNAME = "test_32.txt"
 PROC = None
+SECTIONS = {}
 
 options = {
     0:"disassemble(WHAT,N_BYTES)",
@@ -30,7 +32,9 @@ options = {
     12:"print_plt()",
     13:"list_dynelf_segments()",
     14:"disassemble_dyn(WHAT,N_BYTES)",
-    18:"help()"
+    15:"dump_bin(START=NONE,END=NONE)",
+    # 16:"dump_dyn_lib(START=NONE,END=NONE)",
+    27:"help()"
 }
 
 def help():
@@ -58,6 +62,34 @@ def disassemble_dyn(what,n_bytes):
             print(f"{DYNELF.elf.disasm(what,n_bytes)}")
     except:
         print(f"[x] {traceback.format_exc()}")
+
+def dump_bin(start=None,end=None):
+    try:
+        if not PROC:
+            start_proc()
+
+        if not start and not end:
+            PROC.hexdump(PROC.elf.data)
+        elif start and not end:
+            PROC.hexdump(PROC.elf.data[start:])
+        else:
+            PROC.hexdump(PROC.elf.data[start:end])
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
+# def dump_dyn_lib(start=None,end=None):
+#     if not DYNELF:
+#         print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+#         return
+#     try:
+#         if not start and not end:
+#             DYNELF.elf.hexdump(DYNELF.elf.data)
+#         elif start and not end:
+#             DYNELF.elf.hexdump(DYNELF.elf.data[start:])
+#         else:
+#             DYNELF.elf.hexdump(DYNELF.elf.data[start:end])
+#     except:
+#         print(f"[x] {traceback.format_exc()}")
 
 def leak(address):
     data = PROC.elf.read(address, 4)
@@ -107,6 +139,10 @@ def load_dyn_lib(dyn_lib_path):
     if not PROC:
         start_proc()
     DYNELF = DynELF(leak,PROC.elf.sym["main"],elf=ELF(dyn_lib_path))
+    try:
+        set_dyn_sections()
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 def print_dynelf_got():
     if not DYNELF:
@@ -148,10 +184,24 @@ def save_payload(payload):
     payload = str(payload)[2:-1]
     p = process(f"python2.7 -c 'print \"{payload}\"' > {PAYLOAD_FNAME}",
         shell=True, stderr=open('/dev/null', 'w+b'))
-    # p.close()
+
+def set_dyn_sections():
+    if DYNELF_SECTIONS:
+        DYNELF_SECTIONS.clear()
+    if not DYNELF:
+        print("[!] No dynamic library loaded. Call load_dyn_lib(DYN_LIB_PATH) first then try again")
+        return
+    try:
+        [ DYNELF_SECTIONS.update({dyn_section.name:dyn_section}) for dyn_section in DYNELF.elf.sections ]
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
+def set_sections():
+    [ SECTIONS.update({section.name:section}) for section in context.sections ]
 
 def start_proc():
     global PROC
     PROC = process(context.path)
 
+set_sections()
 help()
