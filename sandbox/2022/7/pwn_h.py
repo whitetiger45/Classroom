@@ -33,7 +33,9 @@ options = {
     13:"list_dynelf_segments()",
     14:"disassemble_dyn(WHAT,N_BYTES)",
     15:"dump_bin(START=NONE,END=NONE)",
-    # 16:"dump_dyn_lib(START=NONE,END=NONE)",
+    16:"save_bin(PATH)",
+    17:"search(WHAT) -> VADDR",
+    18:"write(WHAT,WHERE)",
     27:"help()"
 }
 
@@ -180,10 +182,31 @@ def read_payload(f_name):
     fd.close()
     return payload
 
+def save_bin(path):
+    try:
+        if not PROC:
+            start_proc()
+        PROC.elf.save(path)
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
 def save_payload(payload):
     payload = str(payload)[2:-1]
     p = process(f"python2.7 -c 'print \"{payload}\"' > {PAYLOAD_FNAME}",
         shell=True, stderr=open('/dev/null', 'w+b'))
+
+def search(what):
+    vaddr = None
+    try:
+        if not PROC:
+            start_proc()
+        if isinstance(what,str) or isinstance(what,bytes):
+            vaddr = PROC.elf.search(what)
+        else:
+            print(f"[!] Usage: search( [STR | BYTES] )")
+    except:
+        print(f"[x] {traceback.format_exc()}")
+    return vaddr
 
 def set_dyn_sections():
     if DYNELF_SECTIONS:
@@ -202,6 +225,14 @@ def set_sections():
 def start_proc():
     global PROC
     PROC = process(context.path)
+
+def write(what,where):
+    try:
+        if not PROC:
+            start_proc()
+        PROC.elf.pack(where,what)
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 set_sections()
 help()
