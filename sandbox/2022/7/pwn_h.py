@@ -34,7 +34,7 @@ options = {
     14:"disassemble_dyn(WHAT,N_BYTES)",
     15:"dump_bin(START=NONE,END=NONE)",
     16:"save_bin(PATH)",
-    17:"search(WHAT) -> VADDR",
+    17:"search(WHAT) -> START,END",
     18:"write(WHAT,WHERE)",
     27:"help()"
 }
@@ -196,17 +196,14 @@ def save_payload(payload):
         shell=True, stderr=open('/dev/null', 'w+b'))
 
 def search(what):
-    vaddr = None
-    try:
-        if not PROC:
-            start_proc()
-        if isinstance(what,str) or isinstance(what,bytes):
-            vaddr = PROC.elf.search(what)
-        else:
-            print(f"[!] Usage: search( [STR | BYTES] )")
-    except:
-        print(f"[x] {traceback.format_exc()}")
-    return vaddr
+    start = None
+    end = None
+    if isinstance(what,bytes):
+        start = context.data.find(what)
+        end = len(what) + start
+    else:
+        print(f"[!] Usage: search( [ BYTES ] )")
+    return start,end
 
 def set_dyn_sections():
     if DYNELF_SECTIONS:
