@@ -33,9 +33,8 @@ options = {
     13:"list_dynelf_segments()",
     14:"disassemble_dyn(WHAT,N_BYTES)",
     15:"dump_bin(START=NONE,END=NONE)",
-    16:"save_bin(PATH)",
-    17:"search(WHAT) -> START,END",
-    18:"write(WHAT,WHERE)",
+    16:"search(WHAT) -> START,END",
+    17:"write(WHAT,WHERE)",
     27:"help()"
 }
 
@@ -65,7 +64,7 @@ def disassemble_dyn(what,n_bytes):
     except:
         print(f"[x] {traceback.format_exc()}")
 
-def dump_bin(start=None,end=None):
+def dump_bin(start=0,end=-1):
     try:
         if not PROC:
             start_proc()
@@ -74,6 +73,8 @@ def dump_bin(start=None,end=None):
             PROC.hexdump(PROC.elf.data)
         elif start and not end:
             PROC.hexdump(PROC.elf.data[start:])
+        elif not start and end:
+            PROC.hexdump(PROC.elf.data[:end])
         else:
             PROC.hexdump(PROC.elf.data[start:end])
     except:
@@ -182,14 +183,6 @@ def read_payload(f_name):
     fd.close()
     return payload
 
-def save_bin(path):
-    try:
-        if not PROC:
-            start_proc()
-        PROC.elf.save(path)
-    except:
-        print(f"[x] {traceback.format_exc()}")
-
 def save_payload(payload):
     payload = str(payload)[2:-1]
     p = process(f"python2.7 -c 'print \"{payload}\"' > {PAYLOAD_FNAME}",
@@ -200,7 +193,10 @@ def search(what):
     end = None
     if isinstance(what,bytes):
         start = context.data.find(what)
-        end = len(what) + start
+        if start == -1:
+            end = -1
+        else:
+            end = len(what) + start
     else:
         print(f"[!] Usage: search( [ BYTES ] )")
     return start,end
@@ -225,9 +221,9 @@ def start_proc():
 
 def write(what,where):
     try:
-        if not PROC:
-            start_proc()
-        PROC.elf.pack(where,what)
+        with open(context.path,"r+b") as fd:
+            fd.seek(where)
+            fd.write(what)
     except:
         print(f"[x] {traceback.format_exc()}")
 
