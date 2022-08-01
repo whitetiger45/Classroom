@@ -2,8 +2,8 @@
 # functions needed across projects that make vulnerability research easier
 from pwn import *
 
-import argparse, struct
-import sys, traceback
+import argparse, re
+import struct, sys, traceback
 
 if len(sys.argv) != 3 or sys.argv[1] != "-f":
     print(f"[!] Usage: python -i {sys.argv[0]} -f FILE_NAME")
@@ -30,18 +30,14 @@ def help():
 def dump_bin(start=0,end=-1):
     print(bin[start:end])
 
+get_match = lambda m: m.span()
 def search(what):
-    start = None
-    end = None
+    match_idxs = []
     if isinstance(what,bytes):
-        start = bin.find(what)
-        if start == -1:
-            end = start
-        else:
-            end = len(what) + start
+        match_idxs = list(map(get_match,list(re.finditer(what,context.data))))
     else:
         print(f"[!] Usage: search( [ BYTES ] )")
-    return start,end
+    return match_idxs
 
 def write(what,where):
     try:

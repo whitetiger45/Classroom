@@ -2,8 +2,8 @@
 # functions needed across projects that make vulnerability research easier
 from pwn import *
 
-import argparse, struct
-import sys, traceback
+import argparse, re
+import struct, sys, traceback
 
 if len(sys.argv) != 3 or sys.argv[1] != "-f":
     print(f"[!] Usage: python -i {sys.argv[0]} -f FILE_NAME")
@@ -68,15 +68,7 @@ def dump_bin(start=0,end=-1):
     try:
         if not PROC:
             start_proc()
-
-        if not start and not end:
-            PROC.hexdump(PROC.elf.data)
-        elif start and not end:
-            PROC.hexdump(PROC.elf.data[start:])
-        elif not start and end:
-            PROC.hexdump(PROC.elf.data[:end])
-        else:
-            PROC.hexdump(PROC.elf.data[start:end])
+        PROC.hexdump(PROC.elf.data[start:end])
     except:
         print(f"[x] {traceback.format_exc()}")
 
@@ -188,18 +180,14 @@ def save_payload(payload):
     p = process(f"python2.7 -c 'print \"{payload}\"' > {PAYLOAD_FNAME}",
         shell=True, stderr=open('/dev/null', 'w+b'))
 
+get_match = lambda m: m.span()
 def search(what):
-    start = None
-    end = None
+    match_idxs = []
     if isinstance(what,bytes):
-        start = context.data.find(what)
-        if start == -1:
-            end = -1
-        else:
-            end = len(what) + start
+        match_idxs = list(map(get_match,list(re.finditer(what,context.data))))
     else:
         print(f"[!] Usage: search( [ BYTES ] )")
-    return start,end
+    return match_idxs
 
 def set_dyn_sections():
     if DYNELF_SECTIONS:
