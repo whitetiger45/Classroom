@@ -35,6 +35,7 @@ options = {
     15:"dump_bin(START=NONE,END=NONE)",
     16:"search(WHAT) -> START,END",
     17:"write(WHAT,WHERE)",
+    18:"list_sections()",
     27:"help()"
 }
 
@@ -123,6 +124,11 @@ def list_libraries():
     print("\nLIBRARY_NAME (LIBRARY_ADDRESS)\n")
     for lib_name,lib_addr in context.libs.items():
         print(f"[*]\t{lib_name} ({hex(lib_addr)})")
+
+def list_sections():
+    print("\nSECTION_NAME (SECTION_OFFSET, SECTION_SIZE)\n")
+    for section in context.sections:
+        print(f"[*]\t{section.name} (offset: {hex(section.header['sh_offset'])}, size: {hex(section.header['sh_size'])})")
 
 def list_symbols():
     print("\nSYMBOL_NAME (SYMBOL_ADDRESS)\n")
