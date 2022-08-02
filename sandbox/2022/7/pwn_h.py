@@ -32,10 +32,12 @@ options = {
     12:"print_plt()",
     13:"list_dynelf_segments()",
     14:"disassemble_dyn(WHAT,N_BYTES)",
-    15:"dump_bin(START=NONE,END=NONE)",
+    15:"dump_bin(START=0,END=-1)",
     16:"search(WHAT) -> START,END",
     17:"write(WHAT,WHERE)",
     18:"list_sections()",
+    19:"print_section(SECTION_NAME)",
+    20:"print_bin(START=0,END=-1)",
     27:"help()"
 }
 
@@ -127,8 +129,8 @@ def list_libraries():
 
 def list_sections():
     print("\nSECTION_NAME (SECTION_OFFSET, SECTION_SIZE)\n")
-    for section in context.sections:
-        print(f"[*]\t{section.name} (offset: {hex(section.header['sh_offset'])}, size: {hex(section.header['sh_size'])})")
+    for section_name,section in SECTIONS.items():
+        print(f"[*]\t{section_name} (offset: {hex(section.header['sh_offset'])}, size: {hex(section.header['sh_size'])})")
 
 def list_symbols():
     print("\nSYMBOL_NAME (SYMBOL_ADDRESS)\n")
@@ -144,6 +146,9 @@ def load_dyn_lib(dyn_lib_path):
         set_dyn_sections()
     except:
         print(f"[x] {traceback.format_exc()}")
+
+def print_bin(start=0,end=-1):
+    print(f"{context.data[start:end]}")
 
 def print_dynelf_got():
     if not DYNELF:
@@ -174,6 +179,12 @@ def print_plt():
     print("\nPLT_SYMBOL_NAME (PLT_SYMBOL_ADDRESS)\n")
     for s_name, s_addr in PROC.elf.plt.items():
         print(f"[*]\t{s_name} ({hex(s_addr)})")
+
+def print_section(section_name):
+    try:
+        print(f"[*]\n{SECTIONS[section_name].data()}")
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 def read_payload(f_name):
     fd = open(f_name, "r", errors="backslashreplace")
