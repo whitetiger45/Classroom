@@ -15,6 +15,7 @@ DYNELF_SECTIONS = {}
 PAYLOAD_FNAME = "test_32.txt"
 PROC = None
 SECTIONS = {}
+W_SEGMENTS = {}
 
 options = {
     0:"disassemble(WHAT,N_BYTES)",
@@ -38,6 +39,10 @@ options = {
     18:"list_sections()",
     19:"print_section(SECTION_NAME)",
     20:"print_bin(START=0,END=-1)",
+    21:"list_w_segments()",
+    22:"list_w_segment_tags(SEGMENT_IDX)",
+    23:"list_w_segment_symbols(SEGMENT_IDX)",
+    24:"print_w_segment__tag_tbl_offset(SEGMENT_IDX,TAG_NAME)",
     27:"help()"
 }
 
@@ -89,6 +94,10 @@ def dump_bin(start=0,end=-1):
 #     except:
 #         print(f"[x] {traceback.format_exc()}")
 
+def init():
+    set_sections()
+    set_w_segments()
+
 def leak(address):
     data = PROC.elf.read(address, 4)
     log.debug("%#x => %s", address, enhex(data or b''))
@@ -136,6 +145,41 @@ def list_symbols():
     print("\nSYMBOL_NAME (SYMBOL_ADDRESS)\n")
     for s_name,s_addr in context.symbols.items():
         print(f"[*]\t{s_name} ({hex(s_addr)})")
+
+def list_w_segments():
+    print("\nSEGMENT_HEADER\n")
+    unwrap_container(W_SEGMENTS,1)
+
+def list_w_segment_symbols(segment_idx):
+    try:
+        it = W_SEGMENTS[segment_idx].iter_symbols()
+        print("\nSEGMENT_SYMBOL\n")
+        while True:
+            try:
+                symbol = it.__next__()
+            except:
+                break
+            print("[*]")
+            print(f"\tname: {symbol.name}")
+            unwrap_container(symbol.entry,2)
+            print()
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
+def list_w_segment_tags(segment_idx):
+    try:
+        it = W_SEGMENTS[segment_idx].iter_tags()
+        print("\nSEGMENT_INFO\n")
+        while True:
+            try:
+                tag = it.__next__()
+            except:
+                break
+            print("[*]")
+            unwrap_container(tag.entry,2)
+            print()
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 def load_dyn_lib(dyn_lib_path):
     global DYNELF
@@ -186,6 +230,15 @@ def print_section(section_name):
     except:
         print(f"[x] {traceback.format_exc()}")
 
+def print_w_segment__tag_tbl_offset(segment_idx,tag_name):
+    try:
+        addr, size = W_SEGMENTS[segment_idx].get_table_offset(tag_name)
+        print("\nTAG_ADDRESS (TAG_SIZE)\n")
+        print(f"[*] {tag_name}: {hex(addr)} ({hex(size)})")
+        print()
+    except:
+        print(f"[x] {traceback.format_exc()}")
+
 def read_payload(f_name):
     fd = open(f_name, "r", errors="backslashreplace")
     payload = "".join( line for line in fd.readlines() )
@@ -220,9 +273,36 @@ def set_dyn_sections():
 def set_sections():
     [ SECTIONS.update({section.name:section}) for section in context.sections ]
 
+def set_w_segments():
+    [ W_SEGMENTS.update({idx:w_segment}) for idx,w_segment in enumerate(context.writable_segments) ]
+
 def start_proc():
     global PROC
     PROC = process(context.path)
+
+def unwrap_container(container,lvl):
+    try:
+        if not isinstance(container,dict):
+            # these are the pwntools Containers that != python dicts
+            for k,v in container.items():
+                if isinstance(v,str):
+                    print("\t"*(lvl-1) + f"{k}: {v}")
+                elif isinstance(v,int):
+                    print("\t"*(lvl-1) + f"{k}: {hex(v)}")
+                else:
+                    print("\t"*(lvl-1) + f"{k}:")
+                    unwrap_container(v,lvl+1)
+        else:
+            # these are our custom containers since pwntools Containers != python dicts
+            for k,element in container.items():
+                try:
+                    print(f"# {k}")
+                    unwrap_container(element.header,lvl+1)
+                    print()
+                except:
+                    print(f"[!][unwrap_container] {traceback.format_exc()}")
+    except:
+        print(f"[x] {traceback.format_exc()}")
 
 def write(what,where):
     try:
@@ -232,5 +312,5 @@ def write(what,where):
     except:
         print(f"[x] {traceback.format_exc()}")
 
-set_sections()
+init()
 help()
