@@ -43,7 +43,8 @@ options = {
     22:"list_w_segment_tags(SEGMENT_IDX)",
     23:"list_w_segment_symbols(SEGMENT_IDX)",
     24:"print_w_segment__tag_tbl_offset(SEGMENT_IDX,TAG_NAME)",
-    27:"help()"
+    25:"get_w_segment_tag(SEGMENT_IDX,TAG_NUMBER) -> DYNAMIC_TAG",
+    36:"help()"
 }
 
 def help():
@@ -93,6 +94,20 @@ def dump_bin(start=0,end=-1):
 #             DYNELF.elf.hexdump(DYNELF.elf.data[start:end])
 #     except:
 #         print(f"[x] {traceback.format_exc()}")
+
+def get_w_segment_tag(segment_idx, tag_number):
+    """
+    quick index into a writable segment. a call to list_w_segment_tags
+    will provide the tag number.
+    """
+    tag = None
+    try:
+        tag = W_SEGMENTS[segment_idx].get_tag(tag_number)
+        print(f"[*] {tag.__str__()}")
+        print(f"[*] {tag.__repr__()}")
+    except:
+        print(f"[x] {traceback.format_exc()}")
+    return tag
 
 def init():
     set_sections()
@@ -170,14 +185,16 @@ def list_w_segment_tags(segment_idx):
     try:
         it = W_SEGMENTS[segment_idx].iter_tags()
         print("\nSEGMENT_INFO\n")
+        N = 0
         while True:
             try:
                 tag = it.__next__()
             except:
                 break
-            print("[*]")
+            print(f"[*] tag-#: {N}")
             unwrap_container(tag.entry,2)
             print()
+            N += 1
     except:
         print(f"[x] {traceback.format_exc()}")
 
