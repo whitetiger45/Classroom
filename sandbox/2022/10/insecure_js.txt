@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+ This experiment is meant to help me understand the "Uncaught DOMException: The operation is insecure."
+  that executing this html+script throws in my browser.
+
+  I got the original code from Gynvael Mission 015: MISSION 015
+
+  For the complete video on YouTube see: https://youtu.be/sgocpmsC14o
+
+  As of 2022.05.10:
+    I don't understand why the DOMException is thrown because all that's happening to side-step this same-origin-policy in this PoC walkthrough is:
+      (1) downloading a resource (var x in the script)
+      (2) base64 encoding it
+      (3) pasting the base64 encoded png image into my script (var y)
+      (4) calling the exact same onload function that threw an exception, but instead of downloading the external resource, we render it inline as the src of var y 
+
+  Research Question: Why does the image/resource become "safe" by adding a man-in-the-middle between server 1 (gynvael.vexillium.org) and server 2 (w3schools.com | jsfiddle.net)?
+-->
+</head>
+<body>
+<p id="arr-1"></p>
+<p id="arr-2"></p>
+<canvas id="canvas-1">
+</canvas>
+
+<script>
+var x = new Image();
+x.src = "http://gynvael.vexillium.org/ext/6c09e7b9cb58b1d939845d68fccd0b1a5d466a32_mission_15_leak.png";
+x.onload = function() {
+  var c = document.createElement("canvas");
+  var x_sx = c.width = x.width;
+  var x_sy = c.height = x.height;
+  var ctx_x = c.getContext("2d");
+  ctx_x.drawImage(x, 10, 10);
+  var x_data = ctx_x.getImageData(0,0,x_sx,x_sy).data;
+  console.log("Size of arr-1: " + x_data.length);
+  var x_p = document.getElementById("arr-1");
+  x_p.textContent = "Size of arr-1: "+ x_data.length;
+}
+
+var y = new Image();
+y.src=`data:image/png;base64,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
+QmCC`;
+y.onload = function() {
+  var c = document.createElement("canvas");
+  var y_sx = c.width = y.width;
+  var y_sy = c.height = y.height;
+  var ctx_y = c.getContext("2d");
+  ctx_y.drawImage(y, 10, 10);
+  var y_data = ctx_y.getImageData(0,0,y_sx,y_sy).data;
+  console.log("Size of arr-2: " + y_data.length);
+  var y_p = document.getElementById("arr-2");
+  y_p.textContent = "Size of arr-2: "+ y_data.length;
+}
+</script>
+</body>
+</html>
