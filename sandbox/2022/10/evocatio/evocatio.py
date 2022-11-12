@@ -3,28 +3,32 @@
 from pathlib import Path
 import json, traceback
 
-class Evocatio:
-    def __init__(self,maxDepth = 3):
-        self._objects = []
-        self._maxDepth = maxDepth
+class Evocatio:    
 
-    def evocatio(self,root,lvl=0,keys=[]):
+    def __init__(self,maxDepth = 3):        
+        self._maxDepth = maxDepth
+        self._objects = []
+        self._outputFD = Path("evocatio.loot.json")
+        self.levitasDict = lambda objects: [ d[obj] for d in objects for obj in d ]
+        self.levitasList = lambda objects: [ obj for l in objects for obj in l ]
+
+    def evocatio(self,root,label,lvl=0,keys=[]):
         try:            
             if hasattr(root,"items"):
                 for k,v in root.items():
                     try:
                         if keys and k in keys:
-                            self._objects.append({k:v})
+                            self._objects.append({f"{label}.{k}":v})
                         if (hasattr(v,"items") or hasattr(v,"index")) and lvl <= self._maxDepth:
-                            self.evocatio(v,lvl+1,keys)
+                            self.evocatio(v,f"{label}.{k}",lvl+1,keys)
                     except:
                         print(f"[!] {traceback.format_exc()}")
             else:
                 if hasattr(root,"index"):
-                    for element in root:
+                    for idx,element in enumerate(root):
                         try:
                             if lvl <= self._maxDepth:
-                                self.evocatio(element,lvl+1,keys)
+                                self.evocatio(element,f"{label}.{idx}",lvl+1,keys)
                         except:
                             print(f"[!] {traceback.format_exc()}")
                 else:
@@ -59,4 +63,10 @@ class Evocatio:
             print(f"[*] Objects:\n")
             print(json.dumps(self._objects,indent=4))
         except:
-            print(f"[x][show] {traceback.format_exc()}")
+            print(f"[x] {traceback.format_exc()}")
+
+    def write(self):
+        try:
+            self._outputFD.write_text(json.dumps(self._objects,indent=4))
+        except:
+            print(f"[x] {traceback.format_exc()}")
