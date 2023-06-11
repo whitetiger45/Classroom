@@ -1,0 +1,26 @@
+[1: mitre_attacks_bug/resources/commit_history_src/resultToHTML/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.resultToHtml.js]
+[2: mitre_attacks_bug/resources/commit_history_src/resultToHTML/e3869b671041f781358694b4a3dcc2cd6d1b63fd.resultToHtml.js]
+
+[1->2 line 1]:    * Converts a search result object to an HTML string with highlighted search words.
+[1->2 line 2]:    * The HTML string will include the result's title, a link to the result's path, and a preview of the content
+[1->2 line 3]:    * with search words highlighted. The preview will be trimmed to a buffer size around the found words.
+[1->2 line 4]:    *
+[1->2 line 5]:    * @private
+[1->2 line 6]:    * @function
+[1->2 line 7]:    * @param {Object} result - A search result object containing an `id`, a `title`, a `path`, and a `content` property.
+[1->2 line 8]:    * @returns {string} An HTML string representing the search result with highlighted search words.
+[1->2 line 10]:   #resultToHTML(result) {
+[1->2 line 26]:     this.currentQuery.words.forEach((searchWord) => {
+[1->2 line 36]:     positions.sort((a, b) => a.index - b.index);
+[1->2 line 45]:     const allWords = new Set(this.currentQuery.words.map((word) => word.word));
+[1->2 line 80]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 92]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 120]:     const left = Math.max(0, best.min - this.buffer);
+[1->2 line 121]:     const right = Math.min(preview.length, best.max + this.buffer);
+[1->2 line 129]:     preview = preview.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 131]:     title = title.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 140]:                     ${preview}
+[1->2 line 141]:                 </div>
+[1->2 line 142]:             </div>
+[1->2 line 143]:         `; // end template
+[1->2 line 144]:   }

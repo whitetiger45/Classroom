@@ -1,0 +1,239 @@
+[1: ../commit_history_src/b27b47a40d844ed208c5d6a3f54d9532a8960569.search.js]
+[2: ../commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.search-service.js]
+
+[2->1 line 0]: let site_base_url = "";
+[2->1 line 1]: let page_limit = 5; //number of results per page
+[2->1 line 2]: let buffer = 200; //2* buffer is roughly the size of the result preview
+[2->1 line 5]: // overlay container
+[2->1 line 6]: let search_overlay = $("#search-overlay");
+[2->1 line 7]: // button in header to open search
+[2->1 line 8]: let search_open_trigger = $("#search-button"); 
+[2->1 line 9]: // button to close search
+[2->1 line 10]: let close_button = $("#close-search-icon")
+[2->1 line 11]: // text input on search page
+[2->1 line 12]: let search_input = $("#search-input");
+[2->1 line 13]: // body of search results
+[2->1 line 14]: let search_body = $("#search-body");
+[2->1 line 15]: // button to show more results
+[2->1 line 16]: let load_more_results = $("#load-more-results");
+[2->1 line 17]: let load_more_results_button = $("#load-more-results-button");
+[2->1 line 18]: // search parsing icon
+[2->1 line 19]: let search_parsing_icon = $("#search-parsing-icon");
+[2->1 line 21]: // register custom matchers globally
+[2->1 line 22]: FlexSearch.registerMatcher({
+[2->1 line 23]:     //attack and ATT&CK are equivalent for the purposes of search
+[2->1 line 24]:     "ATT&CK": "ATTACK", 
+[2->1 line 25]:     "ATTACK": "ATT&CK"
+[2->1 line 26]: })
+[2->1 line 28]: class IndexHelper {
+[2->1 line 29]:     constructor(documents) {
+[2->1 line 30]:         this.indexes = {
+[2->1 line 31]:             "title": new FlexSearch({
+[2->1 line 32]:                 encode: "simple",     //phonetic normalizations
+[2->1 line 33]:                 tokenize: "forward",  //match substring beginning of word
+[2->1 line 34]:                 threshold: 2,         //exclude scores below this number
+[2->1 line 35]:                 resolution: 9,        //how many steps in the scoring algorithm
+[2->1 line 36]:                 depth: 4,             //how far around words to search for adjacent matches. Disabled for title
+[2->1 line 37]:                 doc: {
+[2->1 line 38]:                     id: "id",
+[2->1 line 39]:                     field: "title"
+[2->1 line 41]:             }),
+[2->1 line 42]:             "content": new FlexSearch({
+[2->1 line 43]:                 encode: "simple",     //phonetic normalizations
+[2->1 line 44]:                 tokenize: "strict",  //match substring beginning of word
+[2->1 line 45]:                 threshold: 2,        //exclude scores below this number
+[2->1 line 46]:                 resolution: 9,       //how many steps in the scoring algorithm
+[2->1 line 47]:                 depth: 4,            //how far around words to search for adjacent matches. Disabled for title
+[2->1 line 48]:                 doc: {
+[2->1 line 49]:                     id: "id",
+[2->1 line 50]:                     field: "content"
+[2->1 line 52]:             })
+[2->1 line 54]:         // console.log("adding pages to index");
+[2->1 line 55]:         this.indexes.title.add(documents);
+[2->1 line 56]:         this.indexes.content.add(documents);
+[2->1 line 57]:         // console.log("done adding pages to index");
+[2->1 line 59]:         this.setQuery("");
+[2->1 line 61]:     setQuery(query) {
+[2->1 line 62]:         this.query = query;
+[2->1 line 63]:         this.nextPageRef = true;
+[2->1 line 64]:         this.titleStage = true;
+[2->1 line 65]:         this.seenPaths = new Set();
+[2->1 line 68]:         let results = this.nextPageHelper();
+[2->1 line 69]:         let self = this;
+[2->1 line 70]:         results = results.filter(function(result) { return !self.seenPaths.has(result.path) });
+[2->1 line 71]:         results.forEach(function(result) { self.seenPaths.add(result.path) });
+[2->1 line 73]:         // keep fetching until we have no more results or we have enough results
+[2->1 line 74]:         while (results.length < page_limit) {
+[2->1 line 75]:             let newResults = this.nextPageHelper(page_limit - results.length);
+[2->1 line 76]:             if (newResults.length == 0) break; //ran out of results
+[2->1 line 77]:             // cull duplicates
+[2->1 line 78]:             newResults = newResults.filter(function(result) { return !self.seenPaths.has(result.path) });
+[2->1 line 79]:             newResults.forEach(function(result) { self.seenPaths.add(result.path) });
+[2->1 line 80]:             // append to master list
+[2->1 line 81]:             results = results.concat(newResults);
+[2->1 line 84]:         return results;
+[2->1 line 87]:      * Get the next page of results, or null if no more pages
+[2->1 line 88]:      * @param {int} limit the number of results to get (default is the page_limit)
+[2->1 line 90]:     nextPageHelper(limit=page_limit) {
+[2->1 line 91]:         if (!this.nextPageRef) {
+[2->1 line 92]:             console.warn("no next page")
+[2->1 line 93]:             return []
+[2->1 line 96]:         if (this.titleStage) {
+[2->1 line 97]:             // console.log("fetching next title page")
+[2->1 line 98]:             let response = this.indexes.title.search(this.query, {
+[2->1 line 99]:                 limit: limit,
+[2->1 line 100]:                 page: this.nextPageRef
+[2->1 line 102]:             let results = response.result.map(function(result) {
+[2->1 line 103]:                 result.source = "title";
+[2->1 line 104]:                 return result;
+[2->1 line 107]:             if (response.next) { //next page exists on title stage
+[2->1 line 108]:                 this.nextPageRef = response.next;
+[2->1 line 109]:                 return results;
+[2->1 line 110]:             } else { //end of title stage
+[2->1 line 111]:                 this.titleStage = false;
+[2->1 line 112]:                 this.nextPageRef = true;
+[2->1 line 113]:                 return results;
+[2->1 line 115]:         } else { //content stage
+[2->1 line 116]:             // console.log("fetching next content page")
+[2->1 line 117]:             let response = this.indexes.content.search(this.query, {
+[2->1 line 118]:                 limit: limit,
+[2->1 line 119]:                 page: this.nextPageRef
+[2->1 line 121]:             this.nextPageRef = response.next;
+[2->1 line 122]:             return response.result.map(function(result) {
+[2->1 line 123]:                 result.source = "content";
+[2->1 line 124]:                 return result;
+[2->1 line 131]: class SearchService {
+[2->1 line 132]:     constructor(tag, documents) {
+[2->1 line 134]:         this.index = new IndexHelper(documents);
+[2->1 line 137]:             clean: "",
+[2->1 line 146]:             joined: "" //alternation
+[2->1 line 148]:         this.render_container = $("#" + tag);
+[2->1 line 154]:      * @param {str} querystr string to search for in the indexes
+[2->1 line 156]:     query(querystr) {
+[2->1 line 157]:         this.current_query.clean = querystr.trim();
+[2->1 line 160]:         let joined = "(" + this.current_query.clean.split(" ").join("|") + ")";
+[2->1 line 161]:         this.current_query.joined = new RegExp(joined, "gi")
+[2->1 line 164]:         let escaped = this.current_query.clean.replace(/\s+/, " "); //remove double spaces which causes query to match on every 0 length string and flip out
+[2->1 line 165]:         this.current_query.words = escaped.split(" ").map(function(searchword) {
+[2->1 line 166]:             let regexstr = searchword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); //escape all regex chars so that entering ".." doesn't cause it to flip out
+[2->1 line 167]:             regexstr = regexstr.replace(/((?:att&ck)|(?:attack))/gi, '((?:att&ck)|(?:attack))') //equivalence of ATT&CK and attack
+[2->1 line 168]:             return { word: searchword, regex: new RegExp(regexstr, "gi") }
+[2->1 line 182]:         let title = result.title;
+[2->1 line 183]:         let path = result.path;
+[2->1 line 184]:         if (path.endsWith("/index.html")) {
+[2->1 line 191]:         let positions = []
+[2->1 line 193]:         this.current_query.words.forEach(function(searchword) {
+[2->1 line 195]:             while((currMatches = searchword.regex.exec(preview)) !== null) {
+[2->1 line 197]:                     index: searchword.regex.lastIndex,
+[2->1 line 198]:                     word: searchword.word
+[2->1 line 201]:         })
+[2->1 line 206]:         positions.sort(function(a,b) { return a.index - b.index });
+[2->1 line 210]:             for (var a of s1) if (!s2.has(a)) return false;
+[2->1 line 213]:         let allWords = new Set(this.current_query.words.map(function(word) { return word.word }))
+[2->1 line 215]:         let pos = 0;
+[2->1 line 216]:         let best = {
+[2->1 line 220]:             totalFound: 0 //total number of words found
+[2->1 line 224]:             let word = position.word;
+[2->1 line 225]:             let index = position.index;
+[2->1 line 228]:             let foundWords = new Set();
+[2->1 line 233]:             let min = index //rightmost word find
+[2->1 line 238]:                 best.max = index - 10
+[2->1 line 246]:                         let ahead = positions[i + j];
+[2->1 line 247]:                         let dist = ahead.index - index;
+[2->1 line 253]:                             totalDist += ahead.index - index
+[2->1 line 258]:                         let behind = positions[i - j];
+[2->1 line 259]:                         let dist = index - behind.index;
+[2->1 line 268]:                     if (setsEqual(allWords, foundWords) || exceeded == 2) { //found all the words in proximity, or both searches exceeded the buffer
+[2->1 line 275]:             if (foundWords.size > best.totalFound || (totalDist < best.totalDist && foundWords.size >= best.totalFound)) {
+[2->1 line 285]:         let left = Math.max(0, best.min - buffer);
+[2->1 line 286]:         let right = Math.min(preview.length, best.max + buffer);
+[2->1 line 289]:         // add elipses to preview so people know that the preview is not the complete page data
+[2->1 line 290]:         if (right < result.content.length) preview += "&hellip;";
+[2->1 line 291]:         if (left > 0) preview = "&hellip; " + preview;
+[2->1 line 315]:         this.render_container.html("");
+[2->1 line 323]:         let results = this.index.nextPage();
+[2->1 line 326]:             search_body.show();
+[2->1 line 327]:             let self = this;
+[2->1 line 328]:             let resultHTML = results.map(function(result) { return self.result_to_html(result) });
+[2->1 line 329]:             resultHTML = resultHTML.join("");
+[2->1 line 331]:             if (this.index.nextPageRef) load_more_results.show();
+[2->1 line 332]:             else                        load_more_results.hide();
+[2->1 line 334]:             if (this.current_query.clean !== "") { //search with no results
+[2->1 line 335]:                 search_body.show();
+[2->1 line 338]:                 `)
+[2->1 line 339]:                 load_more_results.hide();
+[2->1 line 341]:                 search_body.hide();
+[2->1 line 351]: let openSearch = function() {
+[2->1 line 352]:     // console.log("open search")
+[2->1 line 353]:     search_body.hide();
+[2->1 line 354]:     search_overlay.show();
+[2->1 line 355]:     search_overlay.removeClass("hidden");
+[2->1 line 356]:     search_input.focus();
+[2->1 line 359]: let closeSearch = function() {
+[2->1 line 360]:     // console.log("close search")
+[2->1 line 361]:     search_input.val('');
+[2->1 line 362]:     search_overlay.hide();
+[2->1 line 363]:     search_overlay.addClass("hidden");
+[2->1 line 366]: let search_service = null;
+[2->1 line 367]: let search = function(query) {
+[2->1 line 368]:     if (search_service == null) {
+[2->1 line 369]:         search_parsing_icon.show()
+[2->1 line 370]:         // console.log("initializing search service")
+[2->1 line 371]:         $.ajax({ //if docs have not yet been loaded
+[2->1 line 372]:             url: site_base_url + "/index.json",
+[2->1 line 373]:             dataType: "json",
+[2->1 line 374]:             success: function (data) {
+[2->1 line 375]:                 search_service = new SearchService("search-results", data)
+[2->1 line 376]:                 search_service.query(query);
+[2->1 line 377]:                 search_parsing_icon.hide();
+[2->1 line 381]:         search_service.query(query);
+[2->1 line 385]: //utility class for debouncing function calls.
+[2->1 line 386]: //used to debounce keyboard input so that rapid keypresses doesn't overwhelm the computer.
+[2->1 line 387]: class Debouncer {
+[2->1 line 388]:     // new debouncer, param is the amount of debounce delay time in ms
+[2->1 line 389]:     constructor(delay) {
+[2->1 line 390]:         this.callback = null;
+[2->1 line 391]:         this.i = 0;
+[2->1 line 392]:         this.delay = delay;
+[2->1 line 394]:     //callback with debounce
+[2->1 line 395]:     debounce(callback) {
+[2->1 line 396]:         this.callback = callback;
+[2->1 line 397]:         this.i++;
+[2->1 line 398]:         let i = this.i;
+[2->1 line 399]:         let self = this;
+[2->1 line 400]:         setTimeout(function() {
+[2->1 line 401]:             self.resolve(i)
+[2->1 line 402]:         }, this.delay)
+[2->1 line 404]:     //resolve the debounced callback
+[2->1 line 405]:     resolve(i) {
+[2->1 line 406]:         // only do the callback if a new debounced input hasn't been added.
+[2->1 line 407]:         if (this.i == i) this.callback();
+[2->1 line 410]: let debounce = new Debouncer(300);
+[2->1 line 412]: // triggers for closing search
+[2->1 line 413]: search_overlay.on("click", function(e) {
+[2->1 line 414]:     if (e.target != this) return; //don't close for children
+[2->1 line 415]:     else closeSearch();
+[2->1 line 416]: })
+[2->1 line 417]: $(document).keyup(function(e) { e.key === 'Escape'? closeSearch():null });
+[2->1 line 418]: close_button.on("click", closeSearch);
+[2->1 line 419]: // triggers for opening search
+[2->1 line 420]: search_open_trigger.on("click", openSearch);
+[2->1 line 421]: // triggers for performing search functions
+[2->1 line 422]: search_input.on("input", function(e) { 
+[2->1 line 423]:     debounce.debounce(function() { search(e.target.value) });
+[2->1 line 424]: })
+[2->1 line 425]: // trigger to render more results
+[2->1 line 426]: load_more_results_button.on("click", function() {
+[2->1 line 427]:     if (search_service) search_service.nextPage();
+[2->1 line 428]:     load_more_results_button.blur(); //onfocus
+[2->1 line 431]: //internet explorer compatability patches
+[2->1 line 432]: if (!String.prototype.includes) {
+[2->1 line 433]:     String.prototype.includes = function(search, start) {
+[2->1 line 434]:         if (typeof start !== 'number') {
+[2->1 line 435]:             start = 0;
+[2->1 line 438]:         if (start + search.length > this.length) {
+[2->1 line 439]:             return false;
+[2->1 line 441]:             return this.indexOf(search, start) !== -1;
+[2->1 line 446]: if (typeof String.prototype.endsWith !== 'function') {
+[2->1 line 447]:     String.prototype.endsWith = function(suffix) {
+[2->1 line 448]:         return this.indexOf(suffix, this.length - suffix.length) !== -1;

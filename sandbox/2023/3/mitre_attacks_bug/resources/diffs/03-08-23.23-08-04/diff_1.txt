@@ -1,0 +1,25 @@
+[1: ../commit_history_src/2f7185ddcea48817d6b98dab36e2c9258c24545c.search.js]
+[2: ../commit_history_src/b27b47a40d844ed208c5d6a3f54d9532a8960569.search.js]
+
+[1->2 line 329]:             resultHTML = resultHTML.join("");
+[1->2 line 429]: });
+[1->2 line 430]: 
+[1->2 line 431]: //internet explorer compatability patches
+[1->2 line 432]: if (!String.prototype.includes) {
+[1->2 line 433]:     String.prototype.includes = function(search, start) {
+[1->2 line 434]:         if (typeof start !== 'number') {
+[1->2 line 435]:             start = 0;
+[1->2 line 436]:         }
+[1->2 line 437]: 
+[1->2 line 438]:         if (start + search.length > this.length) {
+[1->2 line 439]:             return false;
+[1->2 line 440]:         } else {
+[1->2 line 441]:             return this.indexOf(search, start) !== -1;
+[1->2 line 442]:         }
+[1->2 line 443]:     };
+[1->2 line 444]: }
+[1->2 line 445]: 
+[1->2 line 446]: if (typeof String.prototype.endsWith !== 'function') {
+[1->2 line 447]:     String.prototype.endsWith = function(suffix) {
+[1->2 line 448]:         return this.indexOf(suffix, this.length - suffix.length) !== -1;
+[1->2 line 449]:     };

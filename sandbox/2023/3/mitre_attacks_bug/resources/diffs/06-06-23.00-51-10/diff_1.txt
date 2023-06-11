@@ -1,0 +1,442 @@
+[1: mitre_attacks_bug/resources/commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.search-service.js]
+[2: mitre_attacks_bug/resources/commit_history_src/e3869b671041f781358694b4a3dcc2cd6d1b63fd.search-service.js]
+
+[1->2 line 0]: const $ = require('jquery');
+[1->2 line 3]: const { IndexedDBWrapper } = require("./indexed-db-wrapper.js");
+[1->2 line 6]: const AttackIndex = require('./attack-index.js');
+[1->2 line 9]: const { loadMoreResults, searchBody } = require('./components.js');
+[1->2 line 11]: module.exports = class SearchService {
+[1->2 line 14]:    * The SearchService class is responsible for managing the search functionality of the application. It allows for
+[1->2 line 15]:    * initialization of the search index, processing search queries, and rendering search results.
+[1->2 line 16]:    *
+[1->2 line 17]:    * @class SearchService
+[1->2 line 18]:    * @constructor
+[1->2 line 19]:    * @param {string} tag - The ID of the DOM element that will be used as the container for rendering search results.
+[1->2 line 20]:    * @param {string} [buildId] - An optional build ID used as a part of the IndexedDB database name.
+[1->2 line 22]:   constructor(tag, buildId) {
+[1->2 line 24]:     // 2* buffer is roughly the size of the result preview
+[1->2 line 25]:     this.buffer = 200;
+[1->2 line 27]:     // Sets the maximum number of search results displayed on a single page.
+[1->2 line 28]:     // Clicking "Load more results" will add ${pageLimit} additional results to the current page.
+[1->2 line 29]:     this.pageLimit = 5;
+[1->2 line 31]:     this.currentQuery = {
+[1->2 line 47]:      * The following two IndexedDBWrapper instances initialize two IndexedDB tables. Each instance corresponds to one
+[1->2 line 48]:      * table. The wrapper class obfuscates the CRUD logic for interfacing with IndexedDB.
+[1->2 line 49]:      *
+[1->2 line 50]:      * 1. content_table: handles all objects loaded from index.json
+[1->2 line 51]:      *
+[1->2 line 52]:      * 2. flexsearch_table: handles the FlexSearch document instance (so we don't have to re-index index.json every time
+[1->2 line 53]:      *    FlexSearch is cleared from browser memory!).
+[1->2 line 56]:     const schemas = {
+[1->2 line 57]:       content_table: '&id, title, path, content',
+[1->2 line 58]:       searchindex_table: '++id, title, content',
+[1->2 line 61]:     const dbName = buildId ? `AttackWebsite-${buildId}` : 'AttackWebsite';
+[1->2 line 63]:     this.db = new IndexedDBWrapper(dbName, schemas);
+[1->2 line 65]:     this.contentDb = this.db.getTableWrapper('content_table');
+[1->2 line 66]:     this.searchIndexDb = this.db.getTableWrapper('searchindex_table');
+[1->2 line 69]:      * A quick note on the schemas passed in the above 👆 IndexedDBWrapper initializations:
+[1->2 line 70]:      *
+[1->2 line 71]:      * The &id syntax means that the id field is the primary key of the table, but it will not be auto-incremented.
+[1->2 line 72]:      * In this case, you must provide a unique value for the id field when inserting a new record, and the
+[1->2 line 73]:      * IndexedDB will enforce uniqueness on the id field.
+[1->2 line 74]:      *
+[1->2 line 75]:      * The ++id syntax means that the id field is the primary key of the table and it will be auto-incremented. In
+[1->2 line 76]:      * other words, when you insert a new record without providing a value for the id field, the IndexedDB will
+[1->2 line 77]:      * automatically assign a unique, incremental value to the id field.
+[1->2 line 80]:     // Initialize the AttackIndex instance (this is our in-memory FlexSearch instance)
+[1->2 line 81]:     this.attackIndex = new AttackIndex();
+[1->2 line 85]:    * Asynchronously initializes the search engine by either indexing the provided documents or restoring the search
+[1->2 line 86]:    * index from a backup stored in IndexedDB. If documents are provided, the method will add them to the search index,
+[1->2 line 87]:    * create a backup of the search index, and store the documents in IndexedDB.
+[1->2 line 88]:    *
+[1->2 line 89]:    * @async
+[1->2 line 90]:    * @function
+[1->2 line 91]:    * @param {Array<Object>} [documents] - An optional array of document objects to be indexed. Each document object
+[1->2 line 92]:    * should have an `id`, a `title`, a `path`, and a `content` property.
+[1->2 line 94]:   async initializeAsync(documents) {
+[1->2 line 96]:     // If documents are defined, then load them into the AttackIndex instance.
+[1->2 line 97]:     if (documents) {
+[1->2 line 98]:       console.debug('Indexing documents: ', documents);
+[1->2 line 100]:       this.maxSearchResults = documents.length;
+[1->2 line 102]:       // Add the data to the in-memory FlexSearch instance
+[1->2 line 103]:       this.attackIndex.addBulk(documents);
+[1->2 line 105]:       console.debug('Backing up search index...');
+[1->2 line 107]:       // Backup the in-memory FlexSearch index for later restoration
+[1->2 line 108]:       await this.backupSearchIndex();
+[1->2 line 109]:       await this.contentDb.bulkPut(documents, 100);
+[1->2 line 111]:       console.debug('Backup of search index completed.');
+[1->2 line 113]:       console.debug('Restoring search index from backup...');
+[1->2 line 115]:       this.maxSearchResults = await this.contentDb.count();
+[1->2 line 117]:       // If no documents were provided, then attempt to load them from the IndexedDB database
+[1->2 line 118]:       await this.restoreSearchIndexFromBackup();
+[1->2 line 123]:    * Exports data from the in-memory FlexSearch instance to the IndexedDB.
+[1->2 line 124]:    * @returns {Promise<Array<string>>}
+[1->2 line 126]:   async backupSearchIndex() {
+[1->2 line 128]:     const keys = [];
+[1->2 line 129]:     let processedKeys = 0;
+[1->2 line 131]:     // totalKeys(x) = (3 * #searchFields) + 3
+[1->2 line 132]:     //                          ^
+[1->2 line 133]:     //                    title + content --> 2 fields
+[1->2 line 134]:     const totalKeys = 9;
+[1->2 line 136]:     return new Promise((resolve) => {
+[1->2 line 137]:       this.attackIndex.index.export(async (key, data) => {
+[1->2 line 138]:         await this.searchIndexDb.put({ key, data });
+[1->2 line 139]:         keys.push(key);
+[1->2 line 140]:         processedKeys++;
+[1->2 line 142]:         if (processedKeys === totalKeys) {
+[1->2 line 143]:           resolve(true);
+[1->2 line 150]:    * Imports data from the IndexedDB to the in-memory FlexSearch instance.
+[1->2 line 151]:    * @returns {Promise<void>}
+[1->2 line 153]:   async restoreSearchIndexFromBackup() {
+[1->2 line 154]:     // Retrieve all records from the specified object store
+[1->2 line 155]:     const documents = await this.searchIndexDb.getAll();
+[1->2 line 157]:     console.debug(`Located ${documents.length} documents in the searchindex_table`);
+[1->2 line 159]:     for (const document of documents) {
+[1->2 line 160]:       await this.attackIndex.import(document.key, document.data);
+[1->2 line 165]:    * Given an array of index positions returned by a FlexSearch query, retrieves the original content for each position
+[1->2 line 166]:    * from the IndexedDB content_table and returns an array of matching documents.
+[1->2 line 167]:    *
+[1->2 line 168]:    * @param {number[]} positions - An array of index positions returned by a FlexSearch query.
+[1->2 line 169]:    * @returns {Promise<Object[]>} - An array of matching documents retrieved from the IndexedDB content_table.
+[1->2 line 171]:   async resolveSearchResults(positions) {
+[1->2 line 172]:     // Create an array of promises to get documents from the IndexedDB content_table
+[1->2 line 173]:     const getPromises = positions.map(position => this.contentDb.get(position));
+[1->2 line 175]:     // Wait for all promises to resolve
+[1->2 line 176]:     const docs = await Promise.all(getPromises);
+[1->2 line 178]:     // Filter out null or undefined documents
+[1->2 line 179]:     return docs.filter(doc => doc !== null && doc !== undefined);
+[1->2 line 183]:    * Asynchronously performs a search query on the search index and renders the search results on the web page.
+[1->2 line 184]:    * The search will be performed on both the title and content fields of the indexed documents.
+[1->2 line 185]:    * The search results are paginated, showing the first page of results after the search.
+[1->2 line 186]:    *
+[1->2 line 187]:    * @async
+[1->2 line 188]:    * @function
+[1->2 line 189]:    * @param {string} query - The raw search query string.
+[1->2 line 191]:   async query(query) {
+[1->2 line 192]:     this.offset = 0;
+[1->2 line 193]:     this.#cleanTheQuery(query);
+[1->2 line 195]:     const results = await this.attackIndex.search(this.currentQuery.clean, ["title", "content"], this.maxSearchResults);
+[1->2 line 196]:     console.debug('search index results: ', results);
+[1->2 line 199]:      * results:  [
+[1->2 line 201]:      *         field: 'title',
+[1->2 line 202]:      *         result: [
+[1->2 line 203]:      *           2, 3, 4, 5, 6,
+[1->2 line 204]:      *           ..., 100
+[1->2 line 205]:      *         ]
+[1->2 line 206]:      *       },
+[1->2 line 208]:      *         field: 'content',
+[1->2 line 209]:      *         result: [
+[1->2 line 210]:      *           1, 5, 6, 7,
+[1->2 line 211]:      *           2, 3, 8, 9,
+[1->2 line 212]:      *         ]
+[1->2 line 214]:      *     ]
+[1->2 line 217]:     this.searchResults = await this.#setSearchResults(results);
+[1->2 line 218]:     const firstPage = this.searchResults.slice(0, this.pageLimit);
+[1->2 line 219]:     this.#renderSearchResults(firstPage);
+[1->2 line 223]:    * Renders the search results on the web page based on the given search result page.
+[1->2 line 224]:    * If the search query is empty, it will show the "Load More Results" button.
+[1->2 line 225]:    * If the search query has no results, it will display a "no results" message.
+[1->2 line 226]:    *
+[1->2 line 227]:    * @private
+[1->2 line 228]:    * @function
+[1->2 line 229]:    * @param {Array<{ id: number, title: string, path: string, content: string }>} page - An array of search result
+[1->2 line 230]:    * objects, where each object has an `id`, a `title`, a `path`, and a `content` property.
+[1->2 line 231]:    *
+[1->2 line 232]:    * @example
+[1->2 line 233]:    * page: [
+[1->2 line 235]:    *     id: 0,
+[1->2 line 236]:    *     title: "Random title",
+[1->2 line 237]:    *     path: "/path/to/random/page.html",
+[1->2 line 238]:    *     content: "Some random content."
+[1->2 line 239]:    *   },
+[1->2 line 240]:    *   {
+[1->2 line 241]:    *     id: 1,
+[1->2 line 242]:    *     title: "Another random title",
+[1->2 line 243]:    *     path: "/path/to/another/random/page.html",
+[1->2 line 244]:    *     content: "Some more random content."
+[1->2 line 245]:    *   }
+[1->2 line 246]:    * ]
+[1->2 line 247]:    */
+[1->2 line 248]:   #renderSearchResults(page) {
+[1->2 line 249]:     if (page.length > 0) {
+[1->2 line 250]:       // Render the search results
+[1->2 line 251]:       searchBody.show();
+[1->2 line 252]:       const self = this;
+[1->2 line 253]:       let resultHTML = page.map((result) => self.#resultToHTML(result));
+[1->2 line 254]:       resultHTML = resultHTML.join('');
+[1->2 line 255]:       this.render_container.append(resultHTML);
+[1->2 line 256]: 
+[1->2 line 257]:       // if there are more pages to show
+[1->2 line 258]:       if (this.offset + this.pageLimit < this.searchResults.length) {
+[1->2 line 259]:         loadMoreResults.show();
+[1->2 line 260]:       } else {
+[1->2 line 261]:         loadMoreResults.hide();
+[1->2 line 262]:       }
+[1->2 line 263]: 
+[1->2 line 264]:     } else if (this.currentQuery.clean !== '') {
+[1->2 line 265]:       // search with no results
+[1->2 line 266]:       searchBody.show();
+[1->2 line 267]:       this.render_container.html(`<div class="search-result">no results</div>`);
+[1->2 line 268]:       loadMoreResults.hide();
+[1->2 line 269]:     } else {
+[1->2 line 270]:       // query for empty string
+[1->2 line 271]:       searchBody.hide();
+[1->2 line 272]:     }
+[1->2 line 273]:   }
+[1->2 line 274]: 
+[1->2 line 275]:   /**
+[1->2 line 276]:    * Asynchronously sets the search results by merging title and content results without duplication, prioritizing
+[1->2 line 277]:    * title matches over content matches.
+[1->2 line 278]:    *
+[1->2 line 279]:    * @async
+[1->2 line 280]:    * @private
+[1->2 line 281]:    * @function
+[1->2 line 282]:    * @param {Array<{ field: string, result: Array<number> }>} results - An array containing search results, each object
+[1->2 line 283]:    * in the array should have a `field` property ("title" or "content") and a `result` property (an array of indices).
+[1->2 line 284]:    *
+[1->2 line 285]:    * @returns {Promise<Array>} A Promise that resolves to an array containing the search results with duplicates removed
+[1->2 line 286]:    * and title matches prioritized over content matches.
+[1->2 line 287]:    *
+[1->2 line 288]:    * @example
+[1->2 line 289]:    * results: [
+[1->2 line 290]:    *   {
+[1->2 line 291]:    *     field: 'title',
+[1->2 line 292]:    *     result: [2, 3, 4, 5, 6, ..., 100]
+[1->2 line 293]:    *   },
+[1->2 line 294]:    *   {
+[1->2 line 295]:    *     field: 'content',
+[1->2 line 296]:    *     result: [1, 5, 6, 7, 2, 3, 8, 9]
+[1->2 line 297]:    *   }
+[1->2 line 298]:    * ]
+[1->2 line 299]:    */
+[1->2 line 300]:   async #setSearchResults(results) {
+[1->2 line 301]:     // Get documents corresponding to index positions
+[1->2 line 302]:     const titlePositions = results.find(r => r?.field === 'title')?.result ?? [];
+[1->2 line 303]:     const contentPositions = results.find(r => r?.field === 'content')?.result ?? [];
+[1->2 line 304]: 
+[1->2 line 305]:     /**
+[1->2 line 306]:      * Dedup the search results retrieved by searching the content index. The new filtered array will contain only those
+[1->2 line 307]:      * elements from contentPositions that are not present in titlePositions.
+[1->2 line 308]:      *
+[1->2 line 309]:      * We do this because (1) we don't want to render duplicate search results, and (2) we want to prioritize search
+[1->2 line 310]:      * results retrieved from the title index because title matches are weighted higher than content matches
+[1->2 line 311]:      */
+[1->2 line 312]:     const filteredContentPositions = contentPositions.filter(pos => !titlePositions.includes(pos));
+[1->2 line 313]: 
+[1->2 line 314]:     // Resolve the FlexSearch results to the original elements stored in index.json
+[1->2 line 315]:     const titleDocuments = await this.resolveSearchResults(titlePositions);
+[1->2 line 316]:     const contentDocuments = await this.resolveSearchResults(filteredContentPositions);
+[1->2 line 317]: 
+[1->2 line 318]:     // Concatenate the two arrays, with title results appearing first in the concatenated array.
+[1->2 line 319]:     return titleDocuments.concat(contentDocuments);
+[1->2 line 320]:   }
+[1->2 line 321]: 
+[1->2 line 322]:   /**
+[1->2 line 323]:    * Asynchronously loads and renders more search results by increasing the current offset.
+[1->2 line 324]:    * This method is used for paginating the search results.
+[1->2 line 325]:    *
+[1->2 line 326]:    * @async
+[1->2 line 327]:    * @function
+[1->2 line 328]:    */
+[1->2 line 329]:   async loadMoreResults() {
+[1->2 line 330]:     this.offset += this.pageLimit;
+[1->2 line 331]:     const nextPage = this.searchResults.slice(this.offset, this.offset + this.pageLimit);
+[1->2 line 332]:     console.debug('search index results: ', nextPage);
+[1->2 line 333]:     this.#renderSearchResults(nextPage);
+[1->2 line 334]:   }
+[1->2 line 335]: 
+[1->2 line 336]:   /**
+[1->2 line 337]:    * Cleans and processes the search query by trimming white spaces, escaping special characters, and creating
+[1->2 line 338]:    * regular expressions for each word in the query. The processed query is stored in the `this.currentQuery` object.
+[1->2 line 339]:    *
+[1->2 line 340]:    * @private
+[1->2 line 341]:    * @function
+[1->2 line 342]:    * @param {string} query - The raw search query string.
+[1->2 line 343]:    */
+[1->2 line 344]:   #cleanTheQuery(query) {
+[1->2 line 345]:     console.debug(`Cleaning query string: ${query}`);
+[1->2 line 346]: 
+[1->2 line 347]:     this.currentQuery.clean = query.trim();
+[1->2 line 348]: 
+[1->2 line 349]:     // build joined string
+[1->2 line 350]:     const joined = `(${this.currentQuery.clean.split(' ').join('|')})`;
+[1->2 line 351]:     this.currentQuery.joined = new RegExp(joined, 'gi');
+[1->2 line 352]: 
+[1->2 line 353]:     // Build regex for each word
+[1->2 line 354]: 
+[1->2 line 355]:     // remove double spaces which causes query to match on every 0 length string and flip out
+[1->2 line 356]:     const escaped = this.currentQuery.clean.replace(/\s+/, ' ');
+[1->2 line 357]: 
+[1->2 line 358]:     // The following map code is modifying the current_query object by setting its words property to an array of
+[1->2 line 359]:     // objects. Each object in the array represents a word that was entered as part of a search query, along with a
+[1->2 line 360]:     // regular expression that can be used to match that word in a larger body of text.
+[1->2 line 361]: 
+[1->2 line 362]:     this.currentQuery.words = escaped.split(' ').map((searchWord) => {
+[1->2 line 363]:       // This line replaces any special characters in the search word with escape characters, so that they can be safely
+[1->2 line 364]:       // used in a regular expression. The g flag ensures that all occurrences of special characters in the word are
+[1->2 line 365]:       // replaced, and \\$& inserts the original character as a literal string in the replacement.
+[1->2 line 366]:       // In other words: escape all regex chars so that entering ".." doesn't cause it to flip out
+[1->2 line 367]:       let regexString = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+[1->2 line 368]: 
+[1->2 line 369]:       // This line replaces any occurrence of "att&ck" or "attack" with the regular expression pattern
+[1->2 line 370]:       // ((?:att&ck)|(?:attack)). This is done to make the search more flexible and include results that may use
+[1->2 line 371]:       // different forms of the term.
+[1->2 line 372]:       regexString = regexString.replace(/((?:att&ck)|(?:attack))/gi, '((?:att&ck)|(?:attack))');
+[1->2 line 373]: 
+[1->2 line 374]:       // This line creates a new object that contains the original search word and its corresponding regular expression.
+[1->2 line 375]:       // The regular expression is created using the RegExp constructor, with the gi flags to make it global and
+[1->2 line 376]:       // case-insensitive.
+[1->2 line 377]:       return {
+[1->2 line 378]:         word: searchWord,
+[1->2 line 379]:         regex: new RegExp(regexString, 'gi')
+[1->2 line 380]:       };
+[1->2 line 381]:     });
+[1->2 line 382]:   }
+[1->2 line 383]: 
+[1->2 line 384]:   /**
+[1->2 line 385]:    * Converts a search result object to an HTML string with highlighted search words.
+[1->2 line 386]:    * The HTML string will include the result's title, a link to the result's path, and a preview of the content
+[1->2 line 387]:    * with search words highlighted. The preview will be trimmed to a buffer size around the found words.
+[1->2 line 388]:    *
+[1->2 line 389]:    * @private
+[1->2 line 390]:    * @function
+[1->2 line 391]:    * @param {Object} result - A search result object containing an `id`, a `title`, a `path`, and a `content` property.
+[1->2 line 392]:    * @returns {string} An HTML string representing the search result with highlighted search words.
+[1->2 line 393]:    */
+[1->2 line 394]:   #resultToHTML(result) {
+[1->2 line 395]:     // create title and path
+[1->2 line 396]:     let { title } = result;
+[1->2 line 397]: 
+[1->2 line 398]:     let path = base_url.slice(0, -1) + result.path;
+[1->2 line 399]: 
+[1->2 line 400]:     if (path.endsWith('/index.html')) {
+[1->2 line 401]:       path = path.slice(0, -11);
+[1->2 line 402]:     }
+[1->2 line 403]: 
+[1->2 line 404]:     // create preview html
+[1->2 line 405]:     let preview = result.content;
+[1->2 line 406]: 
+[1->2 line 407]:     // Find a position where the search words occur near each other
+[1->2 line 408]:     const positions = [];
+[1->2 line 409]: 
+[1->2 line 410]:     this.currentQuery.words.forEach((searchWord) => {
+[1->2 line 411]:       let currMatches;
+[1->2 line 412]:       while ((currMatches = searchWord.regex.exec(preview)) !== null) {
+[1->2 line 413]:         positions.push({
+[1->2 line 414]:           index: searchWord.regex.lastIndex,
+[1->2 line 415]:           word: searchWord.word,
+[1->2 line 416]:         });
+[1->2 line 417]:       }
+[1->2 line 418]:     });
+[1->2 line 419]: 
+[1->2 line 420]:     positions.sort((a, b) => a.index - b.index);
+[1->2 line 421]: 
+[1->2 line 422]:     // are two sets equal
+[1->2 line 423]:     function setsEqual(s1, s2) {
+[1->2 line 424]:       if (s1.size !== s2.size) return false;
+[1->2 line 425]:       for (const a of s1) if (!s2.has(a)) return false;
+[1->2 line 426]:       return true;
+[1->2 line 427]:     }
+[1->2 line 428]: 
+[1->2 line 429]:     const allWords = new Set(this.currentQuery.words.map((word) => word.word));
+[1->2 line 430]: 
+[1->2 line 431]:     const pos = 0;
+[1->2 line 432]:     const best = {
+[1->2 line 433]:       min: 0,
+[1->2 line 434]:       max: 0,
+[1->2 line 435]:       totalDist: Infinity, // distance between words
+[1->2 line 436]:       totalFound: 0, // total number of words found
+[1->2 line 437]:     };
+[1->2 line 438]:     for (let i = 0; i < positions.length; i++) {
+[1->2 line 439]:       const position = positions[i];
+[1->2 line 440]:       const {word} = position;
+[1->2 line 441]:       const {index} = position;
+[1->2 line 442]: 
+[1->2 line 443]:       // find out how far we have to go from this position to find all words
+[1->2 line 444]:       const foundWords = new Set();
+[1->2 line 445]:       foundWords.add(position.word);
+[1->2 line 446]: 
+[1->2 line 447]:       let totalDist = 0; // total distance between words for this combination
+[1->2 line 448]:       let max = index; // leftmost word find
+[1->2 line 449]:       let min = index; // rightmost word find
+[1->2 line 450]: 
+[1->2 line 451]:       if (setsEqual(allWords, foundWords)) {
+[1->2 line 452]:         // 1 word search
+[1->2 line 453]:         best.min = index + 10;
+[1->2 line 454]:         best.max = index - 10;
+[1->2 line 455]:         break;
+[1->2 line 456]:       } else {
+[1->2 line 457]:         // search around this word
+[1->2 line 458]:         for (let j = 0; i + j < positions.length || i - j > 0; j++) {
+[1->2 line 459]:           // search j ahead
+[1->2 line 460]:           let exceeded = 0;
+[1->2 line 461]:           if (i + j < positions.length - 1) {
+[1->2 line 462]:             const ahead = positions[i + j];
+[1->2 line 463]:             const dist = ahead.index - index;
+[1->2 line 464]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 465]:               exceeded++;
+[1->2 line 466]:             } else if (!foundWords.has(ahead.word)) { // found a word
+[1->2 line 467]:               foundWords.add(ahead.word);
+[1->2 line 468]:               max = ahead.index;
+[1->2 line 469]:               totalDist += ahead.index - index;
+[1->2 line 470]:             }
+[1->2 line 471]:           }
+[1->2 line 472]:           // search j behind
+[1->2 line 473]:           if (i - j >= 0) {
+[1->2 line 474]:             const behind = positions[i - j];
+[1->2 line 475]:             const dist = index - behind.index;
+[1->2 line 476]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 477]:               exceeded++;
+[1->2 line 478]:             } else if (!foundWords.has(behind.word)) { // found a word
+[1->2 line 479]:               foundWords.add(behind.word);
+[1->2 line 480]:               min = behind.index;
+[1->2 line 481]:               totalDist += index - behind.index;
+[1->2 line 482]:             }
+[1->2 line 483]:           }
+[1->2 line 484]:           // found all the words in proximity, or both searches
+[1->2 line 485]:           if (setsEqual(allWords, foundWords) || exceeded == 2) {
+[1->2 line 486]:             // exceeded the buffer
+[1->2 line 487]:             break;
+[1->2 line 488]:           }
+[1->2 line 489]:         }
+[1->2 line 490]:       }
+[1->2 line 491]:       // by now we must have found as many words as we can
+[1->2 line 492]:       // total found words takes priority over the distance
+[1->2 line 493]:       if (foundWords.size > best.totalFound || (totalDist < best.totalDist
+[1->2 line 494]:           && foundWords.size >= best.totalFound)) {
+[1->2 line 495]:         // new best
+[1->2 line 496]:         best.totalDist = totalDist;
+[1->2 line 497]:         best.max = max;
+[1->2 line 498]:         best.min = min;
+[1->2 line 499]:         best.totalFound = foundWords.size;
+[1->2 line 500]:       }
+[1->2 line 501]:     }
+[1->2 line 502]: 
+[1->2 line 503]:     // buffer around keyword
+[1->2 line 504]:     const left = Math.max(0, best.min - this.buffer);
+[1->2 line 505]:     const right = Math.min(preview.length, best.max + this.buffer);
+[1->2 line 506]:     preview = preview.slice(left, right); // extract buffer
+[1->2 line 507]: 
+[1->2 line 508]:     // add ellipses to preview so people know that the preview is not the complete page data
+[1->2 line 509]:     if (right < result.content.length) preview += '&hellip;';
+[1->2 line 510]:     if (left > 0) preview = `&hellip; ${preview}`;
+[1->2 line 511]: 
+[1->2 line 512]:     // surround preview keywords with highlight class span tags
+[1->2 line 513]:     preview = preview.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 514]:     // surround title keywords with highlight class span tags
+[1->2 line 515]:     title = title.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 516]: 
+[1->2 line 517]:     // result html template
+[1->2 line 518]:     return `
+[1->2 line 519]:             <div class="search-result mb-4">
+[1->2 line 520]:                 <div class="title">
+[1->2 line 521]:                     <a href="${path}">${title}</a>
+[1->2 line 522]:                 </div>
+[1->2 line 523]:                 <div class="preview">
+[1->2 line 524]:                     ${preview}
+[1->2 line 525]:                 </div>
+[1->2 line 526]:             </div>
+[1->2 line 527]:         `; // end template
+[1->2 line 528]:   }
+[1->2 line 529]: 
+[1->2 line 530]: }

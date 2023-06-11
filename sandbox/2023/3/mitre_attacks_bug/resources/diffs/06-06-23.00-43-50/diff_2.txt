@@ -1,0 +1,80 @@
+[1: mitre_attacks_bug/resources/commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.index.js]
+[2: mitre_attacks_bug/resources/commit_history_src/e3869b671041f781358694b4a3dcc2cd6d1b63fd.index.js]
+
+[2->1 line 0]: import FlexSearch from 'flexsearch';
+[2->1 line 1]: import localforage from 'localforage';
+[2->1 line 2]: import $ from 'jquery';
+[2->1 line 12]: // eslint-disable-next-line import/extensions
+[2->1 line 13]: import { baseURL } from './settings.js';
+[2->1 line 15]: // eslint-disable-next-line import/extensions
+[2->1 line 16]: import Debouncer from './debouncer.js';
+[2->1 line 18]: // eslint-disable-next-line import/extensions
+[2->1 line 19]: import SearchService from './search-service.js';
+[2->1 line 21]: import {
+[2->1 line 26]:   searchOpenTrigger,
+[2->1 line 29]: // eslint-disable-next-line import/extensions
+[2->1 line 30]: } from './components.js';
+[2->1 line 32]: // Register custom matchers globally
+[2->1 line 33]: FlexSearch.registerMatcher({
+[2->1 line 34]:   // attack and ATT&CK are equivalent for the purposes of search
+[2->1 line 35]:   'ATT&CK': 'ATTACK',
+[2->1 line 36]:   ATTACK: 'ATT&CK',
+[2->1 line 39]: const isChromium = window.chrome;
+[2->1 line 40]: const isEdgeChromium = isChromium && navigator.userAgent.indexOf('Edg') != -1;
+[2->1 line 41]: const isGoogleChrome = !!(isChromium && !isEdgeChromium);
+[2->1 line 44]:   // console.log("open search")
+[2->1 line 52]:   // console.log("close search")
+[2->1 line 59]: const search = function (query) {
+[2->1 line 60]:   console.debug(`Executing search on query: ${query}`);
+[2->1 line 61]:   if (!searchService) {
+[2->1 line 62]:     console.debug('searchService is NOT defined!');
+[2->1 line 64]:     console.debug('Showed the search_parsing_icon');
+[2->1 line 66]:     // Initializing search service
+[2->1 line 68]:     // eslint-disable-next-line camelcase
+[2->1 line 70]:     // eslint-disable-next-line camelcase
+[2->1 line 74]:      * IndexedDB is a web-based database that allows you to store and retrieve data in the client-side (in the
+[2->1 line 75]:      * browser). It is designed for web applications that need to store large amounts of data, such as audio and
+[2->1 line 76]:      * video files, images, and structured data, on the client side. IndexedDB provides a transactional, NoSQL-style
+[2->1 line 77]:      * database that can be used to store and retrieve data even when the user is offline.
+[2->1 line 79]:      * IndexedDB is a part of the Web Storage API and is supported by modern browsers, including Google Chrome,
+[2->1 line 80]:      * Mozilla Firefox, Microsoft Edge, and Apple Safari.
+[2->1 line 82]:      * The main benefits of using IndexedDB over other client-side storage options, such as local storage or
+[2->1 line 83]:      * cookies, are its ability to store large amounts of structured data, its transactional nature, and its ability
+[2->1 line 84]:      * to search and retrieve data using indexes.
+[2->1 line 86]:      * To use IndexedDB in your web application, you need to create a database, define object stores to store your
+[2->1 line 87]:      * data, and use transactions to interact with the data. The database is created using the indexedDB.open
+[2->1 line 88]:      * method, and transactions are used to read and write data using the IDBTransaction object.
+[2->1 line 90]:      * Overall, IndexedDB is a powerful and flexible client-side database that can be used to store and retrieve
+[2->1 line 91]:      * large amounts of structured data in web applications. It is particularly useful for web applications that
+[2->1 line 92]:      * need to work offline or that need to store large amounts of data on the client side.
+[2->1 line 95]:     // eslint-disable-next-line camelcase
+[2->1 line 96]:     if (!isGoogleChrome && 'indexedDB' in window && saved_uuid && saved_uuid === build_uuid) {
+[2->1 line 97]:       console.debug('isGoogleChrome=False; indexedDB=truthy; saved_uuid=Truthy; saved_uuid==build_uuid=truthy');
+[2->1 line 98]:       // Retrieving cached FlexSearch instances
+[2->1 line 99]:       localforage.getItem('index_helper_title').then((savedTitle) => {
+[2->1 line 100]:         localforage.getItem('index_helper_content').then((savedContent) => {
+[2->1 line 101]:           const exported = { title: savedTitle, content: savedContent };
+[2->1 line 102]:           searchService = new SearchService('search-results', null, exported);
+[2->1 line 103]:           console.debug('Initialized new searchService (1)');
+[2->1 line 104]:           searchService.query(query);
+[2->1 line 110]:       console.debug('Something in that last condition was falsy so we need to initialize some instances of FlexSearch');
+[2->1 line 111]:       // Initializing instances of FlexSearch
+[2->1 line 112]:       $.ajax({ // if docs have not yet been loaded
+[2->1 line 113]:         url: `${baseURL}/index.json`,
+[2->1 line 114]:         dataType: 'json',
+[2->1 line 115]:         success(data) {
+[2->1 line 116]:           searchService = new SearchService('search-results', data, null);
+[2->1 line 117]:           console.debug('Initialized new searchService (2)');
+[2->1 line 118]:           searchService.query(query);
+[2->1 line 120]:         },
+[2->1 line 122]:       console.debug('Retrieved and processed index.json');
+[2->1 line 124]:   } else {
+[2->1 line 125]:     console.debug(`searchService IS defined! Executing searchService.query(${query})`);
+[2->1 line 126]:     searchService.query(query);
+[2->1 line 132]: // triggers for closing search
+[2->1 line 141]: // triggers for opening search
+[2->1 line 142]: searchOpenTrigger.on('click', openSearch);
+[2->1 line 143]: // triggers for performing search functions
+[2->1 line 151]: // trigger to render more results
+[2->1 line 153]:   if (searchService) searchService.nextPage();
+[2->1 line 157]: // Internet Explorer compatability patches

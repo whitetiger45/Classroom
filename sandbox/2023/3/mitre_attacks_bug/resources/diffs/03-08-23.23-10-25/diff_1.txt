@@ -1,0 +1,115 @@
+[1: ../commit_history_src/feb131878ae6dee41ecfba55ba7f80804b16cdd5.search.js]
+[2: ../commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.index.js]
+
+[1->2 line 0]: import FlexSearch from 'flexsearch';
+[1->2 line 1]: import localforage from 'localforage';
+[1->2 line 2]: import $ from 'jquery';
+[1->2 line 5]:  * It is important that the `.js` file extension be included for local imports, otherwise webpack won't be able to
+[1->2 line 6]:  * resolve it. i.e., webpack will throw an error like the following:
+[1->2 line 7]:  *
+[1->2 line 8]:  * ERROR in ./src/search.js 12:0-20
+[1->2 line 9]:  * Module not found: Error: Can't resolve './settings' in '/foo/bar/attack-website/attack-search/src'
+[1->2 line 12]: // eslint-disable-next-line import/extensions
+[1->2 line 13]: import { baseURL } from './settings.js';
+[1->2 line 15]: // eslint-disable-next-line import/extensions
+[1->2 line 16]: import Debouncer from './debouncer.js';
+[1->2 line 18]: // eslint-disable-next-line import/extensions
+[1->2 line 19]: import SearchService from './search-service.js';
+[1->2 line 21]: import {
+[1->2 line 22]:   searchBody,
+[1->2 line 23]:   searchOverlay,
+[1->2 line 24]:   searchInput,
+[1->2 line 25]:   searchParsingIcon,
+[1->2 line 26]:   searchOpenTrigger,
+[1->2 line 27]:   closeButton,
+[1->2 line 28]:   loadMoreResultsButton,
+[1->2 line 29]: // eslint-disable-next-line import/extensions
+[1->2 line 30]: } from './components.js';
+[1->2 line 32]: // Register custom matchers globally
+[1->2 line 35]:   'ATT&CK': 'ATTACK',
+[1->2 line 36]:   ATTACK: 'ATT&CK',
+[1->2 line 39]: const isChromium = window.chrome;
+[1->2 line 40]: const isEdgeChromium = isChromium && navigator.userAgent.indexOf('Edg') != -1;
+[1->2 line 41]: const isGoogleChrome = !!(isChromium && !isEdgeChromium);
+[1->2 line 43]: const openSearch = function () {
+[1->2 line 45]:   searchBody.hide();
+[1->2 line 46]:   searchOverlay.show();
+[1->2 line 47]:   searchOverlay.removeClass('hidden');
+[1->2 line 48]:   searchInput.focus();
+[1->2 line 51]: const closeSearch = function () {
+[1->2 line 53]:   searchInput.val('');
+[1->2 line 54]:   searchOverlay.hide();
+[1->2 line 55]:   searchOverlay.addClass('hidden');
+[1->2 line 58]: let searchService;
+[1->2 line 59]: const search = function (query) {
+[1->2 line 60]:   console.debug(`Executing search on query: ${query}`);
+[1->2 line 61]:   if (!searchService) {
+[1->2 line 62]:     console.debug('searchService is NOT defined!');
+[1->2 line 63]:     searchParsingIcon.show();
+[1->2 line 64]:     console.debug('Showed the search_parsing_icon');
+[1->2 line 66]:     // Initializing search service
+[1->2 line 68]:     // eslint-disable-next-line camelcase
+[1->2 line 69]:     const saved_uuid = localStorage.getItem('saved_uuid');
+[1->2 line 70]:     // eslint-disable-next-line camelcase
+[1->2 line 71]:     console.debug(`Retrieved the saved_uuid from localStorage: ${saved_uuid}`);
+[1->2 line 74]:      * IndexedDB is a web-based database that allows you to store and retrieve data in the client-side (in the
+[1->2 line 75]:      * browser). It is designed for web applications that need to store large amounts of data, such as audio and
+[1->2 line 76]:      * video files, images, and structured data, on the client side. IndexedDB provides a transactional, NoSQL-style
+[1->2 line 77]:      * database that can be used to store and retrieve data even when the user is offline.
+[1->2 line 78]:      *
+[1->2 line 79]:      * IndexedDB is a part of the Web Storage API and is supported by modern browsers, including Google Chrome,
+[1->2 line 80]:      * Mozilla Firefox, Microsoft Edge, and Apple Safari.
+[1->2 line 81]:      *
+[1->2 line 82]:      * The main benefits of using IndexedDB over other client-side storage options, such as local storage or
+[1->2 line 83]:      * cookies, are its ability to store large amounts of structured data, its transactional nature, and its ability
+[1->2 line 84]:      * to search and retrieve data using indexes.
+[1->2 line 85]:      *
+[1->2 line 86]:      * To use IndexedDB in your web application, you need to create a database, define object stores to store your
+[1->2 line 87]:      * data, and use transactions to interact with the data. The database is created using the indexedDB.open
+[1->2 line 88]:      * method, and transactions are used to read and write data using the IDBTransaction object.
+[1->2 line 89]:      *
+[1->2 line 90]:      * Overall, IndexedDB is a powerful and flexible client-side database that can be used to store and retrieve
+[1->2 line 91]:      * large amounts of structured data in web applications. It is particularly useful for web applications that
+[1->2 line 92]:      * need to work offline or that need to store large amounts of data on the client side.
+[1->2 line 95]:     // eslint-disable-next-line camelcase
+[1->2 line 96]:     if (!isGoogleChrome && 'indexedDB' in window && saved_uuid && saved_uuid === build_uuid) {
+[1->2 line 97]:       console.debug('isGoogleChrome=False; indexedDB=truthy; saved_uuid=Truthy; saved_uuid==build_uuid=truthy');
+[1->2 line 98]:       // Retrieving cached FlexSearch instances
+[1->2 line 99]:       localforage.getItem('index_helper_title').then((savedTitle) => {
+[1->2 line 100]:         localforage.getItem('index_helper_content').then((savedContent) => {
+[1->2 line 101]:           const exported = { title: savedTitle, content: savedContent };
+[1->2 line 102]:           searchService = new SearchService('search-results', null, exported);
+[1->2 line 103]:           console.debug('Initialized new searchService (1)');
+[1->2 line 104]:           searchService.query(query);
+[1->2 line 105]:           searchParsingIcon.hide();
+[1->2 line 109]:     else {
+[1->2 line 110]:       console.debug('Something in that last condition was falsy so we need to initialize some instances of FlexSearch');
+[1->2 line 111]:       // Initializing instances of FlexSearch
+[1->2 line 113]:         url: `${baseURL}/index.json`,
+[1->2 line 114]:         dataType: 'json',
+[1->2 line 115]:         success(data) {
+[1->2 line 116]:           searchService = new SearchService('search-results', data, null);
+[1->2 line 117]:           console.debug('Initialized new searchService (2)');
+[1->2 line 118]:           searchService.query(query);
+[1->2 line 119]:           searchParsingIcon.hide();
+[1->2 line 120]:         },
+[1->2 line 122]:       console.debug('Retrieved and processed index.json');
+[1->2 line 125]:     console.debug(`searchService IS defined! Executing searchService.query(${query})`);
+[1->2 line 126]:     searchService.query(query);
+[1->2 line 130]: const debounce = new Debouncer(300);
+[1->2 line 133]: searchOverlay.on('click', function (e) {
+[1->2 line 135]:   closeSearch();
+[1->2 line 137]: $(document).keyup((e) => {
+[1->2 line 138]:   e.key === 'Escape' ? closeSearch() : null;
+[1->2 line 140]: closeButton.on('click', closeSearch);
+[1->2 line 142]: searchOpenTrigger.on('click', openSearch);
+[1->2 line 144]: searchInput.on('input', (e) => {
+[1->2 line 145]:   console.log(`Executing search on input: ${e.target.value}`);
+[1->2 line 146]:   debounce.debounce(() => {
+[1->2 line 147]:     console.log(`debounce callback: ${e.target.value}`);
+[1->2 line 148]:     search(e.target.value);
+[1->2 line 152]: loadMoreResultsButton.on('click', () => {
+[1->2 line 153]:   if (searchService) searchService.nextPage();
+[1->2 line 154]:   loadMoreResultsButton.blur(); // onfocus
+[1->2 line 157]: // Internet Explorer compatability patches
+[1->2 line 176]: console.debug('search module is loaded.');

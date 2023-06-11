@@ -1,0 +1,111 @@
+[1: mitre_attacks_bug/resources/commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.index.js]
+[2: mitre_attacks_bug/resources/commit_history_src/e3869b671041f781358694b4a3dcc2cd6d1b63fd.index.js]
+
+[1->2 line 0]: // Require necessary libraries
+[1->2 line 1]: const $ = require('jquery');
+[1->2 line 11]: // Import required modules with the correct file extension
+[1->2 line 12]: const { baseURL, searchFilePaths } = require('./settings.js');
+[1->2 line 13]: const Debouncer = require('./debouncer.js');
+[1->2 line 14]: const SearchService = require('./search-service.js');
+[1->2 line 16]: // Import required components
+[1->2 line 17]: const {
+[1->2 line 22]:   searchButton,
+[1->2 line 23]:   searchIcon,
+[1->2 line 26]: } = require('./components.js');
+[1->2 line 28]: // Open search overlay
+[1->2 line 36]: // Close search overlay
+[1->2 line 43]: // Variable to check if search service is loaded
+[1->2 line 44]: let searchServiceIsLoaded = false;
+[1->2 line 46]: // Initialize the search service
+[1->2 line 47]: async function initializeSearchService() {
+[1->2 line 48]:   console.debug('Initializing search service...');
+[1->2 line 54]:   // Check if the browser supports IndexedDB. Search service can only work in environments that support IndexedDB.
+[1->2 line 55]:   if ('indexedDB' in window) {
+[1->2 line 56]:     // Verify if the buildUUID is already cached in LocalStorage. This check is performed to determine if the search
+[1->2 line 57]:     // service has been initialized. Each website build instance possesses a unique buildUUID, preventing different
+[1->2 line 58]:     // website builds from sharing the same search index.
+[1->2 line 59]:     if (saved_uuid && saved_uuid === build_uuid) {
+[1->2 line 60]:       // Restore search service from IndexedDB
+[1->2 line 61]:       try {
+[1->2 line 62]:         console.debug('Initializing SearchService (assume documents already cached)...');
+[1->2 line 63]:         searchService = new SearchService('search-results', saved_uuid);
+[1->2 line 64]:         await searchService.initializeAsync(null); // Passing null will instruct the search service to attempt
+[1->2 line 65]:                                                              // restoring itself from the IndexedDB
+[1->2 line 66]:         console.debug('SearchService is initialized.');
+[1->2 line 67]:       } catch (error) {
+[1->2 line 68]:         console.error('Failed to initialize SearchService:', error);
+[1->2 line 69]:         searchServiceIsLoaded = false;
+[1->2 line 70]:       } finally {
+[1->2 line 72]:         searchServiceIsLoaded = true;
+[1->2 line 76]:       // Initialize search service from scratch
+[1->2 line 77]:       console.debug('Documents not cached yet.');
+[1->2 line 79]:       const baseUrl = `${baseURL}/search/`;
+[1->2 line 80]:       const jsonFiles = [];
+[1->2 line 82]:       // Download all JSON files from directory
+[1->2 line 83]:       // Loop through the searchFilePaths array to construct the URLs
+[1->2 line 84]:       searchFilePaths.forEach(function(filename) {
+[1->2 line 85]:         jsonFiles.push(baseUrl + filename);
+[1->2 line 88]:       // Use Promise.all() to download all files concurrently
+[1->2 line 89]:       Promise.all(jsonFiles.map(url => $.getJSON(url)))
+[1->2 line 90]:           .then(data => {
+[1->2 line 91]:             // Concatenate all file data into a single array
+[1->2 line 92]:             const combinedData = data.reduce((acc, curr) => acc.concat(curr), []);
+[1->2 line 94]:             // Initialize search service with combined data
+[1->2 line 95]:             searchService = new SearchService('search-results', build_uuid);
+[1->2 line 96]:             return searchService.initializeAsync(combinedData);
+[1->2 line 97]:           })
+[1->2 line 98]:           .then(() => {
+[1->2 line 99]:             localStorage.setItem('saved_uuid', build_uuid);
+[1->2 line 100]:             console.debug('SearchService is initialized.');
+[1->2 line 102]:             searchServiceIsLoaded = true;
+[1->2 line 103]:           })
+[1->2 line 104]:           .catch(error => {
+[1->2 line 105]:             console.error('Failed to initialize SearchService:', error);
+[1->2 line 107]:             searchServiceIsLoaded = false;
+[1->2 line 112]:     // Disable the search button and display an error icon with a hover effect that displays a message/explanation
+[1->2 line 113]:     console.error('Search is only available in browsers that support IndexedDB. Please try using Firefox, Chrome, Safari, or another browser that supports IndexedDB.');
+[1->2 line 114]:     searchInput.prop('disabled', true);
+[1->2 line 115]:     searchButton.prop('disabled', true);
+[1->2 line 116]:     searchIcon.removeClass('search-icon');
+[1->2 line 117]:     searchIcon.addClass('error-icon');
+[1->2 line 118]:     searchButton.prop('title', 'To use the search feature, please make sure your browser supports IndexedDB. If not, consider upgrading your browser or switching to a supported browser such as Firefox, Chrome, or Safari.')
+[1->2 line 122]: // Declare search service variable
+[1->2 line 125]: // Perform a search using the search service
+[1->2 line 126]: const search = async function (query) {
+[1->2 line 127]:   console.debug(`search -> Received search query: ${query}`);
+[1->2 line 129]:   // Wait until the search service is loaded
+[1->2 line 130]:   while (!searchServiceIsLoaded) {
+[1->2 line 131]:     console.debug('search -> search index is not loaded...');
+[1->2 line 133]:     await new Promise(resolve => setTimeout(resolve, 100));
+[1->2 line 136]:   console.debug(`Executing search: ${query}`);
+[1->2 line 137]:   await searchService.query(query);
+[1->2 line 141]: // Instantiate a debouncer
+[1->2 line 144]: // Set up event handlers for closing search
+[1->2 line 153]: // Set up event handler for close button
+[1->2 line 156]: // Set up event handlers for opening search
+[1->2 line 157]: searchButton.on('click', openSearch);
+[1->2 line 159]: // Set up event handler for search input
+[1->2 line 168]: // Set up event handler for load more results button
+[1->2 line 170]:   if (searchService) searchService.loadMoreResults();
+[1->2 line 174]: // Add compatibility patches for Internet Explorer
+[1->2 line 177]:     if (typeof start !== 'number') {
+[1->2 line 178]:       start = 0;
+[1->2 line 179]:     }
+[1->2 line 180]:     if (start + search.length > this.length) {
+[1->2 line 181]:       return false;
+[1->2 line 182]:     }
+[1->2 line 183]:     return this.indexOf(search, start) !== -1;
+[1->2 line 184]:   };
+[1->2 line 185]: }
+[1->2 line 186]: if (typeof String.prototype.endsWith !== 'function') {
+[1->2 line 187]:   String.prototype.endsWith = function (suffix) {
+[1->2 line 188]:     return this.indexOf(suffix, this.length - suffix.length) !== -1;
+[1->2 line 189]:   };
+[1->2 line 190]: }
+[1->2 line 191]: 
+[1->2 line 192]: // Log that search module is loaded
+[1->2 line 193]: console.debug('search module is loaded.');
+[1->2 line 194]: 
+[1->2 line 195]: // Initialize the search service when the module loads
+[1->2 line 196]: initializeSearchService();
+[1->2 line 197]: 

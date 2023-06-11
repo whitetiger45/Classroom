@@ -1,0 +1,60 @@
+[1: mitre_attacks_bug/resources/commit_history_src/resultToHTML/feb131878ae6dee41ecfba55ba7f80804b16cdd5.resultToHtml.js]
+[2: mitre_attacks_bug/resources/commit_history_src/resultToHTML/e3869b671041f781358694b4a3dcc2cd6d1b63fd.resultToHtml.js]
+
+[1->2 line 1]:    * Converts a search result object to an HTML string with highlighted search words.
+[1->2 line 2]:    * The HTML string will include the result's title, a link to the result's path, and a preview of the content
+[1->2 line 3]:    * with search words highlighted. The preview will be trimmed to a buffer size around the found words.
+[1->2 line 4]:    *
+[1->2 line 5]:    * @private
+[1->2 line 6]:    * @function
+[1->2 line 7]:    * @param {Object} result - A search result object containing an `id`, a `title`, a `path`, and a `content` property.
+[1->2 line 8]:    * @returns {string} An HTML string representing the search result with highlighted search words.
+[1->2 line 10]:   #resultToHTML(result) {
+[1->2 line 12]:     let { title } = result;
+[1->2 line 16]:     if (path.endsWith('/index.html')) {
+[1->2 line 24]:     const positions = [];
+[1->2 line 26]:     this.currentQuery.words.forEach((searchWord) => {
+[1->2 line 28]:       while ((currMatches = searchWord.regex.exec(preview)) !== null) {
+[1->2 line 30]:           index: searchWord.regex.lastIndex,
+[1->2 line 31]:           word: searchWord.word,
+[1->2 line 36]:     positions.sort((a, b) => a.index - b.index);
+[1->2 line 41]:       for (const a of s1) if (!s2.has(a)) return false;
+[1->2 line 45]:     const allWords = new Set(this.currentQuery.words.map((word) => word.word));
+[1->2 line 47]:     const pos = 0;
+[1->2 line 48]:     const best = {
+[1->2 line 52]:       totalFound: 0, // total number of words found
+[1->2 line 56]:       const {word} = position;
+[1->2 line 57]:       const {index} = position;
+[1->2 line 60]:       const foundWords = new Set();
+[1->2 line 65]:       let min = index; // rightmost word find
+[1->2 line 70]:         best.max = index - 10;
+[1->2 line 78]:             const ahead = positions[i + j];
+[1->2 line 79]:             const dist = ahead.index - index;
+[1->2 line 80]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 85]:               totalDist += ahead.index - index;
+[1->2 line 90]:             const behind = positions[i - j];
+[1->2 line 91]:             const dist = index - behind.index;
+[1->2 line 92]:             if (dist > this.buffer) { // exceeded buffer
+[1->2 line 100]:           // found all the words in proximity, or both searches
+[1->2 line 101]:           if (setsEqual(allWords, foundWords) || exceeded == 2) {
+[1->2 line 102]:             // exceeded the buffer
+[1->2 line 109]:       if (foundWords.size > best.totalFound || (totalDist < best.totalDist
+[1->2 line 110]:           && foundWords.size >= best.totalFound)) {
+[1->2 line 120]:     const left = Math.max(0, best.min - this.buffer);
+[1->2 line 121]:     const right = Math.min(preview.length, best.max + this.buffer);
+[1->2 line 124]:     // add ellipses to preview so people know that the preview is not the complete page data
+[1->2 line 125]:     if (right < result.content.length) preview += '&hellip;';
+[1->2 line 126]:     if (left > 0) preview = `&hellip; ${preview}`;
+[1->2 line 129]:     preview = preview.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 131]:     title = title.replace(this.currentQuery.joined, "<span class='search-word-found'>$1</span>");
+[1->2 line 134]:     return `
+[1->2 line 135]:             <div class="search-result mb-4">
+[1->2 line 136]:                 <div class="title">
+[1->2 line 137]:                     <a href="${path}">${title}</a>
+[1->2 line 138]:                 </div>
+[1->2 line 139]:                 <div class="preview">
+[1->2 line 140]:                     ${preview}
+[1->2 line 141]:                 </div>
+[1->2 line 142]:             </div>
+[1->2 line 143]:         `; // end template
+[1->2 line 144]:   }

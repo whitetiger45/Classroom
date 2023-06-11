@@ -1,0 +1,58 @@
+[1: ../commit_history_src/b27b47a40d844ed208c5d6a3f54d9532a8960569.search.js]
+[2: ../commit_history_src/feb131878ae6dee41ecfba55ba7f80804b16cdd5.search.js]
+
+[1->2 line 28]: var isChromium = window.chrome;
+[1->2 line 29]: var isEdgeChromium = isChromium && navigator.userAgent.indexOf("Edg") != -1;
+[1->2 line 30]: var isGoogleChrome = isChromium && !isEdgeChromium ? true : false;
+[1->2 line 33]:     constructor(documents, exported) {
+[1->2 line 60]:         if (documents && !exported) {
+[1->2 line 64]:             localStorage.setItem("saved_uuid", build_uuid);
+[1->2 line 65]:             localforage.setItem("index_helper_title", this.indexes.title.export());
+[1->2 line 66]:             localforage.setItem("index_helper_content", this.indexes.content.export());
+[1->2 line 67]:         } else if (!documents && exported) {
+[1->2 line 68]:             this.indexes.title.import(exported.title);
+[1->2 line 69]:             this.indexes.content.import(exported.content);
+[1->2 line 71]:             console.error("invalid argument: constructor must be called with either documents or exported");
+[1->2 line 147]:     constructor(tag, documents, exported) {
+[1->2 line 149]:         this.index = new IndexHelper(documents, exported);
+[1->2 line 197]:         let path = base_url.slice(0, -1) + result.path;
+[1->2 line 386]:         let saved_uuid = localStorage.getItem("saved_uuid");
+[1->2 line 388]:         if (!isGoogleChrome && 'indexedDB' in window && saved_uuid && saved_uuid == build_uuid) {
+[1->2 line 389]:             // console.log("getting cached flexsearch objects");
+[1->2 line 390]:             localforage.getItem("index_helper_title").then((saved_title) => {
+[1->2 line 391]:                 localforage.getItem("index_helper_content").then((saved_content) => {
+[1->2 line 392]:                     exported = {title: saved_title, content: saved_content};
+[1->2 line 393]:                     search_service = new SearchService("search-results", null, exported);
+[1->2 line 399]:             // console.log("making new flexsearch objects");
+[1->2 line 401]:                 url: base_url + "/index.json",
+[1->2 line 404]:                     search_service = new SearchService("search-results", data, null);
+[1->2 line 450]: search_open_trigger.on("click", openSearch);
+[1->2 line 451]: // triggers for performing search functions
+[1->2 line 452]: search_input.on("input", function(e) { 
+[1->2 line 453]:     debounce.debounce(function() { search(e.target.value) });
+[1->2 line 454]: })
+[1->2 line 455]: // trigger to render more results
+[1->2 line 456]: load_more_results_button.on("click", function() {
+[1->2 line 457]:     if (search_service) search_service.nextPage();
+[1->2 line 458]:     load_more_results_button.blur(); //onfocus
+[1->2 line 459]: });
+[1->2 line 460]: 
+[1->2 line 461]: //internet explorer compatability patches
+[1->2 line 462]: if (!String.prototype.includes) {
+[1->2 line 463]:     String.prototype.includes = function(search, start) {
+[1->2 line 464]:         if (typeof start !== 'number') {
+[1->2 line 465]:             start = 0;
+[1->2 line 466]:         }
+[1->2 line 467]: 
+[1->2 line 468]:         if (start + search.length > this.length) {
+[1->2 line 469]:             return false;
+[1->2 line 470]:         } else {
+[1->2 line 471]:             return this.indexOf(search, start) !== -1;
+[1->2 line 472]:         }
+[1->2 line 473]:     };
+[1->2 line 474]: }
+[1->2 line 475]: 
+[1->2 line 476]: if (typeof String.prototype.endsWith !== 'function') {
+[1->2 line 477]:     String.prototype.endsWith = function(suffix) {
+[1->2 line 478]:         return this.indexOf(suffix, this.length - suffix.length) !== -1;
+[1->2 line 479]:     };

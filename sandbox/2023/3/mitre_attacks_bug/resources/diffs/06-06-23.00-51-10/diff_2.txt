@@ -1,0 +1,68 @@
+[1: mitre_attacks_bug/resources/commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.search-service.js]
+[2: mitre_attacks_bug/resources/commit_history_src/e3869b671041f781358694b4a3dcc2cd6d1b63fd.search-service.js]
+
+[2->1 line 1]: import IndexHelper from './index-helper.js';
+[2->1 line 4]: import { loadMoreResults, searchBody } from './components.js';
+[2->1 line 7]: import { buffer } from './settings.js';
+[2->1 line 9]: export default class SearchService {
+[2->1 line 10]:   constructor(tag, documents, exported) {
+[2->1 line 11]:     // init indexes
+[2->1 line 12]:     this.index = new IndexHelper(documents, exported);
+[2->1 line 13]:     this.current_query = {
+[2->1 line 29]:      * update the search (query) string
+[2->1 line 30]:      * @param {str} queryString string to search for in the indexes
+[2->1 line 32]:   query(queryString) {
+[2->1 line 33]:     console.debug('Executing query method.');
+[2->1 line 35]:     console.debug('SearchService.query: Executing queryString.trim()');
+[2->1 line 36]:     this.current_query.clean = queryString.trim();
+[2->1 line 37]:     console.debug(`this.current_query.clean=${this.current_query.clean}`);
+[2->1 line 40]:     const joined = `(${this.current_query.clean.split(' ').join('|')})`;
+[2->1 line 41]:     this.current_query.joined = new RegExp(joined, 'gi');
+[2->1 line 43]:     // build regex for each word
+[2->1 line 44]:     const escaped = this.current_query.clean.replace(/\s+/, ' '); // remove double spaces which causes query to match on every 0 length string and flip out
+[2->1 line 45]:     this.current_query.words = escaped.split(' ').map((searchWord) => {
+[2->1 line 46]:       let regexString = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // escape all regex chars so that entering ".." doesn't cause it to flip out
+[2->1 line 47]:       regexString = regexString.replace(/((?:att&ck)|(?:attack))/gi, '((?:att&ck)|(?:attack))'); // equivalence of ATT&CK and attack
+[2->1 line 48]:       return { word: searchWord, regex: new RegExp(regexString, 'gi') };
+[2->1 line 50]:     console.debug(`Setting index query to ${this.current_query.clean}`);
+[2->1 line 51]:     this.index.setQuery(this.current_query.clean);
+[2->1 line 52]:     console.debug('Clearing results.');
+[2->1 line 53]:     this.clearResults();
+[2->1 line 54]:     console.debug('Calling this.nextPage()');
+[2->1 line 55]:     this.nextPage(); // render first page of results
+[2->1 line 59]:      * parse the result to the HTML required to render it
+[2->1 line 60]:      * @param result object of format {title, path, content} which describes a page on the site
+[2->1 line 62]:   result_to_html(result) {
+[2->1 line 75]:     this.current_query.words.forEach((searchWord) => {
+[2->1 line 85]:     positions.sort((a, b) => {
+[2->1 line 86]:       console.debug(`a=${a}`);
+[2->1 line 87]:       console.debug(`b=${b}`);
+[2->1 line 88]:       return a.index - b.index;
+[2->1 line 98]:     const allWords = new Set(this.current_query.words.map((word) => word.word));
+[2->1 line 133]:             if (dist > buffer) { // exceeded buffer
+[2->1 line 145]:             if (dist > buffer) { // exceeded buffer
+[2->1 line 173]:     const left = Math.max(0, best.min - buffer);
+[2->1 line 174]:     const right = Math.min(preview.length, best.max + buffer);
+[2->1 line 182]:     preview = preview.replace(this.current_query.joined, "<span class='search-word-found'>$1</span>");
+[2->1 line 184]:     title = title.replace(this.current_query.joined, "<span class='search-word-found'>$1</span>");
+[2->1 line 200]:      * clear the rendered results from the page
+[2->1 line 202]:   clearResults() {
+[2->1 line 204]:     this.hasResults = false;
+[2->1 line 208]:      * render the next page of results if one exists
+[2->1 line 210]:   nextPage() {
+[2->1 line 211]:     console.debug('Executing SearchService.nextPage');
+[2->1 line 212]:     const results = this.index.nextPage();
+[2->1 line 213]:     console.debug(`SearchService.nextPage: processing results: ${results}`);
+[2->1 line 214]:     if (results.length > 0) this.hasResults = true;
+[2->1 line 215]:     console.debug(`this.hasResults=${this.hasResults}`);
+[2->1 line 216]:     if (this.hasResults) {
+[2->1 line 218]:       console.debug('search_body.show() was executed.');
+[2->1 line 220]:       let resultHTML = results.map((result) => self.result_to_html(result));
+[2->1 line 223]:       if (this.index.nextPageRef) loadMoreResults.show();
+[2->1 line 224]:       else loadMoreResults.hide();
+[2->1 line 225]:     } else if (this.current_query.clean !== '') { // search with no results
+[2->1 line 227]:       console.debug('search_body.show() was executed.');
+[2->1 line 228]:       this.render_container.html(`
+[2->1 line 229]:                     <div class="search-result">no results</div>
+[2->1 line 230]:                 `);
+[2->1 line 232]:     } else { // query for empty string

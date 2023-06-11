@@ -1,0 +1,74 @@
+[1: ../commit_history_src/8568cba0a92a080800e3ab9edd8714ec5dd0298b.search.js]
+[2: ../commit_history_src/b27b47a40d844ed208c5d6a3f54d9532a8960569.search.js]
+
+[2->1 line 1]: // this is used for the previous-versions feature to prepend urls for index.json and search result links.
+[2->1 line 2]: // it gets parsed automatically when a version is preserved
+[2->1 line 3]: site_base_url = ""
+[2->1 line 5]: $.ajax({
+[2->1 line 9]:         idx = lunr.Index.load(data)
+[2->1 line 13]: $(document).keypress(
+[2->1 line 14]:     function(e){
+[2->1 line 15]:         if (e.which == '13') {
+[2->1 line 16]:             e.preventDefault();
+[2->1 line 20]: function search(str) {
+[2->1 line 21]:     str = str.replace(/\s+$/, '');
+[2->1 line 23]:     if (str == "") {
+[2->1 line 24]:         $(".search-results").html("");
+[2->1 line 25]:         return
+[2->1 line 28]:     var data = idx.search(str);
+[2->1 line 29]:     if (data.length == 0) {
+[2->1 line 30]:         str = str.replace(/\\/g, '\\\\');
+[2->1 line 31]:         data = idx.search(str);
+[2->1 line 32]:         if (data.length == 0) {
+[2->1 line 33]:             $(".search-results").html("No results found.");
+[2->1 line 34]:             $(".search-results").css('visibility', 'visible');
+[2->1 line 35]:             return;
+[2->1 line 38]:     var categories = { "techniques": [], "tactics": [], "groups": [], "software": [], "mitigations":[] };
+[2->1 line 40]:     $(".search-results").css('visibility', 'visible');
+[2->1 line 41]:     $(".search-results").html("");
+[2->1 line 43]:     var len = data.length;
+[2->1 line 44]:     var upperBound;
+[2->1 line 45]:     if (len < 20) {
+[2->1 line 46]:         upperBound  = len;
+[2->1 line 48]:     else {
+[2->1 line 49]:         upperBound = 20;
+[2->1 line 52]:     for (var i = 0; i < upperBound; i++) {
+[2->1 line 53]:         var tokens = data[i]["ref"].split("|||");
+[2->1 line 54]:         var url = tokens[0];
+[2->1 line 55]:         var title = tokens[1];
+[2->1 line 57]:         if (title.toLowerCase().includes(str.toLowerCase())) {
+[2->1 line 58]:             var highlightIdx = title.toLowerCase().indexOf(str.toLowerCase());
+[2->1 line 59]:             if (highlightIdx == 0) {
+[2->1 line 60]:                 title = "<strong class='search-highlight'>" + title.substring(0, str.length) + "</strong>" + title.substring(str.length);
+[2->1 line 62]:             else if (highlightIdx == title.length - 1) {
+[2->1 line 63]:                 title = title.substring(0, title.toLowerCase().indexOf(str.toLowerCase())) + "<strong class='search-highlight'>" + title.substring(title.toLowerCase().indexOf(str.toLowerCase())) + "</strong>";
+[2->1 line 65]:             else {
+[2->1 line 66]:                 title = title.substring(0, title.toLowerCase().indexOf(str.toLowerCase())) + "<strong class='search-highlight'>" + title.substring(title.toLowerCase().indexOf(str.toLowerCase()), title.toLowerCase().indexOf(str.toLowerCase()) + str.length) + "</strong>" + title.substring(title.toLowerCase().indexOf(str.toLowerCase()) + str.length);
+[2->1 line 70]:         for (var key in categories) {
+[2->1 line 71]:             if (url.includes(key)) {
+[2->1 line 72]:                 categories[key].push("<a href='" + site_base_url + url + "'>" + title + "</a>");
+[2->1 line 77]:     for (var key in categories) {
+[2->1 line 78]:         if (categories[key].length > 0) {
+[2->1 line 79]:             $(".search-results").html($(".search-results").html() + "<span class='search-header'>" + key.charAt(0).toUpperCase() + key.slice(1) + "</span><hr class='search-divider' />");
+[2->1 line 80]:             $(".search-results").append("<div class='" + key + "'></div>")
+[2->1 line 81]:             // true if search term found in description
+[2->1 line 82]:             var descriptionHeader = true;
+[2->1 line 83]:             for (var i = 0; i < categories[key].length; i++) {
+[2->1 line 84]:                 if (categories[key][i].includes("search-highlight")) {
+[2->1 line 85]:                     // $(".search-results").html($(".search-results").html() + categories[key][i]);
+[2->1 line 86]:                     $("." + key).append(categories[key][i]);
+[2->1 line 88]:                 else {
+[2->1 line 89]:                     if (descriptionHeader) {
+[2->1 line 90]:                         $(".search-results").html($(".search-results").html() + "<span class='text-muted'>Term found on page</span>");
+[2->1 line 92]:                     descriptionHeader = false;
+[2->1 line 93]:                     $(".search-results").html($(".search-results").html() + categories[key][i]);
+[2->1 line 100]: $("#search").on('input keypress', function (e) {
+[2->1 line 101]:     if (e.target.value != "") {
+[2->1 line 102]:         clearTimeout(timeoutID);
+[2->1 line 103]:         timeoutID = setTimeout(() => search(e.target.value), 500);
+[2->1 line 105]:     else {
+[2->1 line 106]:         $(".search-results").css('visibility', 'hidden');
+[2->1 line 110]: $(window).click(function() {
+[2->1 line 111]:     if(!$(event.target).closest('.search-results').length) {
+[2->1 line 112]:         if($('.search-results').is(":visible")) {
+[2->1 line 113]:             $('.search-results').css('visibility', 'hidden');

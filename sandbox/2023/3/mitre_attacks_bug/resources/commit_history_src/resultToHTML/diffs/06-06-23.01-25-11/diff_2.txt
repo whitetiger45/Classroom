@@ -1,0 +1,18 @@
+[1: mitre_attacks_bug/resources/commit_history_src/resultToHTML/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.resultToHtml.js]
+[2: mitre_attacks_bug/resources/commit_history_src/resultToHTML/e3869b671041f781358694b4a3dcc2cd6d1b63fd.resultToHtml.js]
+
+[2->1 line 1]:      * parse the result to the HTML required to render it
+[2->1 line 2]:      * @param result object of format {title, path, content} which describes a page on the site
+[2->1 line 4]:   result_to_html(result) {
+[2->1 line 17]:     this.current_query.words.forEach((searchWord) => {
+[2->1 line 27]:     positions.sort((a, b) => {
+[2->1 line 28]:       console.debug(`a=${a}`);
+[2->1 line 29]:       console.debug(`b=${b}`);
+[2->1 line 30]:       return a.index - b.index;
+[2->1 line 40]:     const allWords = new Set(this.current_query.words.map((word) => word.word));
+[2->1 line 75]:             if (dist > buffer) { // exceeded buffer
+[2->1 line 87]:             if (dist > buffer) { // exceeded buffer
+[2->1 line 115]:     const left = Math.max(0, best.min - buffer);
+[2->1 line 116]:     const right = Math.min(preview.length, best.max + buffer);
+[2->1 line 124]:     preview = preview.replace(this.current_query.joined, "<span class='search-word-found'>$1</span>");
+[2->1 line 126]:     title = title.replace(this.current_query.joined, "<span class='search-word-found'>$1</span>");

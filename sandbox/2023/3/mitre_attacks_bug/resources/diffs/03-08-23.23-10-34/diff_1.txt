@@ -1,0 +1,83 @@
+[1: ../commit_history_src/feb131878ae6dee41ecfba55ba7f80804b16cdd5.search.js]
+[2: ../commit_history_src/58f5cee09bcfb4ffa69c59855b7636e08e4f73e5.search-service.js]
+
+[1->2 line 0]: // eslint-disable-next-line import/extensions
+[1->2 line 1]: import IndexHelper from './index-helper.js';
+[1->2 line 3]: // eslint-disable-next-line import/extensions
+[1->2 line 4]: import { loadMoreResults, searchBody } from './components.js';
+[1->2 line 6]: // eslint-disable-next-line import/extensions
+[1->2 line 7]: import { buffer } from './settings.js';
+[1->2 line 9]: export default class SearchService {
+[1->2 line 14]:       clean: '',
+[1->2 line 23]:       joined: '', // alternation
+[1->2 line 25]:     this.render_container = $(`#${tag}`);
+[1->2 line 30]:      * @param {str} queryString string to search for in the indexes
+[1->2 line 32]:   query(queryString) {
+[1->2 line 33]:     console.debug('Executing query method.');
+[1->2 line 35]:     console.debug('SearchService.query: Executing queryString.trim()');
+[1->2 line 36]:     this.current_query.clean = queryString.trim();
+[1->2 line 37]:     console.debug(`this.current_query.clean=${this.current_query.clean}`);
+[1->2 line 40]:     const joined = `(${this.current_query.clean.split(' ').join('|')})`;
+[1->2 line 41]:     this.current_query.joined = new RegExp(joined, 'gi');
+[1->2 line 44]:     const escaped = this.current_query.clean.replace(/\s+/, ' '); // remove double spaces which causes query to match on every 0 length string and flip out
+[1->2 line 45]:     this.current_query.words = escaped.split(' ').map((searchWord) => {
+[1->2 line 46]:       let regexString = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // escape all regex chars so that entering ".." doesn't cause it to flip out
+[1->2 line 47]:       regexString = regexString.replace(/((?:att&ck)|(?:attack))/gi, '((?:att&ck)|(?:attack))'); // equivalence of ATT&CK and attack
+[1->2 line 48]:       return { word: searchWord, regex: new RegExp(regexString, 'gi') };
+[1->2 line 50]:     console.debug(`Setting index query to ${this.current_query.clean}`);
+[1->2 line 52]:     console.debug('Clearing results.');
+[1->2 line 54]:     console.debug('Calling this.nextPage()');
+[1->2 line 64]:     let { title } = result;
+[1->2 line 66]:     if (path.endsWith('/index.html')) {
+[1->2 line 73]:     const positions = [];
+[1->2 line 75]:     this.current_query.words.forEach((searchWord) => {
+[1->2 line 77]:       while ((currMatches = searchWord.regex.exec(preview)) !== null) {
+[1->2 line 79]:           index: searchWord.regex.lastIndex,
+[1->2 line 80]:           word: searchWord.word,
+[1->2 line 85]:     positions.sort((a, b) => {
+[1->2 line 86]:       console.debug(`a=${a}`);
+[1->2 line 87]:       console.debug(`b=${b}`);
+[1->2 line 88]:       return a.index - b.index;
+[1->2 line 94]:       for (const a of s1) if (!s2.has(a)) return false;
+[1->2 line 98]:     const allWords = new Set(this.current_query.words.map((word) => word.word));
+[1->2 line 100]:     const pos = 0;
+[1->2 line 101]:     const best = {
+[1->2 line 105]:       totalFound: 0, // total number of words found
+[1->2 line 109]:       const { word } = position;
+[1->2 line 110]:       const { index } = position;
+[1->2 line 113]:       const foundWords = new Set();
+[1->2 line 118]:       let min = index; // rightmost word find
+[1->2 line 123]:         best.max = index - 10;
+[1->2 line 131]:             const ahead = positions[i + j];
+[1->2 line 132]:             const dist = ahead.index - index;
+[1->2 line 138]:               totalDist += ahead.index - index;
+[1->2 line 143]:             const behind = positions[i - j];
+[1->2 line 144]:             const dist = index - behind.index;
+[1->2 line 153]:           // found all the words in proximity, or both searches
+[1->2 line 154]:           if (setsEqual(allWords, foundWords) || exceeded == 2) {
+[1->2 line 155]:             // exceeded the buffer
+[1->2 line 162]:       if (foundWords.size > best.totalFound || (totalDist < best.totalDist
+[1->2 line 163]:         && foundWords.size >= best.totalFound)) {
+[1->2 line 173]:     const left = Math.max(0, best.min - buffer);
+[1->2 line 174]:     const right = Math.min(preview.length, best.max + buffer);
+[1->2 line 177]:     // add ellipses to preview so people know that the preview is not the complete page data
+[1->2 line 178]:     if (right < result.content.length) preview += '&hellip;';
+[1->2 line 179]:     if (left > 0) preview = `&hellip; ${preview}`;
+[1->2 line 203]:     this.render_container.html('');
+[1->2 line 211]:     console.debug('Executing SearchService.nextPage');
+[1->2 line 212]:     const results = this.index.nextPage();
+[1->2 line 213]:     console.debug(`SearchService.nextPage: processing results: ${results}`);
+[1->2 line 215]:     console.debug(`this.hasResults=${this.hasResults}`);
+[1->2 line 217]:       searchBody.show();
+[1->2 line 218]:       console.debug('search_body.show() was executed.');
+[1->2 line 219]:       const self = this;
+[1->2 line 220]:       let resultHTML = results.map((result) => self.result_to_html(result));
+[1->2 line 221]:       resultHTML = resultHTML.join('');
+[1->2 line 223]:       if (this.index.nextPageRef) loadMoreResults.show();
+[1->2 line 224]:       else loadMoreResults.hide();
+[1->2 line 225]:     } else if (this.current_query.clean !== '') { // search with no results
+[1->2 line 226]:       searchBody.show();
+[1->2 line 227]:       console.debug('search_body.show() was executed.');
+[1->2 line 230]:                 `);
+[1->2 line 231]:       loadMoreResults.hide();
+[1->2 line 233]:       searchBody.hide();

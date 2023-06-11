@@ -1,0 +1,10 @@
+[1: ../commit_history_src/b27b47a40d844ed208c5d6a3f54d9532a8960569.search.js]
+[2: ../commit_history_src/feb131878ae6dee41ecfba55ba7f80804b16cdd5.search.js]
+
+[2->1 line 29]:     constructor(documents) {
+[2->1 line 57]:         // console.log("done adding pages to index");
+[2->1 line 132]:     constructor(tag, documents) {
+[2->1 line 134]:         this.index = new IndexHelper(documents);
+[2->1 line 183]:         let path = result.path;
+[2->1 line 372]:             url: site_base_url + "/index.json",
+[2->1 line 375]:                 search_service = new SearchService("search-results", data)
